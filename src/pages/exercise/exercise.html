@@ -1,0 +1,52 @@
+<ion-header>
+  <ion-navbar>
+    <ion-buttons start>
+      <button
+        ion-button
+        type="button"
+        (click)="dismiss()">
+        Close
+      </button>
+    </ion-buttons>
+    <ion-title>Exercise</ion-title>
+    <ion-buttons end>
+      <button
+        ion-button
+        type="submit"
+        form="exerciseForm"
+        [disabled]="form.invalid">
+        Save
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <form
+    id="exerciseForm"
+    #form="ngForm"
+    (ngSubmit)="saveExercise(form.value); form.reset(); dismiss()">
+    <ion-list>
+      <ion-item>
+        <ion-label stacked>Name</ion-label>
+        <ion-input
+          type="text"
+          name="name"
+          required
+          [ngModel]="exercise.name">
+        </ion-input>
+      </ion-item>
+    </ion-list>
+    <ion-list>
+      <ion-item>
+        <ion-label stacked>Description</ion-label>
+        <ion-textarea
+          type="text"
+          name="description"
+          required
+          [ngModel]="exercise.description">
+        </ion-textarea>
+      </ion-item>
+    </ion-list>
+  </form>
+</ion-content>
