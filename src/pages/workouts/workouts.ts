@@ -22,32 +22,32 @@ export class WorkoutsPage extends PageComponent {
   }
 
   ionViewDidEnter(): void {
-    this.refreshList();
+    this.refresh();
   }
 
-  private refreshList(): void {
+  private refresh(): void {
     this.workouts = this.workoutsService.fetch();
   }
 
-  private reallyDeleteWorkout(id:number): void {
-    this.workoutsService.delete(id).then(() => this.refreshList());
+  private reallyDelete(id:number): void {
+    this.workoutsService.delete(id).then(() => this.refresh());
   }
 
-  addWorkout(): void {
-    this.editWorkout(this.workoutsService.create());
+  add(): void {
+    this.edit(this.workoutsService.create());
   }
 
-  editWorkout(workout: Workout): void {
+  edit(workout: Workout): void {
     const modal: Modal = this.modalController.create(WorkoutPage, { workout });
-    modal.onDidDismiss(() => this.refreshList())
+    modal.onDidDismiss(() => this.refresh())
     modal.present();
   }
 
-  removeWorkout({ id, name }: Workout): void {
+  remove({ id, name }: Workout): void {
     this.alertController.create({
       title: `Delete "${name}"?`,
       buttons: [
-        { text: 'Yes', handler: () => this.reallyDeleteWorkout(id) },
+        { text: 'Yes', handler: () => this.reallyDelete(id) },
         { text: 'No' }
       ]
     }).present();

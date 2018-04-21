@@ -66,7 +66,7 @@ export class WorkoutPage extends ModalComponent {
     }).present();
   }
 
-  saveWorkout(workout: Workout): void { // FIXME
+  save(workout: Workout): void { // FIXME
     this.workoutsService.save({ ...this.workout, ...workout });
   }
 }

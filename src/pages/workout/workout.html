@@ -25,7 +25,7 @@
   <form
     id="workoutForm"
     #form="ngForm"
-    (ngSubmit)="saveWorkout(form.value); form.reset(); dismiss()">
+    (ngSubmit)="save(form.value); form.reset(); dismiss()">
     <ion-list>
       <ion-item>
         <ion-label stacked>Name</ion-label>
@@ -50,7 +50,7 @@
         <button type="button" ion-button (click)="addSet()">Add</button>
         <ion-list>
           <ion-item-sliding
-            *ngFor="let set of (sets | async) trackBy: trackBy('id')">
+            *ngFor="let set of (sets | async) trackBy: trackById">
             <ion-item>{{ set.exercise }}</ion-item>
             <ion-item-options>
               <button
