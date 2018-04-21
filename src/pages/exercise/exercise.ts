@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NavParams, ViewController } from 'ionic-angular';
 
-import { PageComponent } from '../page.component';
+import { ModalComponent } from '../modal.component';
 import { Exercise } from '../../models/exercise.model';
 import { ExercisesService } from '../../services/exercises.service';
 
@@ -9,25 +9,19 @@ import { ExercisesService } from '../../services/exercises.service';
   selector: 'page-exercise',
   templateUrl: 'exercise.html',
 })
-export class ExercisePage extends PageComponent {
+export class ExercisePage extends ModalComponent {
   readonly exercise: Exercise;
 
   constructor(
+    viewController: ViewController,
     { data: { exercise } }: NavParams,
-    private readonly viewController: ViewController,
     private readonly exercisesService: ExercisesService
   ) {
-    super();
+    super(viewController);
     this.exercise = exercise;
   }
 
-  dismiss(): void {
-    this.viewController.dismiss();
-  }
-
-  saveExercise(exercise: Exercise): void { // FIXME
-    exercise = { ...this.exercise, ...exercise };
-    const method: keyof ExercisesService = exercise.id ? 'update' : 'create';
-    this.exercisesService[method](exercise);
+  save(exercise: Exercise): void { // FIXME
+    this.exercisesService.save({ ...this.exercise, ...exercise });
   }
 }

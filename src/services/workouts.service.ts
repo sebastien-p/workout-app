@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { DatabaseService } from './database.service';
 import { Workout } from '../models/workout.model';
+import { Set } from '../models/set.model';
 
 @Injectable()
 export class WorkoutsService {
@@ -9,7 +10,11 @@ export class WorkoutsService {
     private readonly databaseService: DatabaseService
   ) {}
 
-  static create(
+  fetch(): Promise<Workout[]> {
+    return this.databaseService.workouts.toArray();
+  }
+
+  create(
     description: string = null,
     manual: boolean = false,
     name: string = null,
@@ -25,19 +30,15 @@ export class WorkoutsService {
     };
   }
 
-  create(workout: Workout): Promise<number> {
-    return this.databaseService.workouts.add(workout);
-  }
-
-  read(): Promise<Workout[]> {
-    return this.databaseService.workouts.toArray();
-  }
-
-  update({ id, ...changes }: Workout): Promise<number> {
-    return this.databaseService.workouts.update(id, changes);
+  save(workout: Workout = this.create()): Promise<number> {
+    return this.databaseService.workouts.put(workout);
   }
 
   delete(id: number): Promise<void> {
     return this.databaseService.workouts.delete(id);
+  }
+
+  fetchSets(ids: number[]): Promise<Set[]> {
+    return this.databaseService.sets.where('id').anyOf(ids).toArray();
   }
 }

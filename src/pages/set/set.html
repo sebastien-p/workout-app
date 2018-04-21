@@ -25,7 +25,7 @@
   <form
     id="setForm"
     #form="ngForm"
-    (ngSubmit)="saveWorkout(form.value); form.reset(); dismiss()">
+    (ngSubmit)="save(form.value); form.reset(); dismiss()">
     <ion-list>
       <ion-item>
         <ion-label stacked>Exercise</ion-label>

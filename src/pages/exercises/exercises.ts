@@ -26,7 +26,7 @@ export class ExercisesPage extends PageComponent {
   }
 
   private refreshList(): void {
-    this.exercises = this.exercisesService.read();
+    this.exercises = this.exercisesService.fetch();
   }
 
   private reallyDeleteExercise(id: number): void {
@@ -34,7 +34,7 @@ export class ExercisesPage extends PageComponent {
   }
 
   addExercise(): void {
-    this.editExercise(ExercisesService.create());
+    this.editExercise(this.exercisesService.create());
   }
 
   editExercise(exercise: Exercise): void {

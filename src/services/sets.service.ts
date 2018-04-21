@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 
 import { DatabaseService } from './database.service';
 import { Set } from '../models/set.model';
-import { Amplitude } from '../models/amplitude.model';
-import { Rythm } from '../models/rythm.model';
+import { Amplitude } from '../models/amplitude.enum';
+import { Rythm } from '../models/rythm.enum';
 
 @Injectable()
 export class SetsService {
@@ -11,7 +11,11 @@ export class SetsService {
     private readonly databaseService: DatabaseService
   ) {}
 
-  static create(
+  fetch(): Promise<Set[]> {
+    return this.databaseService.sets.toArray();
+  }
+
+  create(
     amplitude: Amplitude = Amplitude.Normal,
     description: string = null,
     exercise: number = null,
@@ -31,16 +35,8 @@ export class SetsService {
     };
   }
 
-  create(workout: Set): Promise<number> {
-    return this.databaseService.sets.add(workout);
-  }
-
-  read(): Promise<Set[]> {
-    return this.databaseService.sets.toArray();
-  }
-
-  update({ id, ...changes }: Set): Promise<number> {
-    return this.databaseService.sets.update(id, changes);
+  save({ id, ...set }: Set = this.create()): Promise<number> {
+    return this.databaseService.sets.put(set, id);
   }
 
   delete(id: number): Promise<void> {

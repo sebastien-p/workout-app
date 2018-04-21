@@ -1,6 +1,6 @@
 import { Identifiable } from './identifiable.model';
-import { Amplitude } from './amplitude.model';
-import { Rythm } from './rythm.model';
+import { Amplitude } from './amplitude.enum';
+import { Rythm } from './rythm.enum';
 
 export interface Set extends Identifiable {
   amplitude: Amplitude;

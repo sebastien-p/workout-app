@@ -11,9 +11,7 @@ import {
 import { ModalComponent } from '../modal.component';
 import { Workout } from '../../models/workout.model';
 import { Set } from '../../models/set.model';
-import { Exercise } from '../../models/exercise.model';
 import { WorkoutsService } from '../../services/workouts.service';
-import { ExercisesService } from '../../services/exercises.service';
 import { SetPage } from '../set/set';
 import { SetsService } from '../../services/sets.service';
 
@@ -23,7 +21,7 @@ import { SetsService } from '../../services/sets.service';
 })
 export class WorkoutPage extends ModalComponent {
   readonly workout: Workout;
-  exercises: Promise<Exercise[]>;
+  sets: Promise<Set[]>;
 
   constructor(
     viewController: ViewController,
@@ -31,18 +29,22 @@ export class WorkoutPage extends ModalComponent {
     private readonly alertController: AlertController,
     private readonly modalController: ModalController,
     private readonly workoutsService: WorkoutsService,
-    private readonly exercisesService: ExercisesService
+    private readonly setsService: SetsService
   ) {
     super(viewController);
     this.workout = workout;
   }
 
   ionViewDidEnter(): void {
-    this.exercises = this.exercisesService.read();
+    this.refreshSets();
+  }
+
+  refreshSets(): void {
+    this.sets = this.workoutsService.fetchSets(this.workout.sets); // FIXME
   }
 
   addSet(): void {
-    this.editSet(SetsService.create());
+    this.editSet(this.setsService.create());
   }
 
   editSet(set: Set): void {
@@ -50,7 +52,7 @@ export class WorkoutPage extends ModalComponent {
       workout: this.workout,
       set
     });
-    // modal.onDidDismiss(() => this.refreshList())
+    modal.onDidDismiss(() => this.refreshSets())
     modal.present();
   }
 
@@ -65,8 +67,6 @@ export class WorkoutPage extends ModalComponent {
   }
 
   saveWorkout(workout: Workout): void { // FIXME
-    workout = { ...this.workout, ...workout };
-    const method: keyof WorkoutsService = workout.id ? 'update' : 'create';
-    this.workoutsService[method](workout);
+    this.workoutsService.save({ ...this.workout, ...workout });
   }
 }

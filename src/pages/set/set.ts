@@ -4,9 +4,9 @@ import { ViewController, NavParams } from 'ionic-angular';
 import { ModalComponent } from '../modal.component';
 import { Workout } from '../../models/workout.model';
 import { Set } from '../../models/set.model';
-import { WorkoutsService } from '../../services/workouts.service';
 import { Exercise } from '../../models/exercise.model';
 import { ExercisesService } from '../../services/exercises.service';
+import { SetsService } from '../../services/sets.service';
 
 @Component({
   selector: 'page-set',
@@ -20,7 +20,7 @@ export class SetPage extends ModalComponent {
   constructor(
     viewController: ViewController,
     { data: { workout, set } }: NavParams,
-    private readonly workoutsService: WorkoutsService,
+    private readonly setsService: SetsService,
     private readonly exercisesService: ExercisesService
   ) {
     super(viewController);
@@ -29,16 +29,10 @@ export class SetPage extends ModalComponent {
   }
 
   ionViewDidEnter(): void {
-    this.exercises = this.exercisesService.read();
+    this.exercises = this.exercisesService.fetch();
   }
 
-  dismiss(): void {
-    this.viewController.dismiss();
-  }
-
-  saveWorkout(set: Set): void { // TODO + FIXME
-    this.workout.sets.push(set.id);
-    const method: keyof WorkoutsService = this.workout.id ? 'update' : 'create';
-    this.workoutsService[method](this.workout);
+  save(set: Set): void { // TODO + FIXME
+    this.setsService.save(set).then(id => this.workout.sets.push(id))
   }
 }

@@ -25,7 +25,7 @@
   <form
     id="exerciseForm"
     #form="ngForm"
-    (ngSubmit)="saveExercise(form.value); form.reset(); dismiss()">
+    (ngSubmit)="save(form.value); form.reset(); dismiss()">
     <ion-list>
       <ion-item>
         <ion-label stacked>Name</ion-label>
