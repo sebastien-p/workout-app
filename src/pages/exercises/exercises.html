@@ -12,7 +12,7 @@
 <ion-content>
   <ion-list>
     <ion-item-sliding
-      *ngFor="let exercise of (exercises | async) trackBy: trackById">
+      *ngFor="let exercise of (exercises | async) trackBy: trackById()">
       <ion-item>{{ exercise.name }}</ion-item>
       <ion-item-options>
         <button

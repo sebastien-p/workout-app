@@ -1,9 +1,13 @@
 import { TrackByFunction } from '@angular/core';
 
-export abstract class PageComponent {
-  trackById = (i: number, object: any): number => this.trackBy('id')(i, object);
+import { Identifiable } from '../models/identifiable.model';
 
-  trackBy(key: string): TrackByFunction<any> {
-    return (i, object) => object[key];
+export abstract class PageComponent {
+  trackByKey<T>(key: keyof T): TrackByFunction<T> {
+    return (i, item) => item[key];
+  }
+
+  trackById<T extends Identifiable = Identifiable>(): TrackByFunction<T> {
+    return this.trackByKey<T>('id');
   }
 }

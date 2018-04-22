@@ -35,7 +35,7 @@
           required
           [ngModel]="set.exercise">
           <ion-option
-            *ngFor="let exercise of (exercises | async) trackBy: trackById"
+            *ngFor="let exercise of (exercises | async) trackBy: trackById()"
             [value]="exercise.id">
             {{ exercise.name }}
           </ion-option>
