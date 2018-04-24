@@ -1,38 +1,20 @@
 import { Injectable } from '@angular/core';
+import { Dexie } from 'dexie';
 
-import { DatabaseService } from './database.service';
 import { DisplayExercise } from '../models/exercise.model';
-import { DisplaySet, DatabaseSet } from '../models/set.model';
+import { DisplaySet } from '../models/set.model';
+import { DisplayWorkout } from '../models/workout.model';
 import { Amplitude } from '../models/amplitude.enum';
 import { Rythm } from '../models/rythm.enum';
-import { DisplayWorkout } from '../models/workout.model';
+import { DatabaseService } from './database.service';
+import { ExercisesService } from './exercises.service';
 
 @Injectable()
 export class SetsService {
   constructor(
-    private readonly databaseService: DatabaseService
+    private readonly database: DatabaseService,
+    private readonly exercises: ExercisesService
   ) {}
-
-  fetch(workoutId: number): Promise<DisplaySet[]> {
-    const { exercises, sets, } = this.databaseService;
-    return this.databaseService.transaction('r', [exercises, sets], async () => {
-      const results = await sets
-        .where('workout')
-        .equals(workoutId)
-        .sortBy('position');
-      const toto = await exercises
-        .where('id')
-        .anyOf(results.map(set => set.exercise))
-        .toArray();
-      return results.map<DisplaySet>(set => {
-        const exercise = toto.find(titi => titi.id === set.exercise) as DisplayExercise;
-        return {
-          ...set,
-          exercise
-        };
-      });
-    });
-  }
 
   create(
     amplitude: Amplitude = Amplitude.Normal,
@@ -42,8 +24,7 @@ export class SetsService {
     repetitions: number = 0,
     rest: number = 0,
     restLast: number = rest,
-    rythm: Rythm = Rythm.Normal,
-    workout: number = null
+    rythm: Rythm = Rythm.Normal
   ): DisplaySet {
     return {
       amplitude,
@@ -53,25 +34,58 @@ export class SetsService {
       repetitions,
       rest,
       restLast,
-      rythm,
-      workout
+      rythm
     };
   }
 
-  save({ id, ...set }: DisplaySet = this.create()): Promise<number> {
-    const { sets } = this.databaseService;
-    return this.databaseService.transaction('rw', [sets], async () => {
-      if (set.position === null) {
-        set.position = await sets
-          .where('workout')
-          .equals(set.workout)
-          .count();
-      }
-      return sets.put({ ...set, exercise: set.exercise.id });
+  fetch(id: number): Dexie.Promise<DisplaySet>;
+  fetch(): Dexie.Promise<DisplaySet[]>;
+  fetch(id?: number): any {
+    const { exercises, sets } = this.database;
+    return this.database.transaction('r', [
+      exercises,
+      sets
+    ], async () => {
+      return id ? this.fetchOne(id) : this.fetchAll()
     });
   }
 
-  delete(id: number): Promise<void> {
-    return this.databaseService.sets.delete(id);
+  save( // TODO: update workout
+    workout: DisplayWorkout,
+    { exercise, ...set }: DisplaySet
+  ): Dexie.Promise<number> {
+    const { workouts, sets } = this.database;
+    return this.database.transaction('rw', [
+      sets,
+      workouts
+    ], async () => {
+      const id: number = await sets.put({
+        exercise: exercise.id,
+        ...set
+      });
+      workouts.where('id').equals(workout.id).modify(workout => {
+        workout.sets.push(id);
+      });
+      return id;
+    });
+  }
+
+  delete(id: number): Dexie.Promise<void> { // TODO: update workout
+    return this.database.sets.delete(id);
+  }
+
+  private fetchOne(id: number): Dexie.Promise<DisplaySet> {
+    const { sets } = this.database;
+    return sets.get(id).then(async ({ exercise, ...set }) => ({
+      exercise: await this.exercises.fetch(exercise),
+      ...set
+    }));
+  }
+
+  private fetchAll(): Dexie.Promise<DisplaySet[]> {
+    const { sets, map } = this.database;
+    return sets.toCollection().primaryKeys().then(
+      ids => map(ids, id => this.fetchOne(id))
+    );
   }
 }

@@ -1,7 +1,7 @@
 import { Identifiable } from './identifiable.model';
+import { DisplayExercise } from './exercise.model';
 import { Amplitude } from './amplitude.enum';
 import { Rythm } from './rythm.enum';
-import { DisplayExercise } from './exercise.model';
 
 interface Set extends Identifiable {
   amplitude: Amplitude;
@@ -10,7 +10,6 @@ interface Set extends Identifiable {
   rest: number;
   restLast: number;
   rythm: Rythm;
-  workout: number;
 }
 
 export interface DatabaseSet extends Set {

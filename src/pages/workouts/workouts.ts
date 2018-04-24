@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { AlertController, ModalController, Modal } from 'ionic-angular';
 
+import { DisplayWorkout } from '../../models/workout.model';
 import { PageComponent } from '../page.component';
 import { WorkoutPage } from '../workout/workout';
-import { Workout } from '../../models/workout.model';
 import { WorkoutsService } from '../../services/workouts.service';
 
 @Component({
@@ -11,7 +11,7 @@ import { WorkoutsService } from '../../services/workouts.service';
   templateUrl: 'workouts.html'
 })
 export class WorkoutsPage extends PageComponent {
-  workouts: Promise<Workout[]>;
+  workouts: Promise<DisplayWorkout[]>;
 
   constructor(
     private readonly alertController: AlertController,
@@ -37,13 +37,13 @@ export class WorkoutsPage extends PageComponent {
     this.edit(this.workoutsService.create());
   }
 
-  edit(workout: Workout): void {
+  edit(workout: DisplayWorkout): void {
     const modal: Modal = this.modalController.create(WorkoutPage, { workout });
     modal.onDidDismiss(() => this.refresh())
     modal.present();
   }
 
-  remove({ id, name }: Workout): void {
+  remove({ id, name }: DisplayWorkout): void {
     this.alertController.create({
       title: `Delete "${name}"?`,
       buttons: [

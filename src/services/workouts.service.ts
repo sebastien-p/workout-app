@@ -1,44 +1,70 @@
 import { Injectable } from '@angular/core';
+import { Dexie } from 'dexie';
 
+import { DisplaySet } from '../models/set.model';
+import { DisplayWorkout } from '../models/workout.model';
 import { DatabaseService } from './database.service';
-import { Workout } from '../models/workout.model';
-import { Set } from '../models/set.model';
+import { SetsService } from './sets.service';
 
 @Injectable()
 export class WorkoutsService {
   constructor(
-    private readonly databaseService: DatabaseService
+    private readonly database: DatabaseService,
+    private readonly sets: SetsService
   ) {}
-
-  fetch(): Promise<Workout[]> {
-    return this.databaseService.workouts.toArray();
-  }
 
   create(
     description: string = null,
     manual: boolean = false,
     name: string = null,
-    restTime: number = 0,
-    sets: number[] = []
-  ): Workout {
+    rest: number = 0,
+    sets: DisplaySet[] = []
+  ): DisplayWorkout {
     return {
       description,
       manual,
       name,
-      restTime,
+      rest,
       sets
     };
   }
 
-  save(workout: Workout = this.create()): Promise<number> {
-    return this.databaseService.workouts.put(workout);
+  fetch(id: number): Dexie.Promise<DisplayWorkout>;
+  fetch(): Dexie.Promise<DisplayWorkout[]>;
+  fetch(id?: number): any {
+    const { exercises, sets, workouts } = this.database;
+    return this.database.transaction('r', [
+      exercises,
+      sets,
+      workouts
+    ], async () =>  {
+      return id ? this.fetchOne(id) : this.fetchAll()
+    });
   }
 
-  delete(id: number): Promise<void> {
-    return this.databaseService.workouts.delete(id);
+  save({ sets, ...workout }: DisplayWorkout): Dexie.Promise<number> {
+    return this.database.workouts.put({
+      sets: sets.map(set => set.id),
+      ...workout
+    });
   }
 
-  fetchSets(ids: number[]): Promise<Set[]> {
-    return this.databaseService.sets.where('id').anyOf(ids).toArray();
+  delete(id: number): Dexie.Promise<void> { // TODO: delete sets
+    return this.database.workouts.delete(id);
+  }
+
+  private fetchOne(id: number): Dexie.Promise<DisplayWorkout> {
+    const { workouts, map } = this.database;
+    return workouts.get(id).then(async ({ sets, ...workout }) => ({
+      sets: await map(sets, set => this.sets.fetch(set)),
+      ...workout
+    }));
+  }
+
+  private fetchAll(): Dexie.Promise<DisplayWorkout[]> {
+    const { workouts, map } = this.database;
+    return workouts.toCollection().primaryKeys().then(
+      ids => map(ids, id => this.fetchOne(id))
+    );
   }
 }

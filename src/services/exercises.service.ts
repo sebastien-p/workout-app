@@ -1,18 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Dexie } from 'dexie';
 
-import { DatabaseService } from './database.service';
 import { DisplayExercise } from '../models/exercise.model';
+import { DatabaseService } from './database.service';
 
 @Injectable()
 export class ExercisesService {
   constructor(
-    private readonly databaseService: DatabaseService
+    private readonly database: DatabaseService
   ) {}
-
-  fetch(): Dexie.Promise<DisplayExercise[]> {
-    return this.databaseService.exercises.toArray();
-  }
 
   create(
     name: string = null,
@@ -24,15 +20,44 @@ export class ExercisesService {
     };
   }
 
-  save(exercise: DisplayExercise = this.create()): Dexie.Promise<number> {
-    return this.databaseService.exercises.put(exercise);
+  fetch(id: number): Dexie.Promise<DisplayExercise>;
+  fetch(): Dexie.Promise<DisplayExercise[]>;
+  fetch(id?: number): any {
+    const { exercises } = this.database;
+    return this.database.transaction('r', [
+      exercises
+    ], async () => {
+      return id ? this.fetchOne(id) : this.fetchAll()
+    });
   }
 
-  delete(id: number): Dexie.Promise<void> {
-    const { sets, exercises } = this.databaseService;
-    return this.databaseService.transaction('rw', [sets, exercises], () => {
-      sets.where('exercise').equals(id).delete();
+  save(exercise: DisplayExercise): Dexie.Promise<number> {
+    return this.database.exercises.put({ ...exercise });
+  }
+
+  delete(id: number): Dexie.Promise<void> {// TODO: delete sets + update workouts
+    const { exercises, sets, workouts } = this.database;
+    return this.database.transaction('rw', [
+      exercises,
+      sets,
+      workouts
+    ], async () => {
+      const ids: number[] = await sets.where('exercise').equals(id).primaryKeys();
+      workouts.where('sets').anyOf(ids).modify(workout => {
+
+      });
+      sets.where('id').equals(ids).delete();
       exercises.delete(id);
     });
+  }
+
+  private fetchOne(id: number): Dexie.Promise<DisplayExercise> {
+    const { exercises } = this.database;
+    return exercises.get(id);
+  }
+
+  private fetchAll(): Dexie.Promise<DisplayExercise[]> {
+    const { exercises } = this.database;
+    return exercises.toArray();
   }
 }
