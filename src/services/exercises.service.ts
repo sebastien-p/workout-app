@@ -27,15 +27,16 @@ export class ExercisesService {
     return this.database.transaction('r', [
       exercises
     ], async () => {
-      return id ? this.fetchOne(id) : this.fetchAll()
+      return await (id ? this.fetchOne(id) : this.fetchAll());
     });
   }
 
   save(exercise: DisplayExercise): Dexie.Promise<number> {
-    return this.database.exercises.put({ ...exercise });
+    const { exercises } = this.database;
+    return exercises.put({ ...exercise });
   }
 
-  delete(id: number): Dexie.Promise<void> {// TODO: delete sets + update workouts
+  delete({ id }: DisplayExercise): Dexie.Promise<void> {// TODO + DRY
     const { exercises, sets, workouts } = this.database;
     return this.database.transaction('rw', [
       exercises,
@@ -44,10 +45,10 @@ export class ExercisesService {
     ], async () => {
       const ids: number[] = await sets.where('exercise').equals(id).primaryKeys();
       workouts.where('sets').anyOf(ids).modify(workout => {
-
+        workout.sets = workout.sets.filter(set => ids.indexOf(set) < 0);
       });
-      sets.where('id').equals(ids).delete();
-      exercises.delete(id);
+      sets.bulkDelete(ids);
+      return await exercises.delete(id);
     });
   }
 

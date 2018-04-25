@@ -33,6 +33,6 @@ export class SetPage extends ModalComponent {
   }
 
   save(set: DisplaySet): void { // TODO + FIXME
-    this.setsService.save(this.workout, set);
+    this.setsService.save(set);
   }
 }

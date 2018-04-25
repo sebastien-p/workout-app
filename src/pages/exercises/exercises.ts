@@ -29,8 +29,8 @@ export class ExercisesPage extends PageComponent {
     this.exercises = this.exercisesService.fetch();
   }
 
-  private reallyDelete(id: number): void {
-    this.exercisesService.delete(id).then(() => this.refresh());
+  private reallyDelete(exercise: DisplayExercise): void {
+    this.exercisesService.delete(exercise).then(() => this.refresh());
   }
 
   add(): void {
@@ -45,11 +45,11 @@ export class ExercisesPage extends PageComponent {
     modal.present();
   }
 
-  remove({ id, name }: DisplayExercise): void {
+  remove(exercise: DisplayExercise): void {
     this.alertController.create({
-      title: `Delete "${name}"?`,
+      title: `Delete "${exercise.name}"?`,
       buttons: [
-        { text: 'Yes', handler: () => this.reallyDelete(id) },
+        { text: 'Yes', handler: () => this.reallyDelete(exercise) },
         { text: 'No' }
       ]
     }).present();

@@ -10,6 +10,7 @@ interface Set extends Identifiable {
   rest: number;
   restLast: number;
   rythm: Rythm;
+  workout: number;
 }
 
 export interface DatabaseSet extends Set {

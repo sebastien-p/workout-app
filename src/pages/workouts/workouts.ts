@@ -29,8 +29,8 @@ export class WorkoutsPage extends PageComponent {
     this.workouts = this.workoutsService.fetch();
   }
 
-  private reallyDelete(id:number): void {
-    this.workoutsService.delete(id).then(() => this.refresh());
+  private reallyDelete(workout: DisplayWorkout): void {
+    this.workoutsService.delete(workout).then(() => this.refresh());
   }
 
   add(): void {
@@ -43,11 +43,11 @@ export class WorkoutsPage extends PageComponent {
     modal.present();
   }
 
-  remove({ id, name }: DisplayWorkout): void {
+  remove(workout: DisplayWorkout): void {
     this.alertController.create({
-      title: `Delete "${name}"?`,
+      title: `Delete "${workout.name}"?`,
       buttons: [
-        { text: 'Yes', handler: () => this.reallyDelete(id) },
+        { text: 'Yes', handler: () => this.reallyDelete(workout) },
         { text: 'No' }
       ]
     }).present();

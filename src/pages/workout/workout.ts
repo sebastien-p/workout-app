@@ -38,6 +38,10 @@ export class WorkoutPage extends ModalComponent {
     this.refresh();
   }
 
+  private reallyDelete(set: DisplaySet): void {
+    this.setsService.delete(set).then(() => this.refresh());
+  }
+
   refresh(): void { // FIXME
     if (!this.workout.id) { return; }
     this.workoutsService.fetch(this.workout.id)
@@ -45,7 +49,7 @@ export class WorkoutPage extends ModalComponent {
   }
 
   addSet(): void {
-    this.editSet(this.setsService.create());
+    this.editSet(this.setsService.create(this.workout.id));
   }
 
   editSet(set: DisplaySet): void {
@@ -61,7 +65,7 @@ export class WorkoutPage extends ModalComponent {
     this.alertController.create({
       title: `Delete "TODO"?`,
       buttons: [
-        { text: 'Yes', handler: () => console.log('OK') },
+        { text: 'Yes', handler: () => this.reallyDelete(set) },
         { text: 'No' }
       ]
     }).present();

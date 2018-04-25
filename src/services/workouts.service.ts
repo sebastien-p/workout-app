@@ -38,7 +38,7 @@ export class WorkoutsService {
       sets,
       workouts
     ], async () =>  {
-      return id ? this.fetchOne(id) : this.fetchAll()
+      return await (id ? this.fetchOne(id) : this.fetchAll());
     });
   }
 
@@ -49,8 +49,15 @@ export class WorkoutsService {
     });
   }
 
-  delete(id: number): Dexie.Promise<void> { // TODO: delete sets
-    return this.database.workouts.delete(id);
+  delete({ id, sets: workoutSets }: DisplayWorkout): Dexie.Promise<void> {
+    const { sets, workouts } = this.database;
+    return this.database.transaction('rw', [
+      sets,
+      workouts
+    ], async () => {
+      sets.bulkDelete(workoutSets.map(set => set.id));
+      return await workouts.delete(id);
+    });
   }
 
   private fetchOne(id: number): Dexie.Promise<DisplayWorkout> {
