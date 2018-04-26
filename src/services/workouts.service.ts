@@ -37,15 +37,17 @@ export class WorkoutsService {
       exercises,
       sets,
       workouts
-    ], async () =>  {
+    ], async () => {
       return await (id ? this.fetchOne(id) : this.fetchAll());
     });
   }
 
   save({ sets, ...workout }: DisplayWorkout): Dexie.Promise<number> {
-    return this.database.workouts.put({
-      sets: sets.map(set => set.id),
-      ...workout
+    const { workouts } = this.database;
+    return this.database.transaction('rw', [
+      workouts
+    ], async () => {
+      return await workouts.put({ sets: sets.map(set => set.id), ...workout });
     });
   }
 

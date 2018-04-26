@@ -5,7 +5,6 @@ import { Rythm } from './rythm.enum';
 
 interface Set extends Identifiable {
   amplitude: Amplitude;
-  position: number;
   repetitions: number;
   rest: number;
   restLast: number;

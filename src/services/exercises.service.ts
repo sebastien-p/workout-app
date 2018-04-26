@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Dexie } from 'dexie';
 
 import { DisplayExercise } from '../models/exercise.model';
-import { DatabaseService } from './database.service';
+import { DatabaseService, Updater } from './database.service';
 
 @Injectable()
 export class ExercisesService {
@@ -33,20 +33,22 @@ export class ExercisesService {
 
   save(exercise: DisplayExercise): Dexie.Promise<number> {
     const { exercises } = this.database;
-    return exercises.put({ ...exercise });
+    return this.database.transaction('rw', [
+      exercises
+    ], async () => {
+      return await exercises.put({ ...exercise });
+    });
   }
 
-  delete({ id }: DisplayExercise): Dexie.Promise<void> {// TODO + DRY
-    const { exercises, sets, workouts } = this.database;
+  delete({ id }: DisplayExercise): Dexie.Promise<void> {
+    const { exercises, sets, workouts, removeAll } = this.database;
     return this.database.transaction('rw', [
       exercises,
       sets,
       workouts
     ], async () => {
-      const ids: number[] = await sets.where('exercise').equals(id).primaryKeys();
-      workouts.where('sets').anyOf(ids).modify(workout => {
-        workout.sets = workout.sets.filter(set => ids.indexOf(set) < 0);
-      });
+      const ids: number[] = await sets.where({ exercise: id }).primaryKeys();
+      this.updateWorkouts(ids, sets => removeAll(sets, ids));
       sets.bulkDelete(ids);
       return await exercises.delete(id);
     });
@@ -60,5 +62,15 @@ export class ExercisesService {
   private fetchAll(): Dexie.Promise<DisplayExercise[]> {
     const { exercises } = this.database;
     return exercises.toArray();
+  }
+
+  private updateWorkouts(
+    sets: number[],
+    setsUpdater: Updater<number>
+  ): Dexie.Promise<number> {
+    const { workouts } = this.database;
+    return workouts.where('sets').anyOf(sets).modify(workout => {
+      workout.sets = setsUpdater(workout.sets);
+    });
   }
 }

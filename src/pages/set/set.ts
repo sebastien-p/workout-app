@@ -3,7 +3,6 @@ import { ViewController, NavParams } from 'ionic-angular';
 
 import { DisplayExercise } from '../../models/exercise.model';
 import { DisplaySet } from '../../models/set.model';
-import { DisplayWorkout } from '../../models/workout.model';
 import { ModalComponent } from '../modal.component';
 import { ExercisesService } from '../../services/exercises.service';
 import { SetsService } from '../../services/sets.service';
@@ -13,18 +12,16 @@ import { SetsService } from '../../services/sets.service';
   templateUrl: 'set.html',
 })
 export class SetPage extends ModalComponent {
-  private readonly workout: DisplayWorkout;
   readonly set: DisplaySet;
   exercises: Promise<DisplayExercise[]>;
 
   constructor(
     viewController: ViewController,
-    { data: { workout, set } }: NavParams,
-    private readonly setsService: SetsService,
-    private readonly exercisesService: ExercisesService
+    { data: { set } }: NavParams,
+    private readonly exercisesService: ExercisesService,
+    private readonly setsService: SetsService
   ) {
     super(viewController);
-    this.workout = workout;
     this.set = set;
   }
 
@@ -33,6 +30,6 @@ export class SetPage extends ModalComponent {
   }
 
   save(set: DisplaySet): void { // TODO + FIXME
-    this.setsService.save(set);
+    this.setsService.save({ ...this.set, ...set });
   }
 }

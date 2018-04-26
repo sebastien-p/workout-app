@@ -5,10 +5,8 @@ import { DisplayExercise } from '../models/exercise.model';
 import { DisplaySet } from '../models/set.model';
 import { Amplitude } from '../models/amplitude.enum';
 import { Rythm } from '../models/rythm.enum';
-import { DatabaseService } from './database.service';
+import { DatabaseService, Updater } from './database.service';
 import { ExercisesService } from './exercises.service';
-
-export type SetsUpdater = (sets: number[], id: number) => number[];
 
 @Injectable()
 export class SetsService {
@@ -22,7 +20,6 @@ export class SetsService {
     amplitude: Amplitude = Amplitude.Normal,
     description: string = null,
     exercise: DisplayExercise = null,
-    position: number = -1,
     repetitions: number = 0,
     rest: number = 0,
     restLast: number = rest,
@@ -32,7 +29,6 @@ export class SetsService {
       amplitude,
       description,
       exercise,
-      position,
       repetitions,
       rest,
       restLast,
@@ -54,24 +50,25 @@ export class SetsService {
   }
 
   save({ exercise, ...set }: DisplaySet): Dexie.Promise<number> {
-    const { sets, workouts } = this.database;
+    const { sets, workouts, add } = this.database;
     return this.database.transaction('rw', [
       sets,
       workouts
     ], async () => {
-      if (!set.id) { this.updateWorkout(set, (sets, id) => sets.concat(id)); }
-      return await sets.put({ exercise: exercise.id, ...set });
+      const id: number = await sets.put({ exercise: exercise.id, ...set });
+      this.updateWorkout(set.workout, ids => add(ids, id));
+      return id;
     });
   }
 
-  delete(set: DisplaySet): Dexie.Promise<void> {
-    const { sets, workouts } = this.database;
+  delete({ id, workout }: DisplaySet): Dexie.Promise<void> {
+    const { sets, workouts, removeOne } = this.database;
     return this.database.transaction('rw', [
       sets,
       workouts
     ], async () => {
-      this.updateWorkout(set, (sets, id) => sets.filter(set => set !== id));
-      return await sets.delete(set.id);
+      this.updateWorkout(workout, ids => removeOne(ids, id));
+      return await sets.delete(id);
     });
   }
 
@@ -91,12 +88,12 @@ export class SetsService {
   }
 
   private updateWorkout(
-    { id, workout }: Partial<DisplaySet>,
-    setsUpdater: SetsUpdater
+    workout: number,
+    setsUpdater: Updater<number>
   ): Dexie.Promise<number> {
     const { workouts } = this.database;
-    return workouts.where('id').equals(workout).modify(workout => {
-      workout.sets = setsUpdater(workout.sets, id);
+    return workouts.where({ id: workout }).modify(workout => {
+      workout.sets = setsUpdater(workout.sets);
     });
   }
 }

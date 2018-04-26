@@ -39,7 +39,7 @@ export class WorkoutsPage extends PageComponent {
 
   edit(workout: DisplayWorkout): void {
     const modal: Modal = this.modalController.create(WorkoutPage, { workout });
-    modal.onDidDismiss(() => this.refresh())
+    modal.onDidDismiss(() => this.refresh());
     modal.present();
   }
 
