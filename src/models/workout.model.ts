@@ -1,7 +1,15 @@
 import { Nameable } from './nameable.model';
+import { DisplaySet } from './set.model';
 
-export interface Workout extends Nameable {
-  manual: boolean;
-  restTime: number;
+interface Workout extends Nameable {
+  auto: boolean;
+  rest: number;
+}
+
+export interface DatabaseWorkout extends Workout {
   sets: number[];
+}
+
+export interface DisplayWorkout extends Workout {
+  sets: DisplaySet[];
 }

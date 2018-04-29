@@ -45,13 +45,13 @@
           [ngModel]="workout.description">
         </ion-textarea>
       </ion-item>
-      <ion-item>
+      <ion-item *ngIf="!!workout.id">
         Sets
         <button type="button" ion-button (click)="addSet()">Add</button>
         <ion-list>
           <ion-item-sliding
-            *ngFor="let set of (sets | async) trackBy: trackById()">
-            <ion-item>{{ set.exercise }}</ion-item>
+            *ngFor="let set of workout.sets trackBy: trackById()">
+            <ion-item>{{ set.exercise.name }} - {{ set.repetitions }}</ion-item>
             <ion-item-options>
               <button
                 ion-button
