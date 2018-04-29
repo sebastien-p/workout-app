@@ -2,7 +2,7 @@ import { Nameable } from './nameable.model';
 import { DisplaySet } from './set.model';
 
 interface Workout extends Nameable {
-  manual: boolean;
+  auto: boolean;
   rest: number;
 }
 

@@ -11,12 +11,12 @@ export class ExercisesService {
   ) {}
 
   create(
-    name: string = null,
-    description: string = null
+    description: string = null,
+    name: string = null
   ): DisplayExercise {
     return {
-      name,
-      description
+      description,
+      name
     };
   }
 

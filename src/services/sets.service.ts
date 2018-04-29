@@ -18,20 +18,20 @@ export class SetsService {
   create(
     workout: number,
     amplitude: Amplitude = Amplitude.Normal,
+    auto: boolean = true,
     description: string = null,
     exercise: DisplayExercise = null,
     repetitions: number = 0,
     rest: number = 0,
-    restLast: number = rest,
     rythm: Rythm = Rythm.Normal
   ): DisplaySet {
     return {
       amplitude,
+      auto,
       description,
       exercise,
       repetitions,
       rest,
-      restLast,
       rythm,
       workout
     };
