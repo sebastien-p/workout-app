@@ -28,6 +28,15 @@
     (ngSubmit)="save(form.value); dismiss()">
     <ion-list>
       <ion-item>
+        <ion-label stacked>Description</ion-label>
+        <ion-textarea
+          type="text"
+          name="description"
+          required
+          [ngModel]="set.description">
+        </ion-textarea>
+      </ion-item>
+      <ion-item>
         <ion-label stacked>Exercise</ion-label>
         <ion-select
           type="text"
