@@ -35,7 +35,7 @@ export class WorkoutPage extends ModalComponent {
   }
 
   ionViewDidEnter(): void {
-    this.refresh();
+    if (this.workout.id) { this.refresh(); }
   }
 
   private reallyDelete(set: DisplaySet): void {
@@ -43,7 +43,6 @@ export class WorkoutPage extends ModalComponent {
   }
 
   refresh(): void { // FIXME
-    if (!this.workout.id) { return; }
     this.workoutsService.fetch(this.workout.id)
       .then(workout => this.workout = workout);
   }
@@ -72,6 +71,12 @@ export class WorkoutPage extends ModalComponent {
   }
 
   save(workout: DisplayWorkout): void { // FIXME
-    this.workoutsService.save({ ...this.workout, ...workout });
+    this.workoutsService.save({ ...this.workout, ...workout })
+      .then(id => {
+        if (this.workout.id) { return; }
+        this.workout.id = id;
+        this.refresh();
+      });
+
   }
 }

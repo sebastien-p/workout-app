@@ -14,7 +14,7 @@
         ion-button
         type="submit"
         form="exerciseForm"
-        [disabled]="form.invalid">
+        [disabled]="form.pristine || form.invalid">
         Save
       </button>
     </ion-buttons>
@@ -25,7 +25,7 @@
   <form
     id="exerciseForm"
     #form="ngForm"
-    (ngSubmit)="save(form.value); form.reset(); dismiss()">
+    (ngSubmit)="save(form.value); dismiss()">
     <ion-list>
       <ion-item>
         <ion-label stacked>Name</ion-label>
@@ -36,8 +36,6 @@
           [ngModel]="exercise.name">
         </ion-input>
       </ion-item>
-    </ion-list>
-    <ion-list>
       <ion-item>
         <ion-label stacked>Description</ion-label>
         <ion-textarea

@@ -32,4 +32,8 @@ export class SetPage extends ModalComponent {
   save(set: DisplaySet): void { // TODO + FIXME
     this.setsService.save({ ...this.set, ...set });
   }
+
+  compare(a: DisplayExercise, b: DisplayExercise): boolean {
+    return a.id === b.id;
+  }
 }
