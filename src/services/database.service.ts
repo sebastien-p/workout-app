@@ -15,7 +15,7 @@ export class DatabaseService extends Dexie {
   sets: Table<DatabaseSet>;
 
   constructor() {
-    super('TODO');
+    super('pro.fing.workout-app.db');
     this.version(1).stores({
       exercises: '++id,name',
       sets: '++id,exercise',
