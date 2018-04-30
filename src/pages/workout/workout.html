@@ -14,7 +14,7 @@
         ion-button
         type="submit"
         form="workoutForm"
-        [disabled]="form.pristine || form.invalid">
+        [disabled]="!canSubmit">
         Save
       </button>
     </ion-buttons>
@@ -24,8 +24,7 @@
 <ion-content>
   <form
     id="workoutForm"
-    #form="ngForm"
-    (ngSubmit)="save(form.value); form.reset(form.value); workout.id && dismiss()">
+    (ngSubmit)="submit()">
     <ion-list>
       <ion-list-header>Properties</ion-list-header>
       <ion-item>
@@ -34,7 +33,7 @@
           type="text"
           name="name"
           required
-          [ngModel]="workout.name">
+          [ngModel]="item.name">
         </ion-input>
       </ion-item>
       <ion-item>
@@ -43,23 +42,27 @@
           type="text"
           name="description"
           required
-          [ngModel]="workout.description">
+          [ngModel]="item.description">
         </ion-textarea>
       </ion-item>
       <ion-item>
         <ion-label stacked>Auto</ion-label>
-        <ion-toggle name="auto" [ngModel]="workout.auto"></ion-toggle>
+        <ion-toggle name="auto" [ngModel]="item.auto"></ion-toggle>
       </ion-item>
       <ion-item *ngIf="form.value.auto">
         <ion-label stacked>Rest</ion-label>
-        <ion-range name="rest" min="0" max="200" [ngModel]="workout.rest">
+        <ion-range
+          name="rest"
+          min="0"
+          max="200"
+          [ngModel]="item.rest">
           <ion-label range-left>0s</ion-label>
           <ion-label range-right>200s</ion-label>
         </ion-range>
       </ion-item>
     </ion-list>
   </form>
-  <ion-list *ngIf="!!workout.id">
+  <ion-list *ngIf="!!item.id">
     <ion-list-header>
       Sets
       <button
@@ -73,10 +76,10 @@
     </ion-list-header>
     <ion-item-group
       reorder="true"
-      (ionItemReorder)="$event.applyTo(workout.sets); save(form.value)">
+      (ionItemReorder)="$event.applyTo(item.sets); save()">
       <ion-item-sliding
-        *ngFor="let set of workout.sets trackBy: trackById()">
-        <ion-item>{{ set.exercise.name }} - {{ set.repetitions }}</ion-item>
+        *ngFor="let set of item.sets trackBy: trackById()">
+        <ion-item>{{ set.exercise.name }} - {{ set.series }}</ion-item>
         <ion-item-options>
           <button
             ion-button

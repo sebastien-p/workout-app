@@ -6,9 +6,9 @@ import { Rythm } from './rythm.enum';
 interface Set extends Identifiable {
   auto: boolean;
   amplitude: Amplitude;
-  repetitions: number;
   rest: number;
   rythm: Rythm;
+  series: number;
   workout: number;
 }
 

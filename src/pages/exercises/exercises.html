@@ -4,7 +4,12 @@
       Exercises
     </ion-title>
   <ion-buttons end>
-    <button ion-button type="button" (click)="add()">Add</button>
+    <button
+      ion-button
+      type="button"
+      (click)="add()">
+      Add
+    </button>
   </ion-buttons>
   </ion-navbar>
 </ion-header>
@@ -12,21 +17,21 @@
 <ion-content>
   <ion-list>
     <ion-item-sliding
-      *ngFor="let exercise of (exercises | async) trackBy: trackById()">
-      <ion-item>{{ exercise.name }}</ion-item>
+      *ngFor="let item of list trackBy: trackById()">
+      <ion-item>{{ item.name }}</ion-item>
       <ion-item-options>
         <button
           ion-button
           type="button"
           color="danger"
-          (click)="remove(exercise)">
+          (click)="remove(item)">
           Delete
         </button>
         <button
           ion-button
           type="button"
           color="primary"
-          (click)="edit(exercise)">
+          (click)="edit(item)">
           Edit
         </button>
       </ion-item-options>

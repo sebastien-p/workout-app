@@ -3,37 +3,33 @@ import { ViewController, NavParams } from 'ionic-angular';
 
 import { DisplayExercise } from '../../models/exercise.model';
 import { DisplaySet } from '../../models/set.model';
-import { ModalComponent } from '../modal.component';
 import { ExercisesService } from '../../services/exercises.service';
 import { SetsService } from '../../services/sets.service';
+import { ItemModalComponent } from '../item-modal.component';
 
 @Component({
   selector: 'page-set',
   templateUrl: 'set.html',
 })
-export class SetPage extends ModalComponent {
-  readonly set: DisplaySet;
-  exercises: Promise<DisplayExercise[]>;
+export class SetPage
+  extends ItemModalComponent<DisplaySet, SetsService> {
+  exercises: DisplayExercise[];
 
   constructor(
     viewController: ViewController,
-    { data: { set } }: NavParams,
-    private readonly exercisesService: ExercisesService,
-    private readonly setsService: SetsService
+    navParams: NavParams,
+    setsService: SetsService,
+    protected readonly exercisesService: ExercisesService
   ) {
-    super(viewController);
-    this.set = set;
+    super(
+      viewController,
+      navParams,
+      setsService
+    );
   }
 
   ionViewDidEnter(): void {
-    this.exercises = this.exercisesService.fetch();
-  }
-
-  save(set: DisplaySet): void { // TODO + FIXME
-    this.setsService.save({ ...this.set, ...set });
-  }
-
-  compare(a: DisplayExercise, b: DisplayExercise): boolean {
-    return a.id === b.id;
+    this.exercisesService.fetch()
+      .then(exercises => this.exercises = exercises);
   }
 }

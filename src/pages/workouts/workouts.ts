@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { AlertController, ModalController, Modal } from 'ionic-angular';
+import { AlertController, ModalController } from 'ionic-angular';
 
 import { DisplayWorkout } from '../../models/workout.model';
-import { PageComponent } from '../page.component';
+import { ListPageComponent } from '../list-page.component';
 import { WorkoutPage } from '../workout/workout';
 import { WorkoutsService } from '../../services/workouts.service';
 
@@ -10,46 +10,18 @@ import { WorkoutsService } from '../../services/workouts.service';
   selector: 'page-workouts',
   templateUrl: 'workouts.html'
 })
-export class WorkoutsPage extends PageComponent {
-  workouts: Promise<DisplayWorkout[]>;
-
+export class WorkoutsPage
+extends ListPageComponent<DisplayWorkout, WorkoutsService> {
   constructor(
-    private readonly alertController: AlertController,
-    private readonly modalController: ModalController,
-    private readonly workoutsService: WorkoutsService
+    alertController: AlertController,
+    modalController: ModalController,
+    workoutsService: WorkoutsService
   ) {
-    super();
-  }
-
-  ionViewDidEnter(): void {
-    this.refresh();
-  }
-
-  private refresh(): void {
-    this.workouts = this.workoutsService.fetch();
-  }
-
-  private reallyDelete(workout: DisplayWorkout): void {
-    this.workoutsService.delete(workout).then(() => this.refresh());
-  }
-
-  add(): void {
-    this.edit(this.workoutsService.create());
-  }
-
-  edit(workout: DisplayWorkout): void {
-    const modal: Modal = this.modalController.create(WorkoutPage, { workout });
-    modal.onDidDismiss(() => this.refresh());
-    modal.present();
-  }
-
-  remove(workout: DisplayWorkout): void {
-    this.alertController.create({
-      title: `Delete "${workout.name}"?`,
-      buttons: [
-        { text: 'Yes', handler: () => this.reallyDelete(workout) },
-        { text: 'No' }
-      ]
-    }).present();
+    super(
+      alertController,
+      modalController,
+      WorkoutPage,
+      workoutsService
+    );
   }
 }

@@ -14,7 +14,7 @@
         ion-button
         type="submit"
         form="setForm"
-        [disabled]="form.pristine || form.invalid">
+        [disabled]="!canSubmit">
         Save
       </button>
     </ion-buttons>
@@ -24,54 +24,53 @@
 <ion-content>
   <form
     id="setForm"
-    #form="ngForm"
-    (ngSubmit)="save(form.value); dismiss()">
+    (ngSubmit)="submit()">
     <ion-list>
-      <ion-item>
-        <ion-label stacked>Description</ion-label>
-        <ion-textarea
-          type="text"
-          name="description"
-          required
-          [ngModel]="set.description">
-        </ion-textarea>
-      </ion-item>
       <ion-item>
         <ion-label stacked>Exercise</ion-label>
         <ion-select
           type="text"
           name="exercise"
           required
-          [ngModel]="set.exercise"
-          [compareWith]="compare">
+          [ngModel]="item.exercise"
+          [compareWith]="compareById()">
           <ion-option
-            *ngFor="let exercise of (exercises | async) trackBy: trackById()"
+            *ngFor="let exercise of exercises trackBy: trackById()"
             [value]="exercise">
             {{ exercise.name }}
           </ion-option>
         </ion-select>
       </ion-item>
       <ion-item>
-        <ion-label stacked>Repetitions</ion-label>
-        <ion-range name="repetitions" min="0" max="10" [ngModel]="set.repetitions">
+        <ion-label stacked>Series</ion-label>
+        <ion-range
+          name="series"
+          min="0"
+          max="10"
+          pin
+          [ngModel]="item.series">
           <ion-label range-left>0</ion-label>
           <ion-label range-right>10</ion-label>
         </ion-range>
       </ion-item>
       <ion-item>
         <ion-label stacked>Auto</ion-label>
-        <ion-toggle name="auto" [ngModel]="set.auto"></ion-toggle>
+        <ion-toggle name="auto" [ngModel]="item.auto"></ion-toggle>
       </ion-item>
       <ion-item *ngIf="form.value.auto">
         <ion-label stacked>Rest</ion-label>
-        <ion-range name="rest" min="0" max="200" [ngModel]="set.rest">
+        <ion-range
+          name="rest"
+          min="0"
+          max="200"
+          [ngModel]="item.rest">
           <ion-label range-left>0s</ion-label>
           <ion-label range-right>200s</ion-label>
         </ion-range>
       </ion-item>
       <ion-item>
         <ion-label stacked>Rythm</ion-label>
-        <ion-select name="rythm" [ngModel]="set.rythm">
+        <ion-select name="rythm" [ngModel]="item.rythm">
           <ion-option [value]="0">Normal</ion-option>
           <ion-option [value]="1">Fast</ion-option>
           <ion-option [value]="2">Slow</ion-option>
@@ -79,12 +78,23 @@
       </ion-item>
       <ion-item>
         <ion-label stacked>Amplitude</ion-label>
-        <ion-select name="amplitude" [ngModel]="set.amplitude">
+        <ion-select name="amplitude" [ngModel]="item.amplitude">
           <ion-option [value]="0">Normal</ion-option>
           <ion-option [value]="1">Medium</ion-option>
           <ion-option [value]="2">Short</ion-option>
         </ion-select>
       </ion-item>
+      <ion-item>
+        <ion-label stacked>Description</ion-label>
+        <ion-textarea
+          type="text"
+          name="description"
+          rows="10"
+          required
+          [ngModel]="item.description">
+        </ion-textarea>
+      </ion-item>
     </ion-list>
   </form>
+  <p>trololo {{exercises|json}}</p>
 </ion-content>

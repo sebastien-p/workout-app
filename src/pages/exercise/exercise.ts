@@ -3,25 +3,23 @@ import { NavParams, ViewController } from 'ionic-angular';
 
 import { DisplayExercise } from '../../models/exercise.model';
 import { ExercisesService } from '../../services/exercises.service';
-import { ModalComponent } from '../modal.component';
+import { ItemModalComponent } from '../item-modal.component';
 
 @Component({
   selector: 'page-exercise',
   templateUrl: 'exercise.html',
 })
-export class ExercisePage extends ModalComponent {
-  readonly exercise: DisplayExercise;
-
+export class ExercisePage
+extends ItemModalComponent<DisplayExercise, ExercisesService> {
   constructor(
     viewController: ViewController,
-    { data: { exercise } }: NavParams,
-    private readonly exercisesService: ExercisesService
+    navParams: NavParams,
+    exercisesService: ExercisesService
   ) {
-    super(viewController);
-    this.exercise = exercise;
-  }
-
-  save(exercise: DisplayExercise): void { // FIXME
-    this.exercisesService.save({ ...this.exercise, ...exercise });
+    super(
+      viewController,
+      navParams,
+      exercisesService
+    );
   }
 }
