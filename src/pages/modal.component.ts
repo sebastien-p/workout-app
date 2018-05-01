@@ -9,7 +9,7 @@ export abstract class ModalComponent extends PageComponent {
     super();
   }
 
-  dismiss(): void {
-    this.viewController.dismiss();
+  dismiss(...parameters: any[]): Promise<any> {
+    return this.viewController.dismiss(...parameters);
   }
 }

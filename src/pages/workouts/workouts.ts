@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 import { AlertController, ModalController } from 'ionic-angular';
 
 import { DisplayWorkout } from '../../models/workout.model';
+import { WorkoutsService } from '../../services/workouts.service';
 import { ListPageComponent } from '../list-page.component';
 import { WorkoutPage } from '../workout/workout';
-import { WorkoutsService } from '../../services/workouts.service';
 
 @Component({
   selector: 'page-workouts',

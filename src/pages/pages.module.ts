@@ -9,6 +9,7 @@ import { ExercisesPage } from './exercises/exercises';
 import { WorkoutPage } from './workout/workout';
 import { WorkoutsPage } from './workouts/workouts';
 import { SetPage } from './set/set';
+import { SetsPage } from './sets/sets';
 
 @NgModule({
   imports: [
@@ -26,7 +27,8 @@ import { SetPage } from './set/set';
     ExercisesPage,
     WorkoutPage,
     WorkoutsPage,
-    SetPage
+    SetPage,
+    SetsPage
   ],
   entryComponents: [
     HomePage,
@@ -35,7 +37,8 @@ import { SetPage } from './set/set';
     ExercisesPage,
     WorkoutPage,
     WorkoutsPage,
-    SetPage
+    SetPage,
+    SetsPage
   ],
   providers: []
 })

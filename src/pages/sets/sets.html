@@ -1,22 +1,23 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Workouts</ion-title>
-  <ion-buttons end>
-    <button
-      ion-button
-      type="button"
-      (click)="add()">
-      Add
-    </button>
-  </ion-buttons>
+    <ion-title>Sets</ion-title>
+    <ion-buttons end>
+      <button
+        ion-button
+        type="button"
+        (click)="add()">
+        Add
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
 <ion-content>
-  <ion-list>
-    <ion-item-sliding
-      *ngFor="let item of list trackBy: trackById()">
-      <ion-item>{{ item.name }}</ion-item>
+  <ion-list
+    reorder="true"
+    (ionItemReorder)="reorder($event)">
+    <ion-item-sliding *ngFor="let item of list trackBy: trackById()">
+      <ion-item>{{ item.exercise.name }} - {{ item.series }}</ion-item>
       <ion-item-options>
         <button
           ion-button

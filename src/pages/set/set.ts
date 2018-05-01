@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ViewController, NavParams } from 'ionic-angular';
+import { NavParams, ViewController } from 'ionic-angular';
 
 import { DisplayExercise } from '../../models/exercise.model';
 import { DisplaySet } from '../../models/set.model';
@@ -11,19 +11,18 @@ import { ItemModalComponent } from '../item-modal.component';
   selector: 'page-set',
   templateUrl: 'set.html',
 })
-export class SetPage
-  extends ItemModalComponent<DisplaySet, SetsService> {
+export class SetPage extends ItemModalComponent<DisplaySet, SetsService> {
   exercises: DisplayExercise[];
 
   constructor(
-    viewController: ViewController,
     navParams: NavParams,
+    viewController: ViewController,
     setsService: SetsService,
     protected readonly exercisesService: ExercisesService
   ) {
     super(
-      viewController,
       navParams,
+      viewController,
       setsService
     );
   }

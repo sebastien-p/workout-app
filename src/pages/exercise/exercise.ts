@@ -12,13 +12,13 @@ import { ItemModalComponent } from '../item-modal.component';
 export class ExercisePage
 extends ItemModalComponent<DisplayExercise, ExercisesService> {
   constructor(
-    viewController: ViewController,
     navParams: NavParams,
+    viewController: ViewController,
     exercisesService: ExercisesService
   ) {
     super(
-      viewController,
       navParams,
+      viewController,
       exercisesService
     );
   }

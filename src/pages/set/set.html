@@ -57,12 +57,13 @@
         <ion-label stacked>Auto</ion-label>
         <ion-toggle name="auto" [ngModel]="item.auto"></ion-toggle>
       </ion-item>
-      <ion-item *ngIf="form.value.auto">
+      <ion-item *ngIf="value.auto">
         <ion-label stacked>Rest</ion-label>
         <ion-range
           name="rest"
           min="0"
           max="200"
+          pin
           [ngModel]="item.rest">
           <ion-label range-left>0s</ion-label>
           <ion-label range-right>200s</ion-label>
@@ -71,6 +72,7 @@
       <ion-item>
         <ion-label stacked>Rythm</ion-label>
         <ion-select name="rythm" [ngModel]="item.rythm">
+          <!-- TODO -->
           <ion-option [value]="0">Normal</ion-option>
           <ion-option [value]="1">Fast</ion-option>
           <ion-option [value]="2">Slow</ion-option>
@@ -79,6 +81,7 @@
       <ion-item>
         <ion-label stacked>Amplitude</ion-label>
         <ion-select name="amplitude" [ngModel]="item.amplitude">
+          <!-- TODO -->
           <ion-option [value]="0">Normal</ion-option>
           <ion-option [value]="1">Medium</ion-option>
           <ion-option [value]="2">Short</ion-option>
@@ -96,5 +99,4 @@
       </ion-item>
     </ion-list>
   </form>
-  <p>trololo {{exercises|json}}</p>
 </ion-content>
