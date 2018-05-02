@@ -29,7 +29,6 @@ export class DatabaseService extends Dexie {
     });
 
     this.handleHooks(['creating', 'updating', 'deleting'], () => this.load());
-    this.handleHooks(['reading'], object => (this.load(), object));
   }
 
   map<T, U>(list: T[], mapper: Mapper<T, U>): Dexie.Promise<U[]> {
