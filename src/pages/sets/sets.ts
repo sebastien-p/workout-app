@@ -38,7 +38,7 @@ extends ListPageComponent<DisplaySet, SetsService, DisplayWorkout> {
 
   reorder($event: ReorderIndexes): void {
     super.reorder($event);
-    $event.applyTo(this.item.sets);
+    this.item.sets = this.list;
     this.workoutsService.save(this.item);
   }
 
