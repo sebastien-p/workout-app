@@ -21,22 +21,15 @@ export class DatabaseService extends Dexie {
     private readonly loaderService: LoaderService
   ) {
     super('pro.fing.workout-app.db');
+
     this.version(1).stores({
       exercises: '++id,name',
       sets: '++id,exercise',
       workouts: '++id,name,*&sets'
     });
 
-    // const hooks: string[] = ['creating'/* , 'reading' */, 'updating', 'deleting'];
-    // const that: DatabaseService = this;
-    // this.tables.forEach(function (table) {
-    //   hooks.forEach(function (hook) {
-    //     table.hook(hook as any, function (k, o, t) {
-    //       that.loaderService.show();
-    //       this.onsuccess = this.onerror = () => that.loaderService.hide();
-    //     });
-    //   });
-    // });
+    this.handleHooks(['creating', 'updating', 'deleting'], () => this.load());
+    this.handleHooks(['reading'], object => (this.load(), object));
   }
 
   map<T, U>(list: T[], mapper: Mapper<T, U>): Dexie.Promise<U[]> {
@@ -53,5 +46,18 @@ export class DatabaseService extends Dexie {
 
   removeAll<T>(list: T[], values: T[]): T[] {
     return list.filter(item => values.indexOf(item) < 0);
+  }
+
+  private handleHooks(hooks: string[], handler: Function): void {
+    for (let table of this.tables) {
+      for (let hook of hooks) {
+        table.hook(hook as any, handler as any);
+      }
+    }
+  }
+
+  private load() {
+    this.loaderService.show();
+    Dexie.currentTransaction.on('complete', () => this.loaderService.hide());
   }
 }

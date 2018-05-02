@@ -3,17 +3,16 @@ import { LoadingController, Loading } from 'ionic-angular';
 
 @Injectable()
 export class LoaderService {
-  private readonly loader: Loading;
   private retain: number = 0;
+  private loader: Loading;
 
   constructor(
-    loadingController: LoadingController
-  ) {
-    this.loader = loadingController.create();
-  }
+    private readonly loadingController: LoadingController
+  ) {}
 
   show(): void {
     if (this.retain) { return; }
+    this.loader = this.loadingController.create();
     this.loader.present();
     this.retain += 1;
   }
@@ -21,6 +20,7 @@ export class LoaderService {
   hide(): void {
     if (!this.retain) { return; }
     this.loader.dismiss();
+    this.loader = null;
     this.retain -= 1;
   }
 }
