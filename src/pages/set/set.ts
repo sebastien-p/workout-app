@@ -11,7 +11,8 @@ import { ItemModalComponent } from '../item-modal.component';
   selector: 'page-set',
   templateUrl: 'set.html',
 })
-export class SetPage extends ItemModalComponent<DisplaySet, SetsService> {
+export class SetPage
+extends ItemModalComponent<DisplaySet, SetsService> {
   exercises: DisplayExercise[];
 
   constructor(

@@ -4,18 +4,18 @@ import { ReorderIndexes } from 'ionic-angular/components/item/item-reorder';
 import { Dexie } from 'dexie';
 
 import { DisplaySet } from '../../models/set.model';
+import { DisplayWorkout } from '../../models/workout.model';
 import { SetsService } from '../../services/sets.service';
 import { WorkoutsService } from '../../services/workouts.service';
 import { ListPageComponent } from '../list-page.component';
 import { SetPage } from '../set/set';
-import { DisplayWorkout } from '../../models/workout.model';
 
 @Component({
   selector: 'page-sets',
   templateUrl: 'sets.html',
 })
 export class SetsPage
-  extends ListPageComponent<DisplaySet, SetsService> {
+extends ListPageComponent<DisplaySet, SetsService, DisplayWorkout> {
   constructor(
     navParams: NavParams,
     alertController: AlertController,
@@ -32,22 +32,18 @@ export class SetsPage
     );
   }
 
-  get workout(): DisplayWorkout { // FIXME + get item in ListPage?
-    return this.data.item as DisplayWorkout;
-  }
-
   add(...parameters: DisplaySet[keyof DisplaySet][]): void {
-    super.add(this.workout.id, ...parameters);
+    super.add(this.item.id, ...parameters);
   }
 
-  reorder($event: ReorderIndexes): void { // FIXME + move to ListPage?
-    $event.applyTo(this.list);
-    $event.applyTo(this.workout.sets);
-    this.workoutsService.save(this.workout);
+  reorder($event: ReorderIndexes): void {
+    super.reorder($event);
+    $event.applyTo(this.item.sets);
+    this.workoutsService.save(this.item);
   }
 
   protected refresh(): Dexie.Promise<DisplaySet[]> {
-    return this.workoutsService.fetch(this.workout.id)
+    return this.workoutsService.fetch(this.item.id)
       .then(workout => this.list = workout.sets);
   }
 }

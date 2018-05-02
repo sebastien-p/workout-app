@@ -1,6 +1,5 @@
 import { Component, Type } from '@angular/core';
 
-import { PageComponent } from '../page.component';
 import { ExercisesPage } from '../exercises/exercises';
 import { WorkoutsPage } from '../workouts/workouts';
 
@@ -8,7 +7,7 @@ import { WorkoutsPage } from '../workouts/workouts';
   selector: 'page-admin',
   templateUrl: 'admin.html',
 })
-export class AdminPage extends PageComponent {
+export class AdminPage {
   readonly exercisesPage: Type<ExercisesPage> = ExercisesPage;
   readonly workoutsPage: Type<WorkoutsPage> = WorkoutsPage;
 }

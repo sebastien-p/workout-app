@@ -1,38 +1,28 @@
 import { ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { ViewController, NavParams } from 'ionic-angular';
+import { ViewController } from 'ionic-angular';
 import { Dexie } from 'dexie';
 
 import { Identifiable } from '../models/identifiable.model';
 import { ModalComponent } from './modal.component';
+import { Params } from './page.component';
 
-export interface Data<T extends Identifiable = Identifiable> {
-  item: T;
-}
-
-export interface Params<T extends Identifiable = Identifiable>
-extends NavParams {
-  data: Data<T>;
-};
-
-export abstract class ItemModalComponent<T extends Identifiable, U extends any>
-extends ModalComponent {
-  data: Data<T>;
-
+export abstract class ItemModalComponent
+<T extends Identifiable, U extends any>
+extends ModalComponent<T> {
   @ViewChild(NgForm)
-  protected readonly form: NgForm;
+  readonly form: NgForm;
 
   constructor(
-    { data }: Params<T>,
+    navParams: Params<T>,
     viewController: ViewController,
-    protected readonly service: U
+    service: U
   ) {
-    super(viewController);
-    this.data = data;
-  }
-
-  get item(): T {
-    return this.data.item;
+    super(
+      viewController,
+      navParams,
+      service
+    );
   }
 
   get value(): Partial<T> {
@@ -60,7 +50,7 @@ extends ModalComponent {
     if (this.canSubmit) { this.save().then(() => this.dismiss()); }
   }
 
-  protected save(): Dexie.Promise<number> { // TODO
+  protected save(): Dexie.Promise<number> { // FIXME
     return this.service.save({ ...this.item as any, ...this.value as any });
   }
 }
