@@ -41,7 +41,7 @@ extends PageComponent<V> {
 
   remove(item: T): void {
     const alert: Alert = this.alertController.create({
-      title: `Delete "${item.id}"?`,
+      title: "Delete?",
       buttons: [
         { text: 'Yes', handler: () => { this.delete(item); } },
         { text: 'No' }

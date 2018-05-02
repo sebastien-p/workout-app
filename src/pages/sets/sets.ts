@@ -42,7 +42,7 @@ extends ListPageComponent<DisplaySet, SetsService, DisplayWorkout> {
     this.workoutsService.save(this.item);
   }
 
-  protected refresh(): Dexie.Promise<DisplaySet[]> {
+  protected refresh(): Dexie.Promise<DisplaySet[]> { // TODO: don't fetch the first time
     return this.workoutsService.fetch(this.item.id)
       .then(workout => this.list = workout.sets);
   }
