@@ -26,7 +26,7 @@ extends PageComponent<V> {
   }
 
   ionViewDidEnter(): void {
-    this.refresh();
+    this.refresh(true);
   }
 
   add(...parameters: T[keyof T][]): void {
@@ -54,7 +54,7 @@ extends PageComponent<V> {
     $event.applyTo(this.list);
   }
 
-  protected refresh(): Dexie.Promise<T[]> {
+  protected refresh(enter: boolean = false): Dexie.Promise<T[]> {
     return this.service.fetch().then(list => this.list = list);
   }
 

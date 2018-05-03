@@ -29,6 +29,10 @@ export abstract class PageComponent
     return this.data.item;
   }
 
+  set item(item: T) {
+    this.data.item = item;
+  }
+
   trackByKey<T>(key: keyof T): TrackByFunction<T> {
     return (index, item) => item[key];
   }

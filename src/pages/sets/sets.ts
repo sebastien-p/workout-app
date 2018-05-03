@@ -32,18 +32,24 @@ extends ListPageComponent<DisplaySet, SetsService, DisplayWorkout> {
     );
   }
 
+  get list(): DisplaySet[] {
+    return this.item.sets;
+  }
+
   add(...parameters: DisplaySet[keyof DisplaySet][]): void {
     super.add(this.item.id, ...parameters);
   }
 
   reorder($event: ReorderIndexes): void {
     super.reorder($event);
-    this.item.sets = this.list;
     this.workoutsService.save(this.item);
   }
 
-  protected refresh(): Dexie.Promise<DisplaySet[]> { // TODO: don't fetch the first time
-    return this.workoutsService.fetch(this.item.id)
-      .then(workout => this.list = workout.sets);
+  protected refresh(enter: boolean = false): Dexie.Promise<DisplaySet[]> {
+    if (enter) { return null; }
+    return this.workoutsService.fetch(this.item.id).then(workout => {
+      this.item = workout;
+      return workout.sets;
+    });
   }
 }
