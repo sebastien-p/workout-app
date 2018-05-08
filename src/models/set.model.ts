@@ -6,7 +6,7 @@ import { Rythm } from './rythm.enum';
 interface Set extends Identifiable {
   auto: boolean;
   amplitude: Amplitude;
-  rest: number;
+  rest: string; // FIXME: number (https://angular.io/api/forms/ControlValueAccessor)
   rythm: Rythm;
   series: number;
   workout: number;

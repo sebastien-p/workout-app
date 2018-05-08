@@ -21,7 +21,7 @@ export class SetsService {
     auto: boolean = true,
     description: string = null,
     exercise: DisplayExercise = null,
-    rest: number = null,
+    rest: string = '00:00:00',
     rythm: Rythm = Rythm.Normal,
     series: number = 1
   ): DisplaySet {

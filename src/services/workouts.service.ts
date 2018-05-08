@@ -17,7 +17,7 @@ export class WorkoutsService {
     auto: boolean = true,
     description: string = null,
     name: string = null,
-    rest: number = null,
+    rest: string = '00:00:00',
     sets: DisplaySet[] = []
   ): DisplayWorkout {
     return {

@@ -3,7 +3,7 @@ import { DisplaySet } from './set.model';
 
 interface Workout extends Nameable {
   auto: boolean;
-  rest: number;
+  rest: string; // FIXME: number (https://angular.io/api/forms/ControlValueAccessor)
 }
 
 export interface DatabaseWorkout extends Workout {
