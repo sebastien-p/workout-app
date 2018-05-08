@@ -18,6 +18,6 @@ export class ServicesModule {
         WorkoutsService,
         SetsService
       ]
-    }
+    };
   }
 }

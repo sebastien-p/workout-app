@@ -21,9 +21,9 @@ export class SetsService {
     auto: boolean = true,
     description: string = null,
     exercise: DisplayExercise = null,
-    rest: number = 0,
+    rest: number = null,
     rythm: Rythm = Rythm.Normal,
-    series: number = 0
+    series: number = 1
   ): DisplaySet {
     return {
       amplitude,
