@@ -24,4 +24,8 @@ extends ListPageComponent<DisplayWorkout, WorkoutsService> {
       workoutsService
     );
   }
+
+  getIcon({ auto }: DisplayWorkout): string {
+    return auto ? 'stopwatch' : 'hand';
+  }
 }

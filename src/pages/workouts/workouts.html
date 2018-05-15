@@ -14,9 +14,19 @@
 
 <ion-content>
   <ion-list>
+    <ion-item *ngIf="!list?.length">
+      <h1>Nothing here yet :(</h1>
+      <p>Please add a workout!</p>
+    </ion-item>
     <ion-item-sliding
       *ngFor="let item of list trackBy: trackById()">
-      <ion-item>{{ item.name }}</ion-item>
+      <ion-item>
+        <ion-icon item-start [name]="getIcon(item)"></ion-icon>
+        <h1>{{ item.name }}</h1>
+        <p>{{ item.description }}</p>
+        <p *ngIf="item.auto">{{ item.rest }}</p>
+        <ion-badge item-end>{{ item.sets.length }} set(s)</ion-badge>
+      </ion-item>
       <ion-item-options>
         <button
           ion-button
@@ -28,9 +38,8 @@
         <button
           ion-button
           type="button"
-          color="primary"
           (click)="edit(item)">
-          Edit
+          Update
         </button>
       </ion-item-options>
     </ion-item-sliding>
