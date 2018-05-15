@@ -43,16 +43,14 @@
       </ion-item>
       <ion-item>
         <ion-label stacked>Series</ion-label>
-        <ion-range
+        <ion-input
           name="series"
+          type="number"
           required
-          min="0"
-          max="10"
-          pin
+          step="1"
+          min="1"
           [ngModel]="item.series">
-          <ion-label range-left>0</ion-label>
-          <ion-label range-right>10</ion-label>
-        </ion-range>
+        </ion-input>
       </ion-item>
       <ion-item>
         <ion-label stacked>Auto</ion-label>
