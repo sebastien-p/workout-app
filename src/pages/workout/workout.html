@@ -62,21 +62,11 @@
           displayFormat="HH:mm'ss''"
           [ngModel]="item.rest">
         </ion-datetime>
-        <!-- <ion-range
-          name="rest"
-          required
-          min="0"
-          max="200"
-          pin
-          [ngModel]="item.rest">
-          <ion-label range-left>0s</ion-label>
-          <ion-label range-right>200s</ion-label>
-        </ion-range> -->
       </ion-item>
       <button
         ion-item
         type="button"
-         *ngIf="!isNew"
+        *ngIf="!isNew"
         [navPush]="setsPage"
         [navParams]="data">
         Sets
