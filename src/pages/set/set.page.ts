@@ -5,11 +5,11 @@ import { DisplayExercise } from '../../models/exercise.model';
 import { DisplaySet } from '../../models/set.model';
 import { ExercisesService } from '../../services/exercises.service';
 import { SetsService } from '../../services/sets.service';
-import { ItemModalComponent } from '../item-modal.component';
+import { ItemModalComponent } from '../../components/item-modal.component';
 
 @Component({
   selector: 'page-set',
-  templateUrl: 'set.html',
+  templateUrl: 'set.page.html',
 })
 export class SetPage
 extends ItemModalComponent<DisplaySet, SetsService> {

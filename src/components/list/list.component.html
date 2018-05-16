@@ -1,0 +1,46 @@
+<ng-template #loading>
+  <div padding text-center>
+    <ion-spinner></ion-spinner>
+  </div>
+</ng-template>
+
+<ng-template #empty>
+  <div padding>
+    <h1>Nothing there yet :(</h1>
+    <p>Consider hitting the Add button above...</p>
+  </div>
+</ng-template>
+
+<ng-container *ngIf="!!list; else loading">
+  <ion-list
+    *ngIf="!!list.length; else empty"
+    [reorder]="reorder"
+    (ionItemReorder)="onReorder.emit($event)">
+    <ion-item-sliding
+      *ngFor="let item of list; trackBy: trackById()"
+      (ionSwipe)="onEdit.emit(item)">
+      <ion-item>
+        <ng-container
+          *ngTemplateOutlet="template; context: getContext(item)">
+        </ng-container>
+      </ion-item>
+      <ion-item-options>
+        <button
+          ion-button
+          type="button"
+          color="danger"
+          (click)="onRemove.emit(item)">
+          Delete
+        </button>
+        <button
+          ion-button
+          expandable
+          type="button"
+          (click)="onEdit.emit(item)">
+          Update
+        </button>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+</ng-container>
+

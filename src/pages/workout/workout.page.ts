@@ -3,12 +3,12 @@ import { NavParams, ViewController } from 'ionic-angular';
 
 import { DisplayWorkout } from '../../models/workout.model';
 import { WorkoutsService } from '../../services/workouts.service';
-import { ItemModalComponent } from '../item-modal.component';
-import { SetsPage } from '../sets/sets';
+import { ItemModalComponent } from '../../components/item-modal.component';
+import { SetsPage } from '../sets/sets.page';
 
 @Component({
   selector: 'page-workout',
-  templateUrl: 'workout.html',
+  templateUrl: 'workout.page.html',
 })
 export class WorkoutPage
 extends ItemModalComponent<DisplayWorkout, WorkoutsService> {

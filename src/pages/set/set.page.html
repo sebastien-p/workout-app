@@ -35,7 +35,7 @@
           [ngModel]="item.exercise"
           [compareWith]="compareById()">
           <ion-option
-            *ngFor="let exercise of exercises trackBy: trackById()"
+            *ngFor="let exercise of exercises; trackBy: trackById()"
             [value]="exercise">
             {{ exercise.name }}
           </ion-option>

@@ -3,11 +3,11 @@ import { NavParams, ViewController } from 'ionic-angular';
 
 import { DisplayExercise } from '../../models/exercise.model';
 import { ExercisesService } from '../../services/exercises.service';
-import { ItemModalComponent } from '../item-modal.component';
+import { ItemModalComponent } from '../../components/item-modal.component';
 
 @Component({
   selector: 'page-exercise',
-  templateUrl: 'exercise.html',
+  templateUrl: 'exercise.page.html',
 })
 export class ExercisePage
 extends ItemModalComponent<DisplayExercise, ExercisesService> {

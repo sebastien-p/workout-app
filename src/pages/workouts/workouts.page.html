@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Workouts</ion-title>
+    <ion-buttons end>
+      <button
+        ion-button
+        type="button"
+        (click)="add()">
+        Add
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <app-list
+    [list]="list"
+    (onEdit)="edit($event)"
+    (onRemove)="remove($event)">
+    <ng-template let-item>
+      <ion-icon
+        item-start
+        [name]="getIcon(item)">
+      </ion-icon>
+      <h1>{{ item.name }}</h1>
+      <p>{{ item.description }}</p>
+      <p *ngIf="item.auto">{{ item.rest }}</p>
+      <ion-badge item-end>{{ item.sets.length }} set(s)</ion-badge>
+    </ng-template>
+  </app-list>
+</ion-content>
