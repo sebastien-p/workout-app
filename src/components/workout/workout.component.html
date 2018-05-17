@@ -1,0 +1,6 @@
+<app-item
+  [identifiable]="workout"
+  [nameable]="workout">
+  <ion-badge>{{ workout.sets.length }} set(s)</ion-badge>
+  <app-pauseable [pauseable]="workout"></app-pauseable>
+</app-item>
