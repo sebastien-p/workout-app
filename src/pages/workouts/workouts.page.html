@@ -18,14 +18,7 @@
     (onEdit)="edit($event)"
     (onRemove)="remove($event)">
     <ng-template let-item>
-      <ion-icon
-        item-start
-        [name]="getIcon(item)">
-      </ion-icon>
-      <h1>{{ item.name }}</h1>
-      <p>{{ item.description }}</p>
-      <p *ngIf="item.auto">{{ item.rest }}</p>
-      <ion-badge item-end>{{ item.sets.length }} set(s)</ion-badge>
+      <app-workout [workout]="item"></app-workout>
     </ng-template>
   </app-list>
 </ion-content>

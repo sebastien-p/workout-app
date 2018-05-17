@@ -18,8 +18,7 @@
     (onEdit)="edit($event)"
     (onRemove)="remove($event)">
     <ng-template let-item>
-      <h1>{{ item.name }}</h1>
-      <p>{{ item.description }}</p>
+      <app-exercise [exercise]="item"></app-exercise>
     </ng-template>
   </app-list>
 </ion-content>
