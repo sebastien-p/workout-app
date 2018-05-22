@@ -70,27 +70,29 @@
         </ion-datetime>
       </ion-item>
       <ion-item>
-        <ion-label stacked>Rythm</ion-label>
-        <ion-select
-          name="rythm"
-          required
-          [ngModel]="item.rythm">
-          <!-- TODO -->
-          <ion-option [value]="0">Normal</ion-option>
-          <ion-option [value]="1">Fast</ion-option>
-          <ion-option [value]="2">Slow</ion-option>
-        </ion-select>
-      </ion-item>
-      <ion-item>
         <ion-label stacked>Amplitude</ion-label>
         <ion-select
           name="amplitude"
           required
           [ngModel]="item.amplitude">
-          <!-- TODO -->
-          <ion-option [value]="0">Normal</ion-option>
-          <ion-option [value]="1">Medium</ion-option>
-          <ion-option [value]="2">Short</ion-option>
+          <ion-option
+            *ngFor="let label of amplitudes; index as value"
+            [value]="value">
+            {{ label }}
+          </ion-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label stacked>Rythm</ion-label>
+        <ion-select
+          name="rythm"
+          required
+          [ngModel]="item.rythm">
+          <ion-option
+            *ngFor="let label of rythms; index as value"
+            [value]="value">
+            {{ label }}
+          </ion-option>
         </ion-select>
       </ion-item>
       <ion-item>
