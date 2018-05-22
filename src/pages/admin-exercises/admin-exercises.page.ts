@@ -4,13 +4,13 @@ import { AlertController, ModalController } from 'ionic-angular';
 import { DisplayExercise } from '../../models/exercise.model';
 import { ExercisesService } from '../../services/exercises.service';
 import { ListEditPage } from '../list-edit.page';
-import { ExercisePage } from '../exercise/exercise.page';
+import { AdminExercisePage } from '../admin-exercise/admin-exercise.page';
 
 @Component({
-  selector: 'page-exercises',
-  templateUrl: 'exercises.page.html'
+  selector: 'page-admin-exercises',
+  templateUrl: 'admin-exercises.page.html'
 })
-export class ExercisesPage
+export class AdminExercisesPage
 extends ListEditPage<DisplayExercise, ExercisesService> {
   constructor(
     alertController: AlertController,
@@ -20,7 +20,7 @@ extends ListEditPage<DisplayExercise, ExercisesService> {
     super(
       alertController,
       modalController,
-      ExercisePage,
+      AdminExercisePage,
       exercisesService
     );
   }

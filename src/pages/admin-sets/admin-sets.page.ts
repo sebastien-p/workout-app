@@ -8,13 +8,13 @@ import { DisplayWorkout } from '../../models/workout.model';
 import { SetsService } from '../../services/sets.service';
 import { WorkoutsService } from '../../services/workouts.service';
 import { ListEditPage } from '../list-edit.page';
-import { SetPage } from '../set/set.page';
+import { AdminSetPage } from '../admin-set/admin-set.page';
 
 @Component({
-  selector: 'page-sets',
-  templateUrl: 'sets.page.html'
+  selector: 'page-admin-sets',
+  templateUrl: 'admin-sets.page.html'
 })
-export class SetsPage
+export class AdminSetsPage
 extends ListEditPage<DisplaySet, SetsService, DisplayWorkout> {
   constructor(
     navParams: NavParams,
@@ -26,7 +26,7 @@ extends ListEditPage<DisplaySet, SetsService, DisplayWorkout> {
     super(
       alertController,
       modalController,
-      SetPage,
+      AdminSetPage,
       setsService,
       navParams
     );

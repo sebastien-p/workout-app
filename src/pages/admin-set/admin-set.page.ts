@@ -11,10 +11,10 @@ import { Keys } from '../../components/base.component';
 import { ItemEditModalPage } from '../item-edit-modal.page';
 
 @Component({
-  selector: 'page-set',
-  templateUrl: 'set.page.html'
+  selector: 'page-admin-set',
+  templateUrl: 'admin-set.page.html'
 })
-export class SetPage
+export class AdminSetPage
 extends ItemEditModalPage<DisplaySet, SetsService> {
   exercises: DisplayExercise[];
 

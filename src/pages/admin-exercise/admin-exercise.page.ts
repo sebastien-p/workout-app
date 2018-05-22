@@ -6,10 +6,10 @@ import { ExercisesService } from '../../services/exercises.service';
 import { ItemEditModalPage } from '../item-edit-modal.page';
 
 @Component({
-  selector: 'page-exercise',
-  templateUrl: 'exercise.page.html'
+  selector: 'page-admin-exercise',
+  templateUrl: 'admin-exercise.page.html'
 })
-export class ExercisePage
+export class AdminExercisePage
 extends ItemEditModalPage<DisplayExercise, ExercisesService> {
   constructor(
     navParams: NavParams,
