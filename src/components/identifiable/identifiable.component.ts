@@ -8,5 +8,5 @@ import { Identifiable } from '../../models/identifiable.model';
 })
 export class IdentifiableComponent {
   @Input()
-  identifiable: Identifiable;
+  readonly identifiable: Identifiable;
 }

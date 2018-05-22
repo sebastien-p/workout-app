@@ -8,5 +8,5 @@ import { Pauseable } from '../../models/pauseable.model';
 })
 export class PauseableComponent {
   @Input()
-  pauseable: Pauseable;
+  readonly pauseable: Pauseable;
 }

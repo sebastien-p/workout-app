@@ -8,5 +8,5 @@ import { Nameable } from '../../models/nameable.model';
 })
 export class NameableComponent {
   @Input()
-  nameable: Nameable;
+  readonly nameable: Nameable;
 }

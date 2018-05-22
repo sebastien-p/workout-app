@@ -9,8 +9,8 @@ import { Nameable } from '../../models/nameable.model';
 })
 export class ItemComponent {
   @Input()
-  identifiable: Identifiable;
+  readonly identifiable: Identifiable;
 
   @Input()
-  nameable: Nameable;
+  readonly nameable: Nameable;
 }

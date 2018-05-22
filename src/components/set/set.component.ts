@@ -10,7 +10,7 @@ import { DisplaySet } from '../../models/set.model';
 })
 export class SetComponent {
   @Input()
-  set: DisplaySet;
+  readonly set: DisplaySet;
 
   get amplitude() {
     return Amplitude[this.set.amplitude];

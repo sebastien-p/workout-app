@@ -8,5 +8,5 @@ import { DisplayExercise } from '../../models/exercise.model';
 })
 export class ExerciseComponent {
   @Input()
-  exercise: DisplayExercise;
+  readonly exercise: DisplayExercise;
 }
