@@ -1,4 +1,4 @@
-export const enum Rythm {
+export enum Rythm {
   Normal,
   Fast,
   Slow

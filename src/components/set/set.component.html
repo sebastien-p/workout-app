@@ -1,0 +1,8 @@
+<app-item
+  [identifiable]="set"
+  [nameable]="set.exercise">
+  <ion-badge>{{ amplitude }}</ion-badge>
+  <ion-badge>{{ rythm }}</ion-badge>
+  <ion-badge>{{ set.series }} serie(s)</ion-badge>
+  <app-pauseable [pauseable]="set"></app-pauseable>
+</app-item>

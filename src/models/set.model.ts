@@ -1,14 +1,13 @@
 import { Identifiable } from './identifiable.model';
+import { Pauseable } from './pauseable.model';
 import { DisplayExercise } from './exercise.model';
 import { Amplitude } from './amplitude.enum';
 import { Rythm } from './rythm.enum';
 
-interface Set extends Identifiable {
-  auto: boolean;
+interface Set extends Identifiable, Pauseable {
   amplitude: Amplitude;
-  repetitions: number;
-  rest: number;
   rythm: Rythm;
+  series: number;
   workout: number;
 }
 

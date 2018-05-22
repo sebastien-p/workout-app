@@ -1,23 +1,18 @@
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { IonicModule } from 'ionic-angular';
 
-import { HomePage } from './home/home';
-import { AdminPage } from './admin/admin';
-import { ExercisePage } from './exercise/exercise';
-import { ExercisesPage } from './exercises/exercises';
-import { WorkoutPage } from './workout/workout';
-import { WorkoutsPage } from './workouts/workouts';
-import { SetPage } from './set/set';
+import { ComponentsModule } from '../components/components.module';
+import { HomePage } from './home/home.page';
+import { AdminPage } from './admin/admin.page';
+import { ExercisePage } from './exercise/exercise.page';
+import { ExercisesPage } from './exercises/exercises.page';
+import { WorkoutPage } from './workout/workout.page';
+import { WorkoutsPage } from './workouts/workouts.page';
+import { SetPage } from './set/set.page';
+import { SetsPage } from './sets/sets.page';
 
 @NgModule({
   imports: [
-    FormsModule,
-    IonicModule
-  ],
-  exports: [
-    FormsModule,
-    IonicModule
+    ComponentsModule
   ],
   declarations: [
     HomePage,
@@ -26,7 +21,8 @@ import { SetPage } from './set/set';
     ExercisesPage,
     WorkoutPage,
     WorkoutsPage,
-    SetPage
+    SetPage,
+    SetsPage
   ],
   entryComponents: [
     HomePage,
@@ -35,8 +31,8 @@ import { SetPage } from './set/set';
     ExercisesPage,
     WorkoutPage,
     WorkoutsPage,
-    SetPage
-  ],
-  providers: []
+    SetPage,
+    SetsPage
+  ]
 })
 export class PagesModule {}

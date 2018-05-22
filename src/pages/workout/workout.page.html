@@ -1,0 +1,75 @@
+<ion-header>
+  <ion-navbar>
+    <ion-buttons start>
+      <button
+        ion-button
+        type="button"
+        (click)="dismiss()">
+        Close
+      </button>
+    </ion-buttons>
+    <ion-title>Workout</ion-title>
+    <ion-buttons end>
+      <button
+        ion-button
+        type="submit"
+        form="workoutForm"
+        [disabled]="!canSubmit">
+        Save
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <form
+    id="workoutForm"
+    (ngSubmit)="submit()">
+    <ion-list>
+      <ion-item>
+        <ion-label stacked>Name</ion-label>
+        <ion-input
+          name="name"
+          type="text"
+          required
+          [ngModel]="item.name">
+        </ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label stacked>Description</ion-label>
+        <ion-textarea
+          name="description"
+          rows="10"
+          required
+          [ngModel]="item.description">
+        </ion-textarea>
+      </ion-item>
+      <ion-item>
+        <ion-label stacked>Auto</ion-label>
+        <ion-toggle
+          name="auto"
+          required
+          [ngModel]="item.auto">
+        </ion-toggle>
+      </ion-item>
+      <ion-item *ngIf="value.auto">
+        <ion-label stacked>Rest</ion-label>
+        <ion-datetime
+          name="rest"
+          displayFormat="HH:mm:ss"
+          hourValues="0"
+          required
+          [ngModel]="item.rest">
+        </ion-datetime>
+      </ion-item>
+      <button
+        ion-item
+        type="button"
+        *ngIf="!isNew"
+        [navPush]="setsPage"
+        [navParams]="data">
+        Sets
+      </button>
+    </ion-list>
+  </form>
+</ion-content>

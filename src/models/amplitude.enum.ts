@@ -1,4 +1,4 @@
-export const enum Amplitude {
+export enum Amplitude {
   Normal,
   Medium,
   Short
