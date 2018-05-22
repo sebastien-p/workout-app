@@ -15,7 +15,7 @@
 <ion-content>
   <app-list
     [list]="list"
-    (onEdit)="edit($event)"
+    (onView)="view($event)"
     (onRemove)="remove($event)">
     <ng-template let-item>
       <app-workout [workout]="item"></app-workout>

@@ -3,7 +3,7 @@ import { AlertController, ModalController } from 'ionic-angular';
 
 import { DisplayWorkout } from '../../models/workout.model';
 import { WorkoutsService } from '../../services/workouts.service';
-import { ListPageComponent } from '../../components/list-page.component';
+import { ListEditPage } from '../list-edit.page';
 import { WorkoutPage } from '../workout/workout.page';
 
 @Component({
@@ -11,7 +11,7 @@ import { WorkoutPage } from '../workout/workout.page';
   templateUrl: 'workouts.page.html'
 })
 export class WorkoutsPage
-extends ListPageComponent<DisplayWorkout, WorkoutsService> {
+extends ListEditPage<DisplayWorkout, WorkoutsService> {
   constructor(
     alertController: AlertController,
     modalController: ModalController,

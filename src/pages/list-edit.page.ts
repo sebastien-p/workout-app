@@ -4,39 +4,36 @@ import { ReorderIndexes } from 'ionic-angular/components/item/item-reorder';
 import { Dexie } from 'dexie';
 
 import { Identifiable } from '../models/identifiable.model';
-import { ItemModalComponent } from './item-modal.component';
-import { PageComponent, Params } from './page.component';
+import { Params } from './base.page';
+import { ListPage } from './list.page';
+import { ItemEditModalPage } from './item-edit-modal.page';
 
-export abstract class ListPageComponent
+export abstract class ListEditPage
 <T extends Identifiable, U extends any, V extends Identifiable = Identifiable>
-extends PageComponent<V> {
-  list: T[];
-
+extends ListPage<T, U, V> {
   constructor(
     protected readonly alertController: AlertController,
-    protected readonly modalController: ModalController,
-    protected readonly modalPage: Type<ItemModalComponent<T, U>>,
+    modalController: ModalController,
+    modalPage: Type<ItemEditModalPage<T, U>>,
     service: U,
     navParams?: Params<V>
   ) {
     super(
-      navParams,
-      service
+      modalController,
+      modalPage,
+      service,
+      navParams
     );
   }
 
-  ionViewDidEnter(): void {
-    this.refresh(true);
+  view(item: T): Modal {
+    const modal: Modal = super.view(item);
+    modal.onDidDismiss(() => this.refresh());
+    return modal;
   }
 
   add(...parameters: T[keyof T][]): void {
-    this.edit(this.service.create(...parameters));
-  }
-
-  edit(item: T): void {
-    const modal: Modal = this.modalController.create(this.modalPage, { item });
-    modal.onDidDismiss(() => this.refresh());
-    modal.present();
+    this.view(this.service.create(...parameters));
   }
 
   remove(item: T): void {
@@ -52,10 +49,6 @@ extends PageComponent<V> {
 
   reorder($event: ReorderIndexes): void {
     $event.applyTo(this.list);
-  }
-
-  protected refresh(enter: boolean = false): Dexie.Promise<T[]> {
-    return this.service.fetch().then(list => this.list = list);
   }
 
   protected delete(item: T): Dexie.Promise<number> {

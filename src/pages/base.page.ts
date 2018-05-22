@@ -1,7 +1,7 @@
 import { NavParams } from 'ionic-angular';
 
 import { Identifiable } from '../models/identifiable.model';
-import { BaseComponent } from './base.component';
+import { BaseComponent } from '../components/base.component';
 
 export interface Data<T extends Identifiable = Identifiable> {
   item: T;
@@ -12,7 +12,7 @@ extends NavParams {
   data: Data<T>;
 }
 
-export abstract class PageComponent
+export abstract class BasePage
 <T extends Identifiable = Identifiable, U extends any = any>
 extends BaseComponent {
   readonly data: Data<T>;

@@ -3,7 +3,7 @@ import { NavParams, ViewController } from 'ionic-angular';
 
 import { DisplayWorkout } from '../../models/workout.model';
 import { WorkoutsService } from '../../services/workouts.service';
-import { ItemModalComponent } from '../../components/item-modal.component';
+import { ItemEditModalPage } from '../item-edit-modal.page';
 import { SetsPage } from '../sets/sets.page';
 
 @Component({
@@ -11,7 +11,7 @@ import { SetsPage } from '../sets/sets.page';
   templateUrl: 'workout.page.html'
 })
 export class WorkoutPage
-extends ItemModalComponent<DisplayWorkout, WorkoutsService> {
+extends ItemEditModalPage<DisplayWorkout, WorkoutsService> {
   readonly setsPage: Type<SetsPage> = SetsPage;
 
   constructor(

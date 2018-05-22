@@ -1,11 +1,11 @@
 import { ViewController } from 'ionic-angular';
 
 import { Identifiable } from '../models/identifiable.model';
-import { PageComponent, Params } from './page.component';
+import { BasePage, Params } from './base.page';
 
-export abstract class ModalComponent
+export abstract class ModalPage
 <T extends Identifiable = Identifiable, U extends any = any>
-extends PageComponent<T> {
+extends BasePage<T> {
   constructor(
     protected readonly viewController: ViewController,
     navParams?: Params<T>,

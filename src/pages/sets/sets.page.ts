@@ -7,7 +7,7 @@ import { DisplaySet } from '../../models/set.model';
 import { DisplayWorkout } from '../../models/workout.model';
 import { SetsService } from '../../services/sets.service';
 import { WorkoutsService } from '../../services/workouts.service';
-import { ListPageComponent } from '../../components/list-page.component';
+import { ListEditPage } from '../list-edit.page';
 import { SetPage } from '../set/set.page';
 
 @Component({
@@ -15,7 +15,7 @@ import { SetPage } from '../set/set.page';
   templateUrl: 'sets.page.html'
 })
 export class SetsPage
-extends ListPageComponent<DisplaySet, SetsService, DisplayWorkout> {
+extends ListEditPage<DisplaySet, SetsService, DisplayWorkout> {
   constructor(
     navParams: NavParams,
     alertController: AlertController,

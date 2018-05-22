@@ -1,29 +1,15 @@
 import { ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { ViewController } from 'ionic-angular';
 import { Dexie } from 'dexie';
 
 import { Identifiable } from '../models/identifiable.model';
-import { ModalComponent } from './modal.component';
-import { Params } from './page.component';
+import { ItemModalPage } from './item-modal.page';
 
-export abstract class ItemModalComponent
+export abstract class ItemEditModalPage
 <T extends Identifiable, U extends any>
-extends ModalComponent<T> {
+extends ItemModalPage<T, U> {
   @ViewChild(NgForm)
   readonly form: NgForm;
-
-  constructor(
-    navParams: Params<T>,
-    viewController: ViewController,
-    service: U
-  ) {
-    super(
-      viewController,
-      navParams,
-      service
-    );
-  }
 
   get value(): Partial<T> {
     return this.form.value;
@@ -32,14 +18,6 @@ extends ModalComponent<T> {
   get canSubmit(): boolean {
     const { dirty, valid } = this.form;
     return dirty && valid;
-  }
-
-  get isNew(): boolean {
-    return !this.item.id;
-  }
-
-  dismiss(...parameters: any[]): Promise<number> {
-    return super.dismiss(this.item.id, ...parameters);
   }
 
   reset(): void {

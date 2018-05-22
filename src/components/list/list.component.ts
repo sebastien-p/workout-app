@@ -30,7 +30,7 @@ extends BaseComponent {
   readonly reorder: boolean = false;
 
   @Output()
-  readonly onEdit: EventEmitter<T> = new EventEmitter();
+  readonly onView: EventEmitter<T> = new EventEmitter();
 
   @Output()
   readonly onRemove: EventEmitter<T> = new EventEmitter();

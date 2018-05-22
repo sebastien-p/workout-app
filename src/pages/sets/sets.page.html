@@ -16,7 +16,7 @@
   <app-list
     reorder
     [list]="list"
-    (onEdit)="edit($event)"
+    (onView)="view($event)"
     (onRemove)="remove($event)"
     (onReorder)="reorder($event)">
     <ng-template let-item>
