@@ -8,7 +8,7 @@ import { SetsPage } from '../sets/sets.page';
 
 @Component({
   selector: 'page-workout',
-  templateUrl: 'workout.page.html',
+  templateUrl: 'workout.page.html'
 })
 export class WorkoutPage
 extends ItemModalComponent<DisplayWorkout, WorkoutsService> {

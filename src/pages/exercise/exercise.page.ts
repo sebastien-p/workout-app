@@ -7,7 +7,7 @@ import { ItemModalComponent } from '../../components/item-modal.component';
 
 @Component({
   selector: 'page-exercise',
-  templateUrl: 'exercise.page.html',
+  templateUrl: 'exercise.page.html'
 })
 export class ExercisePage
 extends ItemModalComponent<DisplayExercise, ExercisesService> {

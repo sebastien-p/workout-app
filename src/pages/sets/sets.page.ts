@@ -12,7 +12,7 @@ import { SetPage } from '../set/set.page';
 
 @Component({
   selector: 'page-sets',
-  templateUrl: 'sets.page.html',
+  templateUrl: 'sets.page.html'
 })
 export class SetsPage
 extends ListPageComponent<DisplaySet, SetsService, DisplayWorkout> {

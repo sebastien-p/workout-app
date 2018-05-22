@@ -5,7 +5,7 @@ import { WorkoutsPage } from '../workouts/workouts.page';
 
 @Component({
   selector: 'page-admin',
-  templateUrl: 'admin.page.html',
+  templateUrl: 'admin.page.html'
 })
 export class AdminPage {
   readonly exercisesPage: Type<ExercisesPage> = ExercisesPage;

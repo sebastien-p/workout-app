@@ -12,7 +12,7 @@ import { ItemModalComponent } from '../../components/item-modal.component';
 
 @Component({
   selector: 'page-set',
-  templateUrl: 'set.page.html',
+  templateUrl: 'set.page.html'
 })
 export class SetPage
 extends ItemModalComponent<DisplaySet, SetsService> {
