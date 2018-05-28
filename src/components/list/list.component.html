@@ -31,14 +31,14 @@
           type="button"
           color="danger"
           *ngIf="!readonly"
-          (click)="onRemove.emit(item)">
+          (tap)="onRemove.emit(item)">
           Delete
         </button>
         <button
           ion-button
           expandable
           type="button"
-          (click)="onView.emit(item)">
+          (tap)="onView.emit(item)">
           View
         </button>
       </ion-item-options>
