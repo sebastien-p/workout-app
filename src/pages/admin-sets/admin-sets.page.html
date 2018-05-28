@@ -14,9 +14,8 @@
 
 <ion-content>
   <app-list
-    sliding
-    reorder
     [list]="list"
+    [reorder]="true"
     (onView)="view($event)"
     (onRemove)="remove($event)"
     (onReorder)="reorder($event)">

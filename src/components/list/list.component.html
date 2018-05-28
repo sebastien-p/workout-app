@@ -14,8 +14,8 @@
 <ng-container *ngIf="!!list; else loading">
   <ion-list
     *ngIf="!!list.length; else empty"
-    [sliding]="sliding"
-    [reorder]="reorder"
+    [sliding]="true"
+    [reorder]="!!reorder"
     (ionItemReorder)="onReorder.emit($event)">
     <ion-item-sliding
       *ngFor="let item of list; trackBy: trackById()"
@@ -30,6 +30,7 @@
           ion-button
           type="button"
           color="danger"
+          *ngIf="!readonly"
           (click)="onRemove.emit(item)">
           Delete
         </button>
@@ -38,7 +39,7 @@
           expandable
           type="button"
           (click)="onView.emit(item)">
-          Update
+          View
         </button>
       </ion-item-options>
     </ion-item-sliding>
