@@ -10,6 +10,7 @@ import { AdminWorkoutPage } from './admin-workout/admin-workout.page';
 import { AdminWorkoutsPage } from './admin-workouts/admin-workouts.page';
 import { ExploitPage } from './exploit/exploit.page';
 import { ExploitHistoryPage } from './exploit-history/exploit-history.page';
+import { ExploitWorkoutPage } from './exploit-workout/exploit-workout.page';
 import { ExploitWorkoutsPage } from './exploit-workouts/exploit-workouts.page';
 
 @NgModule({
@@ -26,6 +27,7 @@ import { ExploitWorkoutsPage } from './exploit-workouts/exploit-workouts.page';
     AdminWorkoutsPage,
     ExploitPage,
     ExploitHistoryPage,
+    ExploitWorkoutPage,
     ExploitWorkoutsPage
   ],
   entryComponents: [
@@ -38,6 +40,7 @@ import { ExploitWorkoutsPage } from './exploit-workouts/exploit-workouts.page';
     AdminWorkoutsPage,
     ExploitPage,
     ExploitHistoryPage,
+    ExploitWorkoutPage,
     ExploitWorkoutsPage
   ]
 })
