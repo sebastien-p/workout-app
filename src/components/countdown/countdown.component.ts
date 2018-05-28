@@ -1,9 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { interval } from 'rxjs/observable/interval';
-import { timer } from 'rxjs/observable/timer';
 import { of } from 'rxjs/observable/of';
 import { map } from 'rxjs/operators/map';
+import { timer } from 'rxjs/observable/timer';
 import { takeUntil } from 'rxjs/operators/takeuntil';
 
 import { Pauseable } from '../../models/pauseable.model';
@@ -35,10 +34,10 @@ implements OnInit{
     this.countdown = of(this.pauseable.rest);
   }
 
-  play(): void {
-    const duration: number = this.parse(this.pauseable.rest); // FIXME
-    this.countdown = interval(second).pipe(
-      takeUntil(timer(duration)),
+  play(): void { // FIXME
+    const duration: number = this.parse(this.pauseable.rest);
+    this.countdown = timer(0, second).pipe(
+      takeUntil(timer(duration + second)),
       map(seconds => duration - (seconds * second)),
       map(duration => this.format(duration))
     );
@@ -50,9 +49,10 @@ implements OnInit{
   }
 
   private format(value: number): string {
-    const h = (value / hour) % hoursInDay;
-    const m = (value / minute) % minutesInHour;
-    const s = (value / second) % secondsInMinute;
-    return [h, m, s].map(n => n.toFixed(0).padStart(2, '0')).join(separator);
+    return [
+      (value / hour) % hoursInDay,
+      (value / minute) % minutesInHour,
+      (value / second) % secondsInMinute
+    ].map(n => Math.floor(n).toString().padStart(2, '0')).join(separator);
   }
 }
