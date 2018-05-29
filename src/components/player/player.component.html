@@ -1,0 +1,48 @@
+<ion-toolbar>
+  <ion-buttons start>
+    <button
+      ion-button
+      icon-only
+      type="button"
+      (tap)="onGoFirst.emit()">
+      <ion-icon name="skip-backward"></ion-icon>
+    </button>
+    <button
+      ion-button
+      icon-only
+      type="button"
+      (tap)="onGoPrevious.emit()">
+      <ion-icon name="rewind"></ion-icon>
+    </button>
+    <button
+      ion-button
+      icon-only
+      type="button"
+      (tap)="onGoNext.emit()">
+      <ion-icon name="fastforward"></ion-icon>
+    </button>
+  </ion-buttons>
+  <ion-title>{{ countdown | async }}</ion-title>
+  <ion-buttons end>
+    <button
+      ion-button
+      icon-only
+      type="button"
+      (tap)="play()">
+      <ion-icon name="play"></ion-icon>
+    </button>
+    <button
+      ion-button
+      icon-only
+      type="button">
+      <ion-icon name="pause"></ion-icon>
+    </button>
+    <button
+      ion-button
+      icon-only
+      type="button"
+      (tap)="stop()">
+      <ion-icon name="square"></ion-icon>
+    </button>
+  </ion-buttons>
+</ion-toolbar>

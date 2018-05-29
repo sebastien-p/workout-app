@@ -1,4 +1,12 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {
+  Component,
+  OnChanges,
+  SimpleChanges,
+  Input,
+  Output,
+  EventEmitter
+} from '@angular/core';
+
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { map } from 'rxjs/operators/map';
@@ -16,18 +24,30 @@ const hour: number = minute * minutesInHour;
 const separator: string = ':';
 
 @Component({
-  selector: 'app-countdown',
-  templateUrl: 'countdown.component.html'
+  selector: 'app-player',
+  templateUrl: 'player.component.html'
 })
-export class CountdownComponent
-implements OnInit{
+export class PlayerComponent
+implements OnChanges{
   @Input()
   readonly pauseable: Pauseable;
 
+  @Output()
+  readonly onGoFirst: EventEmitter<void> = new EventEmitter();
+
+  @Output()
+  readonly onGoLast: EventEmitter<void> = new EventEmitter();
+
+  @Output()
+  readonly onGoPrevious: EventEmitter<void> = new EventEmitter();
+
+  @Output()
+  readonly onGoNext: EventEmitter<void> = new EventEmitter();
+
   countdown: Observable<string>;
 
-  ngOnInit(): void {
-    this.stop();
+  ngOnChanges({ pauseable }: SimpleChanges): void {
+    if (pauseable.currentValue !== pauseable.previousValue) { this.stop(); }
   }
 
   stop(): void {
