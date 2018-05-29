@@ -14,8 +14,9 @@
 
 <ion-content>
   <app-list
+    delete
+    reorder
     [list]="list"
-    [reorder]="true"
     (onView)="view($event)"
     (onRemove)="remove($event)"
     (onReorder)="reorder($event)">

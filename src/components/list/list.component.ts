@@ -27,7 +27,7 @@ extends BaseComponent {
   readonly list: T[];
 
   @Input()
-  readonly readonly: boolean = false;
+  readonly delete: boolean = false;
 
   @Input()
   readonly reorder: boolean = false;
