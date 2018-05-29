@@ -22,7 +22,7 @@
       <ion-icon name="fastforward"></ion-icon>
     </button>
   </ion-buttons>
-  <ion-title>{{ countdown | async }}</ion-title>
+  <ion-title>{{ (countdown | async) || pauseable.rest }}</ion-title>
   <ion-buttons end>
     <button
       ion-button
