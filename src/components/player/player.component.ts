@@ -32,16 +32,7 @@ implements OnChanges{
   readonly pauseable: Pauseable;
 
   @Output()
-  readonly onGoFirst: EventEmitter<void> = new EventEmitter();
-
-  @Output()
-  readonly onGoLast: EventEmitter<void> = new EventEmitter();
-
-  @Output()
-  readonly onGoPrevious: EventEmitter<void> = new EventEmitter();
-
-  @Output()
-  readonly onGoNext: EventEmitter<void> = new EventEmitter();
+  readonly onEnd: EventEmitter<void> = new EventEmitter();
 
   countdown: Observable<string>;
 
@@ -54,10 +45,10 @@ implements OnChanges{
   }
 
   play(): void {
-    const time: number = this.parse(this.pauseable.rest);
+    const max: number = this.parse(this.pauseable.rest);
     this.countdown = timer(millisecondsInSecond, millisecondsInSecond).pipe(
-      take(time),
-      scan(value => value - 1, time),
+      take(max),
+      scan(value => value - 1, max),
       map(value => this.format(value))
     );
   }
