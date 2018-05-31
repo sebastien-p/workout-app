@@ -10,7 +10,7 @@ import { ItemComponent } from './item/item.component';
 import { ExerciseComponent } from './exercise/exercise.component';
 import { WorkoutComponent } from './workout/workout.component';
 import { SetComponent } from './set/set.component';
-import { PlayerComponent } from './player/player.component';
+import { CountdownComponent } from './countdown/countdown.component';
 
 @NgModule({
   imports: [
@@ -28,7 +28,7 @@ import { PlayerComponent } from './player/player.component';
     ExerciseComponent,
     WorkoutComponent,
     SetComponent,
-    PlayerComponent
+    CountdownComponent
   ],
   declarations: [
     IdentifiableComponent,
@@ -39,7 +39,7 @@ import { PlayerComponent } from './player/player.component';
     ExerciseComponent,
     WorkoutComponent,
     SetComponent,
-    PlayerComponent
+    CountdownComponent
   ]
 })
 export class ComponentsModule {}

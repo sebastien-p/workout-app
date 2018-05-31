@@ -1,7 +1,6 @@
 import {
   Component,
   OnChanges,
-  SimpleChanges,
   Input,
   Output,
   EventEmitter
@@ -23,30 +22,30 @@ const hoursInDay: number = 24;
 const separator: string = ':';
 
 @Component({
-  selector: 'app-player',
-  templateUrl: 'player.component.html'
+  selector: 'app-countdown',
+  templateUrl: 'countdown.component.html'
 })
-export class PlayerComponent
-implements OnChanges{
+export class CountdownComponent
+implements OnChanges {
   @Input()
   readonly pauseable: Pauseable;
 
   @Output()
   readonly onEnd: EventEmitter<void> = new EventEmitter();
 
-  countdown: Observable<string>;
+  value: Observable<string>;
 
-  ngOnChanges({ pauseable }: SimpleChanges): void {
-    if (pauseable.currentValue !== pauseable.previousValue) { this.stop(); }
+  ngOnChanges(): void {
+    this.stop(); // FIXME: should stop when navigating series too (or disable navigation?)
   }
 
   stop(): void {
-    this.countdown = null;
+    this.value = null;
   }
 
   play(): void {
     const max: number = this.parse(this.pauseable.rest);
-    this.countdown = timer(millisecondsInSecond, millisecondsInSecond).pipe(
+    this.value = timer(millisecondsInSecond, millisecondsInSecond).pipe(
       take(max),
       scan(value => value - 1, max),
       map(value => this.format(value))
