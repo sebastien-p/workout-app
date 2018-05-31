@@ -1,4 +1,11 @@
+<ng-template #compact>
+  <ion-toolbar>
+    <ion-title>{{ set.exercise.name }}, {{ set.series }} serie(s)</ion-title>
+  </ion-toolbar>
+</ng-template>
+
 <app-item
+  *ngIf="compact === false; else compact"
   [identifiable]="set"
   [nameable]="set.exercise">
   <ion-badge>{{ amplitude }}</ion-badge>

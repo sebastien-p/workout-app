@@ -12,6 +12,9 @@ export class SetComponent {
   @Input()
   readonly set: DisplaySet;
 
+  @Input()
+  readonly compact: boolean = false;
+
   get amplitude() {
     return Amplitude[this.set.amplitude];
   }
