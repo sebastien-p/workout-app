@@ -26,7 +26,7 @@ const separator: string = ':';
   templateUrl: 'countdown.component.html'
 })
 export class CountdownComponent
-implements OnChanges {
+implements OnChanges { // TODO: handle zero + no pauseable + handle auto + onEnd + play/stop security?
   @Input()
   readonly pauseable: Pauseable;
 
