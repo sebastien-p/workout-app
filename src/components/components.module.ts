@@ -5,6 +5,7 @@ import { IonicModule } from 'ionic-angular';
 import { IdentifiableComponent } from './identifiable/identifiable.component';
 import { NameableComponent } from './nameable/nameable.component';
 import { PauseableComponent } from './pauseable/pauseable.component';
+import { EmptyComponent } from './empty/empty.component';
 import { ListComponent } from './list/list.component';
 import { ItemComponent } from './item/item.component';
 import { ExerciseComponent } from './exercise/exercise.component';
@@ -23,6 +24,7 @@ import { CountdownComponent } from './countdown/countdown.component';
     IdentifiableComponent,
     NameableComponent,
     PauseableComponent,
+    EmptyComponent,
     ListComponent,
     ItemComponent,
     ExerciseComponent,
@@ -34,6 +36,7 @@ import { CountdownComponent } from './countdown/countdown.component';
     IdentifiableComponent,
     NameableComponent,
     PauseableComponent,
+    EmptyComponent,
     ListComponent,
     ItemComponent,
     ExerciseComponent,

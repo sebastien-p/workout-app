@@ -5,10 +5,7 @@
 </ng-template>
 
 <ng-template #empty>
-  <div padding>
-    <h1>Nothing there yet :(</h1>
-    <p>Consider hitting the Add button above...</p>
-  </div>
+  <app-empty>Consider hitting the Add button above...</app-empty>
 </ng-template>
 
 <ng-container *ngIf="!!list; else loading">
