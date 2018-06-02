@@ -18,7 +18,6 @@ export class SetsService {
   create(
     workout: number,
     amplitude: Amplitude = Amplitude.Normal,
-    auto: boolean = true,
     description: string = null,
     exercise: DisplayExercise = null,
     rest: string = '00:00:00',
@@ -27,7 +26,6 @@ export class SetsService {
   ): DisplaySet {
     return {
       amplitude,
-      auto,
       description,
       exercise,
       rest,
