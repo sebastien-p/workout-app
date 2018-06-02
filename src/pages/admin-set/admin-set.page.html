@@ -42,15 +42,17 @@
       </ion-item>
       <ion-item>
         <ion-label stacked>Series</ion-label>
-        <ion-input
+        <ion-range
           name="series"
-          type="number"
           required
-          step="1"
+          snaps
           min="1"
-          [ngModel]="item.series"
-          (change)="value.series = $event.target.value * 1">
-        </ion-input>
+          max="10"
+          step="1"
+          [ngModel]="item.series">
+          <ion-label range-left>1</ion-label>
+          <ion-label range-right>10</ion-label>
+        </ion-range>
       </ion-item>
       <ion-item>
         <ion-label stacked>Auto</ion-label>
