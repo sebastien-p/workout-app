@@ -12,7 +12,7 @@
   <ion-list
     *ngIf="!!list.length; else empty"
     [sliding]="true"
-    [reorder]="reorder !== false"
+    [reorder]="reorder !== false && list.length > 1"
     (ionItemReorder)="onReorder.emit($event)">
     <ion-item-sliding
       *ngFor="let item of list; trackBy: trackById()"
