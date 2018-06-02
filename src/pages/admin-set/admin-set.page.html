@@ -41,7 +41,10 @@
         </ion-select>
       </ion-item>
       <ion-item>
-        <ion-label stacked>Series</ion-label>
+        <ion-label stacked>
+          Series
+          <ion-badge float-end>{{ value.series }}</ion-badge>
+        </ion-label>
         <ion-range
           name="series"
           required
