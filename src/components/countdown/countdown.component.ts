@@ -7,10 +7,11 @@ import {
 } from '@angular/core';
 
 import { Observable } from 'rxjs/Observable';
+import { timer } from 'rxjs/observable/timer';
 import { map } from 'rxjs/operators/map';
 import { scan } from 'rxjs/operators/scan';
 import { take } from 'rxjs/operators/take';
-import { timer } from 'rxjs/observable/timer';
+import { tap } from 'rxjs/operators/tap';
 
 import { Pauseable } from '../../models/pauseable.model';
 
@@ -26,7 +27,7 @@ const separator: string = ':';
   templateUrl: 'countdown.component.html'
 })
 export class CountdownComponent
-implements OnChanges { // TODO: handle zero + onEnd + play/stop security?
+implements OnChanges { // TODO: play/stop security?
   @Input()
   readonly pauseable: Pauseable;
 
@@ -35,8 +36,14 @@ implements OnChanges { // TODO: handle zero + onEnd + play/stop security?
 
   value: Observable<string>;
 
+  private duration: number;
+
   ngOnChanges(): void {
-    this.stop(); // FIXME: should stop when navigating series too (or disable navigation?)
+    this.initialize();
+  }
+
+  get isPlaying(): boolean {
+    return !!this.value;
   }
 
   stop(): void {
@@ -44,10 +51,12 @@ implements OnChanges { // TODO: handle zero + onEnd + play/stop security?
   }
 
   play(): void {
-    const max: number = this.parse(this.pauseable.rest);
+    if (this.isPlaying) { return; }
+    if (!this.duration) { return this.onComplete(); }
     this.value = timer(millisecondsInSecond, millisecondsInSecond).pipe(
-      take(max),
-      scan(value => value - 1, max),
+      take(this.duration),
+      scan(value => value - 1, this.duration),
+      tap(value => { if (!value) { this.onComplete(); } }), // TODO: find better way to do this
       map(value => this.format(value))
     );
   }
@@ -63,5 +72,15 @@ implements OnChanges { // TODO: handle zero + onEnd + play/stop security?
       (value / secondsInMinute) % minutesInHour,
       value % secondsInMinute
     ].map(n => Math.floor(n).toString().padStart(2, '0')).join(separator);
+  }
+
+  private initialize() {
+    this.duration = this.parse(this.pauseable.rest);
+    this.stop();
+  }
+
+  private onComplete(): void {
+    this.stop();
+    this.onEnd.emit();
   }
 }

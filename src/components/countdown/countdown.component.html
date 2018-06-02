@@ -3,12 +3,14 @@
     <ng-content></ng-content>
   </ion-buttons>
   <ion-title>{{ (value | async) || pauseable.rest }}</ion-title>
-  <ion-buttons end>
+  <ion-buttons
+    end
+    [ngSwitch]="isPlaying">
     <button
       ion-button
       icon-only
       type="button"
-      [disabled]="!!value"
+      *ngSwitchCase="false"
       (tap)="play()">
       <ion-icon name="md-play"></ion-icon>
     </button>
@@ -16,7 +18,7 @@
       ion-button
       icon-only
       type="button"
-      [disabled]="!value"
+      *ngSwitchDefault
       (tap)="stop()">
       <ion-icon name="md-square"></ion-icon>
     </button>
