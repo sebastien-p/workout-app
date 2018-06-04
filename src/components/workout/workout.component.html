@@ -3,4 +3,5 @@
   [nameable]="workout">
   <ion-badge>{{ workout.sets.length }} set(s)</ion-badge>
   <app-pauseable [pauseable]="workout"></app-pauseable>
+  <ion-badge *ngIf="workout.record">History</ion-badge>
 </app-item>

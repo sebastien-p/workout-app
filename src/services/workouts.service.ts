@@ -15,12 +15,14 @@ export class WorkoutsService {
 
   create(
     description: string = null,
+    record: boolean = true,
     name: string = null,
     rest: string = '00:00:00',
     sets: DisplaySet[] = []
   ): DisplayWorkout {
     return {
       description,
+      record,
       name,
       rest,
       sets
