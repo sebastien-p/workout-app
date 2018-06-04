@@ -21,7 +21,8 @@ type Context<T> = {
   selector: 'app-list',
   templateUrl: 'list.component.html'
 })
-export class ListComponent<T extends Identifiable = Identifiable>
+export class ListComponent
+<T extends Identifiable = Identifiable>
 extends BaseComponent {
   @Input()
   readonly list: T[];

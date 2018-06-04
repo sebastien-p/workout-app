@@ -16,10 +16,10 @@ import { ItemEditModalPage } from '../item-edit-modal.page';
 })
 export class AdminSetPage
 extends ItemEditModalPage<DisplaySet, SetsService> {
-  exercises: DisplayExercise[];
-
   readonly amplitudes: Keys<typeof Amplitude> = this.spreadEnum(Amplitude);
   readonly rythms: Keys<typeof Rythm> = this.spreadEnum(Rythm);
+
+  exercises: DisplayExercise[];
 
   constructor(
     navParams: NavParams,

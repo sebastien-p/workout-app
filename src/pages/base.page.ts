@@ -7,7 +7,8 @@ export interface Data<T extends Identifiable = Identifiable> {
   item: T;
 }
 
-export class Params<T extends Identifiable = Identifiable>
+export class Params
+<T extends Identifiable = Identifiable>
 extends NavParams {
   data: Data<T>;
 }

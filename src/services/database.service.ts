@@ -12,7 +12,8 @@ export type Mapper<T, U> = (value: T) => Dexie.Promise<U>;
 export type Updater<T> = (values: T[]) => T[];
 
 @Injectable()
-export class DatabaseService extends Dexie {
+export class DatabaseService
+extends Dexie {
   exercises: Table<DatabaseExercise>;
   workouts: Table<DatabaseWorkout>;
   sets: Table<DatabaseSet>;
