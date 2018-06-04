@@ -21,6 +21,7 @@ const minutesInHour: number = secondsInMinute;
 const secondsInHour: number = secondsInMinute * minutesInHour;
 const hoursInDay: number = 24;
 const separator: string = ':';
+const warnings: number = 3;
 
 @Component({
   selector: 'app-countdown',
@@ -54,10 +55,10 @@ implements OnChanges { // TODO: play/stop security?
     if (this.isPlaying) { return; }
     if (!this.duration) { return this.onComplete(); }
     this.value = timer(millisecondsInSecond, millisecondsInSecond).pipe(
-      take(this.duration),
       scan(value => value - 1, this.duration),
-      tap(value => { if (!value) { this.onComplete(); } }), // TODO: find better way to do this
-      map(value => this.format(value))
+      tap(value => this.onTick(value)),
+      map(value => this.format(value)),
+      take(this.duration)
     );
   }
 
@@ -79,8 +80,19 @@ implements OnChanges { // TODO: play/stop security?
     this.stop();
   }
 
+  private notify(): void {// TODO
+    if (warnings < 1 || this.duration < warnings) { return; }
+    console.log('notified');
+    navigator.vibrate(200);
+  }
+
   private onComplete(): void {
     this.stop();
     this.onEnd.emit();
+  }
+
+  private onTick(value: number): void {
+    if (value < warnings) { this.notify(); }
+    if (!value) { this.onComplete(); }
   }
 }
