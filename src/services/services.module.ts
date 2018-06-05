@@ -5,6 +5,7 @@ import { DatabaseService } from './database.service';
 import { ExercisesService } from './exercises.service';
 import { WorkoutsService } from './workouts.service';
 import { SetsService } from './sets.service';
+import { RecordsService } from './records.service';
 
 @NgModule()
 export class ServicesModule {
@@ -16,7 +17,8 @@ export class ServicesModule {
         DatabaseService,
         ExercisesService,
         WorkoutsService,
-        SetsService
+        SetsService,
+        RecordsService
       ]
     };
   }
