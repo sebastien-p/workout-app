@@ -72,7 +72,7 @@ export class WorkoutsService {
 
   private fetchAll(): Dexie.Promise<DisplayWorkout[]> {
     const { workouts, map } = this.database;
-    return workouts.toCollection().primaryKeys().then(
+    return workouts.orderBy('name').primaryKeys().then(
       ids => map(ids, id => this.fetchOne(id))
     );
   }

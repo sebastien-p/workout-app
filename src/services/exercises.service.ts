@@ -61,7 +61,7 @@ export class ExercisesService {
 
   private fetchAll(): Dexie.Promise<DisplayExercise[]> {
     const { exercises } = this.database;
-    return exercises.toArray();
+    return exercises.orderBy('name').toArray();
   }
 
   private updateWorkouts(
