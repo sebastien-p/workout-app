@@ -9,7 +9,8 @@ import { AdminSetsPage } from './admin-sets/admin-sets.page';
 import { AdminWorkoutPage } from './admin-workout/admin-workout.page';
 import { AdminWorkoutsPage } from './admin-workouts/admin-workouts.page';
 import { ExploitPage } from './exploit/exploit.page';
-import { ExploitHistoryPage } from './exploit-history/exploit-history.page';
+import { ExploitRecordPage } from './exploit-record/exploit-record.page';
+import { ExploitRecordsPage } from './exploit-records/exploit-records.page';
 import { ExploitWorkoutPage } from './exploit-workout/exploit-workout.page';
 import { ExploitWorkoutsPage } from './exploit-workouts/exploit-workouts.page';
 
@@ -26,7 +27,8 @@ import { ExploitWorkoutsPage } from './exploit-workouts/exploit-workouts.page';
     AdminWorkoutPage,
     AdminWorkoutsPage,
     ExploitPage,
-    ExploitHistoryPage,
+    ExploitRecordPage,
+    ExploitRecordsPage,
     ExploitWorkoutPage,
     ExploitWorkoutsPage
   ],
@@ -39,7 +41,8 @@ import { ExploitWorkoutsPage } from './exploit-workouts/exploit-workouts.page';
     AdminWorkoutPage,
     AdminWorkoutsPage,
     ExploitPage,
-    ExploitHistoryPage,
+    ExploitRecordPage,
+    ExploitRecordsPage,
     ExploitWorkoutPage,
     ExploitWorkoutsPage
   ]
