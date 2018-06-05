@@ -62,7 +62,7 @@ export class WorkoutsService {
     });
   }
 
-  private fetchOne(id: number): Dexie.Promise<DisplayWorkout> {
+  private fetchOne(id: number): Dexie.Promise<DisplayWorkout> { // TODO: delete records
     const { workouts, map } = this.database;
     return workouts.get(id).then(async ({ sets, ...workout }) => ({
       sets: await map(sets, set => this.sets.fetch(set)),

@@ -40,7 +40,7 @@ export class ExercisesService {
     });
   }
 
-  delete({ id }: DisplayExercise): Dexie.Promise<void> {
+  delete({ id }: DisplayExercise): Dexie.Promise<void> { // TODO: delete records
     const { exercises, sets, workouts, removeAll } = this.database;
     return this.database.transaction('rw', [
       exercises,

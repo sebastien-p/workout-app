@@ -59,7 +59,7 @@ export class SetsService {
     });
   }
 
-  delete({ id, workout }: DisplaySet): Dexie.Promise<void> {
+  delete({ id, workout }: DisplaySet): Dexie.Promise<void> { // TODO: delete records
     const { sets, workouts, removeOne } = this.database;
     return this.database.transaction('rw', [
       sets,
