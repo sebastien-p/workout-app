@@ -40,8 +40,8 @@ extends ListPage<T, U, V> {
     const alert: Alert = this.alertController.create({
       title: "Are you sure?",
       buttons: [
-        { text: 'Yes', handler: () => { this.delete(item); } },
-        { text: 'No' }
+        { text: 'No' },
+        { text: 'Yes', handler: () => { this.delete(item); } }
       ]
     });
     alert.present();
