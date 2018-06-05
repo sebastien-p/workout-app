@@ -33,6 +33,9 @@ implements OnChanges { // TODO: play/stop security?
   readonly pauseable: Pauseable;
 
   @Output()
+  readonly onStart: EventEmitter<void> = new EventEmitter();
+
+  @Output()
   readonly onEnd: EventEmitter<void> = new EventEmitter();
 
   value: Observable<string>;
@@ -53,6 +56,7 @@ implements OnChanges { // TODO: play/stop security?
 
   play(): void {
     if (this.isPlaying) { return; }
+    this.onStart.emit();
     if (!this.duration) { return this.onComplete(); }
     this.value = timer(millisecondsInSecond, millisecondsInSecond).pipe(
       scan(value => value - 1, this.duration),
