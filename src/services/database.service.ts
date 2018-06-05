@@ -7,7 +7,7 @@ import { DatabaseSet } from '../models/set.model';
 import { DatabaseRecord } from '../models/record.model';
 import { LoaderService } from './loader.service';
 
-export type Table<T> = Dexie.Table<T, number>;
+export type Table<T extends {}> = Dexie.Table<T, number>;
 export type Updater<T> = (values: T[]) => T[];
 export type Mapper<T, U> = (value: T) => Dexie.Promise<U>;
 
