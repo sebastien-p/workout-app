@@ -25,9 +25,9 @@ export class RecordsService {
   create(
     workout: DisplayWorkout,
     exercise: DisplayExercise,
-    serie: number,
+    serie: number = 1,
     value: number = 0,
-    date: number = Date.now()
+    date: string = new Date().toISOString()
   ): DisplayRecord {
     return {
       date,

@@ -3,7 +3,7 @@ import { WithExerciseId, WithExercise } from './with-exercise.model';
 import { WithWorkoutId, WithWorkout } from './with-workout.model';
 
 interface Record extends WithId {
-  date: number;
+  date: string;
   serie: number;
   value: number;
 }
