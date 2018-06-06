@@ -21,7 +21,7 @@ extends ListEditPage<DisplaySet, SetsService, DisplayWorkout> {
     alertController: AlertController,
     modalController: ModalController,
     setsService: SetsService,
-    protected readonly workoutsService: WorkoutsService
+    private readonly workoutsService: WorkoutsService
   ) {
     super(
       alertController,

@@ -25,7 +25,7 @@ extends ItemEditModalPage<DisplaySet, SetsService> {
     navParams: NavParams,
     viewController: ViewController,
     setsService: SetsService,
-    protected readonly exercisesService: ExercisesService
+    private readonly exercisesService: ExercisesService
   ) {
     super(
       navParams,
@@ -35,7 +35,6 @@ extends ItemEditModalPage<DisplaySet, SetsService> {
   }
 
   ionViewDidEnter(): void {
-    this.exercisesService.fetch()
-      .then(exercises => this.exercises = exercises);
+    this.exercisesService.fetch().then(data => this.exercises = data);
   }
 }
