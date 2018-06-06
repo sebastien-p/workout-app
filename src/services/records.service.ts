@@ -67,12 +67,12 @@ export class RecordsService {
     });
   }
 
-  delete(record: DisplayRecord): Dexie.Promise<void> {
+  delete({ id }: DisplayRecord): Dexie.Promise<void> {
     const { records } = this.database;
     return this.database.transaction('rw', [
       records
     ], async () => {
-      return null; // TODO
+      return await records.delete(id);
     });
   }
 
