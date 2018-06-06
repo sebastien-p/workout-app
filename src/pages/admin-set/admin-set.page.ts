@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { NavParams, ViewController } from 'ionic-angular';
 
-import { Amplitude } from '../../models/amplitude.enum';
-import { Rythm } from '../../models/rythm.enum';
 import { DisplayExercise } from '../../models/exercise.model';
 import { DisplaySet } from '../../models/set.model';
+import { Amplitude } from '../../models/amplitude.enum';
+import { Rythm } from '../../models/rythm.enum';
 import { ExercisesService } from '../../services/exercises.service';
 import { SetsService } from '../../services/sets.service';
 import { Keys } from '../../components/base.component';

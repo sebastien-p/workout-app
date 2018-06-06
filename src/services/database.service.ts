@@ -1,15 +1,16 @@
 import { Injectable } from '@angular/core';
 import Dexie from 'dexie';
 
+import { WithId } from '../models/with-id.model';
 import { DatabaseExercise } from '../models/exercise.model';
 import { DatabaseWorkout } from '../models/workout.model';
 import { DatabaseSet } from '../models/set.model';
 import { DatabaseRecord } from '../models/record.model';
 import { LoaderService } from './loader.service';
 
-export type Table<T extends {}> = Dexie.Table<T, number>;
-export type Updater<T> = (values: T[]) => T[];
+export type Table<T extends WithId> = Dexie.Table<T, number>;
 export type Mapper<T, U> = (value: T) => Dexie.Promise<U>;
+export type Updater<T> = (values: T[]) => T[];
 
 @Injectable()
 export class DatabaseService
@@ -28,7 +29,7 @@ extends Dexie {
       exercises: '++id,name',
       workouts: '++id,name,*&sets',
       sets: '++id,exercise',
-      records: '++,workout,exercise,serie,date'
+      records: '++id,workout,exercise,serie,date'
     });
 
     this.handleHooks(['creating', 'updating', 'deleting'], () => this.load());

@@ -1,20 +1,20 @@
 import { NavParams } from 'ionic-angular';
 
-import { Identifiable } from '../models/identifiable.model';
+import { WithId } from '../models/with-id.model';
 import { BaseComponent } from '../components/base.component';
 
-export interface Data<T extends Identifiable = Identifiable> {
+export interface Data<T extends WithId = WithId> {
   item: T;
 }
 
 export class Params
-<T extends Identifiable = Identifiable>
+<T extends WithId = WithId>
 extends NavParams {
   data: Data<T>;
 }
 
 export abstract class BasePage
-<T extends Identifiable = Identifiable, U extends any = any>
+<T extends WithId = WithId, U extends any = any>
 extends BaseComponent {
   readonly data: Data<T>;
 

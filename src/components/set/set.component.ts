@@ -1,8 +1,8 @@
 import { Component, Input } from '@angular/core';
 
+import { DisplaySet } from '../../models/set.model';
 import { Amplitude } from '../../models/amplitude.enum';
 import { Rythm } from '../../models/rythm.enum';
-import { DisplaySet } from '../../models/set.model';
 
 @Component({
   selector: 'app-set',

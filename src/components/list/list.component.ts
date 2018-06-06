@@ -9,7 +9,7 @@ import {
 
 import { ReorderIndexes } from 'ionic-angular/components/item/item-reorder';
 
-import { Identifiable } from '../../models/identifiable.model';
+import { WithId } from '../../models/with-id.model';
 import { BaseComponent } from '../base.component';
 
 type Context<T> = {
@@ -22,7 +22,7 @@ type Context<T> = {
   templateUrl: 'list.component.html'
 })
 export class ListComponent
-<T extends Identifiable = Identifiable>
+<T extends WithId = WithId>
 extends BaseComponent {
   @Input()
   readonly list: T[];

@@ -1,9 +1,10 @@
-import { Identifiable } from './identifiable.model';
-import { Nameable } from './nameable.model';
-import { Pauseable } from './pauseable.model';
+import { WithId } from './with-id.model';
+import { WithName } from './with-name.model';
+import { WithDescription } from './with-description.model';
+import { WithRest } from './with-rest.model';
 import { DisplaySet } from './set.model';
 
-interface Workout extends Identifiable, Nameable, Pauseable {
+interface Workout extends WithId, WithName, WithDescription, WithRest {
   record: boolean;
 }
 

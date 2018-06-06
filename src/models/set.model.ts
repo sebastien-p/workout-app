@@ -1,20 +1,17 @@
-import { Identifiable } from './identifiable.model';
-import { Pauseable } from './pauseable.model';
-import { DisplayExercise } from './exercise.model';
+import { WithId } from './with-id.model';
+import { WithDescription } from './with-description.model';
+import { WithRest } from './with-rest.model';
+import { WithExerciseId, WithExercise } from './with-exercise.model';
+import { WithWorkoutId } from './with-workout.model';
 import { Amplitude } from './amplitude.enum';
 import { Rythm } from './rythm.enum';
 
-interface Set extends Identifiable, Pauseable {
+interface Set extends WithId, WithDescription, WithRest, WithWorkoutId {
   amplitude: Amplitude;
   rythm: Rythm;
   series: number;
-  workout: number;
 }
 
-export interface DatabaseSet extends Set {
-  exercise: number;
-}
+export interface DatabaseSet extends Set, WithExerciseId {}
 
-export interface DisplaySet extends Set {
-  exercise: DisplayExercise;
-}
+export interface DisplaySet extends Set, WithExercise {}

@@ -2,12 +2,12 @@ import { Type } from '@angular/core';
 import { ModalController, Modal } from 'ionic-angular';
 import { Dexie } from 'dexie';
 
-import { Identifiable } from '../models/identifiable.model';
+import { WithId } from '../models/with-id.model';
 import { BasePage, Params } from './base.page';
 import { ItemModalPage } from './item-modal.page';
 
 export abstract class ListPage
-<T extends Identifiable, U extends any, V extends Identifiable = Identifiable>
+<T extends WithId, U extends any, V extends WithId = WithId>
 extends BasePage<V> {
   list: T[];
 

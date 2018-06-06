@@ -13,7 +13,7 @@ import { scan } from 'rxjs/operators/scan';
 import { take } from 'rxjs/operators/take';
 import { tap } from 'rxjs/operators/tap';
 
-import { Pauseable } from '../../models/pauseable.model';
+import { WithRest } from '../../models/with-rest.model';
 
 const millisecondsInSecond: number = 1000;
 const secondsInMinute: number = 60;
@@ -29,8 +29,8 @@ const warnings: number = 3;
 })
 export class CountdownComponent
 implements OnChanges { // TODO: play/stop security?
-  @Input()
-  readonly pauseable: Pauseable;
+  @Input('rest')
+  readonly item: WithRest;
 
   @Output()
   readonly onStart: EventEmitter<void> = new EventEmitter();
@@ -80,7 +80,7 @@ implements OnChanges { // TODO: play/stop security?
   }
 
   private initialize() {
-    this.duration = this.parse(this.pauseable.rest);
+    this.duration = this.parse(this.item.rest);
     this.stop();
   }
 

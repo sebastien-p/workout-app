@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 
-import { Identifiable } from '../../models/identifiable.model';
-import { Nameable } from '../../models/nameable.model';
+import { WithName } from '../../models/with-name.model';
+import { WithDescription } from '../../models/with-description.model';
 
 @Component({
   selector: 'app-item',
@@ -9,8 +9,8 @@ import { Nameable } from '../../models/nameable.model';
 })
 export class ItemComponent {
   @Input()
-  readonly identifiable: Identifiable;
+  readonly name: WithName;
 
   @Input()
-  readonly nameable: Nameable;
+  readonly description: WithDescription;
 }

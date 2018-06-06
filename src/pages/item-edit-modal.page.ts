@@ -2,11 +2,11 @@ import { ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Dexie } from 'dexie';
 
-import { Identifiable } from '../models/identifiable.model';
+import { WithId } from '../models/with-id.model';
 import { ItemModalPage } from './item-modal.page';
 
 export abstract class ItemEditModalPage
-<T extends Identifiable, U extends any>
+<T extends WithId, U extends any>
 extends ItemModalPage<T, U> {
   @ViewChild(NgForm)
   readonly form: NgForm;

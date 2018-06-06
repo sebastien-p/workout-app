@@ -3,13 +3,13 @@ import { AlertController, ModalController, Alert, Modal } from 'ionic-angular';
 import { ReorderIndexes } from 'ionic-angular/components/item/item-reorder';
 import { Dexie } from 'dexie';
 
-import { Identifiable } from '../models/identifiable.model';
+import { WithId } from '../models/with-id.model';
 import { Params } from './base.page';
 import { ListPage } from './list.page';
 import { ItemEditModalPage } from './item-edit-modal.page';
 
 export abstract class ListEditPage
-<T extends Identifiable, U extends any, V extends Identifiable = Identifiable>
+<T extends WithId, U extends any, V extends WithId = WithId>
 extends ListPage<T, U, V> {
   constructor(
     protected readonly alertController: AlertController,

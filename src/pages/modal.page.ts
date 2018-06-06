@@ -1,10 +1,10 @@
 import { ViewController } from 'ionic-angular';
 
-import { Identifiable } from '../models/identifiable.model';
+import { WithId } from '../models/with-id.model';
 import { BasePage, Params } from './base.page';
 
 export abstract class ModalPage
-<T extends Identifiable = Identifiable, U extends any = any>
+<T extends WithId = WithId, U extends any = any>
 extends BasePage<T> {
   constructor(
     protected readonly viewController: ViewController,
