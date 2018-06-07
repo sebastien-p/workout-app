@@ -69,7 +69,7 @@ export class CountdownComponent implements OnChanges {
     this.stop();
   }
 
-  private notify(): void {// TODO
+  private notify(): void { // TODO: beep
     if (warnings < 1 || this.duration < warnings) { return; }
     console.log('notified');
     navigator.vibrate(200);
