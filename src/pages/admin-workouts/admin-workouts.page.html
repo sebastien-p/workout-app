@@ -1,0 +1,25 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Workouts</ion-title>
+    <ion-buttons end>
+      <button
+        ion-button
+        type="button"
+        (tap)="add()">
+        Add
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <app-list
+    delete
+    [list]="list"
+    (onView)="view($event)"
+    (onRemove)="remove($event)">
+    <ng-template let-item>
+      <app-workout [workout]="item"></app-workout>
+    </ng-template>
+  </app-list>
+</ion-content>

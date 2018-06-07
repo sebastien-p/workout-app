@@ -1,13 +1,13 @@
 import { Component, Type } from '@angular/core';
 
-import { ExercisesPage } from '../exercises/exercises.page';
-import { WorkoutsPage } from '../workouts/workouts.page';
+import { AdminExercisesPage } from '../admin-exercises/admin-exercises.page';
+import { AdminWorkoutsPage } from '../admin-workouts/admin-workouts.page';
 
 @Component({
   selector: 'page-admin',
-  templateUrl: 'admin.page.html',
+  templateUrl: 'admin.page.html'
 })
 export class AdminPage {
-  readonly exercisesPage: Type<ExercisesPage> = ExercisesPage;
-  readonly workoutsPage: Type<WorkoutsPage> = WorkoutsPage;
+  readonly exercisesPage: Type<AdminExercisesPage> = AdminExercisesPage;
+  readonly workoutsPage: Type<AdminWorkoutsPage> = AdminWorkoutsPage;
 }

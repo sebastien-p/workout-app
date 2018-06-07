@@ -1,0 +1,6 @@
+app-with-description {
+  > p {
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+}

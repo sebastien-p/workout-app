@@ -6,19 +6,19 @@
 
 <ng-template #empty>
   <div padding>
-    <h1>Nothing there yet :(</h1>
-    <p>Consider hitting the Add button above...</p>
+    <app-empty></app-empty>
   </div>
 </ng-template>
 
 <ng-container *ngIf="!!list; else loading">
   <ion-list
     *ngIf="!!list.length; else empty"
-    [reorder]="reorder"
+    [sliding]="true"
+    [reorder]="reorder !== false && list.length > 1"
     (ionItemReorder)="onReorder.emit($event)">
     <ion-item-sliding
       *ngFor="let item of list; trackBy: trackById()"
-      (ionSwipe)="onEdit.emit(item)">
+      (ionSwipe)="onView.emit(item)">
       <ion-item>
         <ng-container
           *ngTemplateOutlet="template; context: getContext(item)">
@@ -29,15 +29,16 @@
           ion-button
           type="button"
           color="danger"
-          (click)="onRemove.emit(item)">
+          *ngIf="delete !== false"
+          (tap)="onRemove.emit(item)">
           Delete
         </button>
         <button
           ion-button
           expandable
           type="button"
-          (click)="onEdit.emit(item)">
-          Update
+          (tap)="onView.emit(item)">
+          View
         </button>
       </ion-item-options>
     </ion-item-sliding>

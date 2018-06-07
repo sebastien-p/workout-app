@@ -1,0 +1,27 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Sets</ion-title>
+    <ion-buttons end>
+      <button
+        ion-button
+        type="button"
+        (tap)="add()">
+        Add
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <app-list
+    delete
+    reorder
+    [list]="list"
+    (onView)="view($event)"
+    (onRemove)="remove($event)"
+    (onReorder)="reorder($event)">
+    <ng-template let-item>
+      <app-set [set]="item"></app-set>
+    </ng-template>
+  </app-list>
+</ion-content>

@@ -9,7 +9,7 @@ import {
 
 import { ReorderIndexes } from 'ionic-angular/components/item/item-reorder';
 
-import { Identifiable } from '../../models/identifiable.model';
+import { WithId } from '../../models/with-id.model';
 import { BaseComponent } from '../base.component';
 
 type Context<T> = {
@@ -21,16 +21,18 @@ type Context<T> = {
   selector: 'app-list',
   templateUrl: 'list.component.html'
 })
-export class ListComponent<T extends Identifiable = Identifiable>
-extends BaseComponent {
+export class ListComponent<T extends WithId = WithId> extends BaseComponent {
   @Input()
   readonly list: T[];
+
+  @Input()
+  readonly delete: boolean = false;
 
   @Input()
   readonly reorder: boolean = false;
 
   @Output()
-  readonly onEdit: EventEmitter<T> = new EventEmitter();
+  readonly onView: EventEmitter<T> = new EventEmitter();
 
   @Output()
   readonly onRemove: EventEmitter<T> = new EventEmitter();

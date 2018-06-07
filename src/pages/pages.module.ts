@@ -1,38 +1,50 @@
 import { NgModule } from '@angular/core';
 
 import { ComponentsModule } from '../components/components.module';
-import { HomePage } from './home/home.page';
 import { AdminPage } from './admin/admin.page';
-import { ExercisePage } from './exercise/exercise.page';
-import { ExercisesPage } from './exercises/exercises.page';
-import { WorkoutPage } from './workout/workout.page';
-import { WorkoutsPage } from './workouts/workouts.page';
-import { SetPage } from './set/set.page';
-import { SetsPage } from './sets/sets.page';
+import { AdminExercisePage } from './admin-exercise/admin-exercise.page';
+import { AdminExercisesPage } from './admin-exercises/admin-exercises.page';
+import { AdminSetPage } from './admin-set/admin-set.page';
+import { AdminSetsPage } from './admin-sets/admin-sets.page';
+import { AdminWorkoutPage } from './admin-workout/admin-workout.page';
+import { AdminWorkoutsPage } from './admin-workouts/admin-workouts.page';
+import { ExploitPage } from './exploit/exploit.page';
+import { ExploitRecordPage } from './exploit-record/exploit-record.page';
+import { ExploitRecordsPage } from './exploit-records/exploit-records.page';
+import { ExploitWorkoutPage } from './exploit-workout/exploit-workout.page';
+import { ExploitWorkoutsPage } from './exploit-workouts/exploit-workouts.page';
 
 @NgModule({
   imports: [
     ComponentsModule
   ],
   declarations: [
-    HomePage,
     AdminPage,
-    ExercisePage,
-    ExercisesPage,
-    WorkoutPage,
-    WorkoutsPage,
-    SetPage,
-    SetsPage
+    AdminExercisePage,
+    AdminExercisesPage,
+    AdminSetPage,
+    AdminSetsPage,
+    AdminWorkoutPage,
+    AdminWorkoutsPage,
+    ExploitPage,
+    ExploitRecordPage,
+    ExploitRecordsPage,
+    ExploitWorkoutPage,
+    ExploitWorkoutsPage
   ],
   entryComponents: [
-    HomePage,
     AdminPage,
-    ExercisePage,
-    ExercisesPage,
-    WorkoutPage,
-    WorkoutsPage,
-    SetPage,
-    SetsPage
+    AdminExercisePage,
+    AdminExercisesPage,
+    AdminSetPage,
+    AdminSetsPage,
+    AdminWorkoutPage,
+    AdminWorkoutsPage,
+    ExploitPage,
+    ExploitRecordPage,
+    ExploitRecordsPage,
+    ExploitWorkoutPage,
+    ExploitWorkoutsPage
   ]
 })
 export class PagesModule {}

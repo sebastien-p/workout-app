@@ -2,11 +2,17 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from 'ionic-angular';
 
-import { IdentifiableComponent } from './identifiable/identifiable.component';
-import { NameableComponent } from './nameable/nameable.component';
-import { PauseableComponent } from './pauseable/pauseable.component';
+import { WithNameComponent } from './with-name/with-name.component';
+
+import {
+  WithDescriptionComponent
+} from './with-description/with-description.component'
+
+import { WithRestComponent } from './with-rest/with-rest.component';
+import { EmptyComponent } from './empty/empty.component';
 import { ListComponent } from './list/list.component';
 import { ItemComponent } from './item/item.component';
+import { CountdownComponent } from './countdown/countdown.component';
 import { ExerciseComponent } from './exercise/exercise.component';
 import { WorkoutComponent } from './workout/workout.component';
 import { SetComponent } from './set/set.component';
@@ -19,21 +25,25 @@ import { SetComponent } from './set/set.component';
   exports: [
     FormsModule,
     IonicModule,
-    IdentifiableComponent,
-    NameableComponent,
-    PauseableComponent,
+    WithNameComponent,
+    WithDescriptionComponent,
+    WithRestComponent,
+    EmptyComponent,
     ListComponent,
     ItemComponent,
+    CountdownComponent,
     ExerciseComponent,
     WorkoutComponent,
     SetComponent
   ],
   declarations: [
-    IdentifiableComponent,
-    NameableComponent,
-    PauseableComponent,
+    WithNameComponent,
+    WithDescriptionComponent,
+    WithRestComponent,
+    EmptyComponent,
     ListComponent,
     ItemComponent,
+    CountdownComponent,
     ExerciseComponent,
     WorkoutComponent,
     SetComponent

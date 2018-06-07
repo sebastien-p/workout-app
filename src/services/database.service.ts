@@ -1,21 +1,24 @@
 import { Injectable } from '@angular/core';
 import Dexie from 'dexie';
 
-import { Identifiable } from '../models/identifiable.model';
+import { WithId } from '../models/with-id.model';
 import { DatabaseExercise } from '../models/exercise.model';
 import { DatabaseWorkout } from '../models/workout.model';
 import { DatabaseSet } from '../models/set.model';
+import { DatabaseRecord } from '../models/record.model';
 import { LoaderService } from './loader.service';
 
-export type Table<T extends Identifiable> = Dexie.Table<T, number>;
+export type Table<T extends WithId> = Dexie.Table<T, number>;
 export type Mapper<T, U> = (value: T) => Dexie.Promise<U>;
 export type Updater<T> = (values: T[]) => T[];
 
 @Injectable()
-export class DatabaseService extends Dexie {
+export class DatabaseService
+extends Dexie {
   exercises: Table<DatabaseExercise>;
   workouts: Table<DatabaseWorkout>;
   sets: Table<DatabaseSet>;
+  records: Table<DatabaseRecord>;
 
   constructor(
     private readonly loaderService: LoaderService
@@ -24,8 +27,9 @@ export class DatabaseService extends Dexie {
 
     this.version(1).stores({
       exercises: '++id,name',
+      workouts: '++id,name,*&sets',
       sets: '++id,exercise',
-      workouts: '++id,name,*&sets'
+      records: '++id,[workout+exercise+serie],workout,exercise,date'
     });
 
     this.handleHooks(['creating', 'updating', 'deleting'], () => this.load());

@@ -1,6 +1,6 @@
 import { TrackByFunction } from '@angular/core';
 
-import { Identifiable } from '../models/identifiable.model';
+import { WithId } from '../models/with-id.model';
 
 export type CompareFunction<T> = (itemA: T, itemB: T) => boolean;
 export type Keys<T extends {}> = (keyof T)[];
@@ -10,7 +10,7 @@ export abstract class BaseComponent {
     return (index, item) => item[key];
   }
 
-  trackById<T extends Identifiable = Identifiable>(): TrackByFunction<T> {
+  trackById<T extends WithId = WithId>(): TrackByFunction<T> {
     return this.trackByKey<T>('id');
   }
 
@@ -18,7 +18,7 @@ export abstract class BaseComponent {
     return (itemA, itemB) => itemA[key] === itemB[key];
   }
 
-  compareById<T extends Identifiable = Identifiable>(): CompareFunction<T> {
+  compareById<T extends WithId = WithId>(): CompareFunction<T> {
     return this.compareByKey('id');
   }
 

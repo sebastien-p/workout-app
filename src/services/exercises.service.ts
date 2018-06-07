@@ -41,14 +41,16 @@ export class ExercisesService {
   }
 
   delete({ id }: DisplayExercise): Dexie.Promise<void> {
-    const { exercises, sets, workouts, removeAll } = this.database;
+    const { exercises, sets, workouts, records, removeAll } = this.database;
     return this.database.transaction('rw', [
       exercises,
       sets,
-      workouts
+      workouts,
+      records
     ], async () => {
       const ids: number[] = await sets.where({ exercise: id }).primaryKeys();
       this.updateWorkouts(ids, sets => removeAll(sets, ids));
+      records.where({ exercise: id }).delete();
       sets.bulkDelete(ids);
       return await exercises.delete(id);
     });
@@ -61,7 +63,7 @@ export class ExercisesService {
 
   private fetchAll(): Dexie.Promise<DisplayExercise[]> {
     const { exercises } = this.database;
-    return exercises.toArray();
+    return exercises.orderBy('name').toArray();
   }
 
   private updateWorkouts(

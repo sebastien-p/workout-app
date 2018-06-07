@@ -14,15 +14,15 @@ export class WorkoutsService {
   ) {}
 
   create(
-    auto: boolean = true,
     description: string = null,
+    record: boolean = true,
     name: string = null,
     rest: string = '00:00:00',
     sets: DisplaySet[] = []
   ): DisplayWorkout {
     return {
-      auto,
       description,
+      record,
       name,
       rest,
       sets
@@ -52,12 +52,14 @@ export class WorkoutsService {
   }
 
   delete({ id, sets: workoutSets }: DisplayWorkout): Dexie.Promise<void> {
-    const { sets, workouts } = this.database;
+    const { sets, workouts, records } = this.database;
     return this.database.transaction('rw', [
       sets,
-      workouts
+      workouts,
+      records
     ], async () => {
       sets.bulkDelete(workoutSets.map(set => set.id));
+      records.where({ workout: id }).delete();
       return await workouts.delete(id);
     });
   }
@@ -72,7 +74,7 @@ export class WorkoutsService {
 
   private fetchAll(): Dexie.Promise<DisplayWorkout[]> {
     const { workouts, map } = this.database;
-    return workouts.toCollection().primaryKeys().then(
+    return workouts.orderBy('name').primaryKeys().then(
       ids => map(ids, id => this.fetchOne(id))
     );
   }
