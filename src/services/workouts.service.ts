@@ -52,17 +52,19 @@ export class WorkoutsService {
   }
 
   delete({ id, sets: workoutSets }: DisplayWorkout): Dexie.Promise<void> {
-    const { sets, workouts } = this.database;
+    const { sets, workouts, records } = this.database;
     return this.database.transaction('rw', [
       sets,
-      workouts
+      workouts,
+      records
     ], async () => {
       sets.bulkDelete(workoutSets.map(set => set.id));
+      records.where({ workout: id }).delete();
       return await workouts.delete(id);
     });
   }
 
-  private fetchOne(id: number): Dexie.Promise<DisplayWorkout> { // TODO: delete records
+  private fetchOne(id: number): Dexie.Promise<DisplayWorkout> {
     const { workouts, map } = this.database;
     return workouts.get(id).then(async ({ sets, ...workout }) => ({
       sets: await map(sets, set => this.sets.fetch(set)),
