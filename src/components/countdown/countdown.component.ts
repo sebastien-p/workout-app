@@ -14,13 +14,8 @@ import { take } from 'rxjs/operators/take';
 import { tap } from 'rxjs/operators/tap';
 
 import { WithRest } from '../../models/with-rest.model';
+import { millisInSecond, DateService } from '../../services/date.service';
 
-const millisecondsInSecond: number = 1000;
-const secondsInMinute: number = 60;
-const minutesInHour: number = secondsInMinute;
-const secondsInHour: number = secondsInMinute * minutesInHour;
-const hoursInDay: number = 24;
-const separator: string = ':';
 const warnings: number = 3;
 
 @Component({
@@ -42,6 +37,10 @@ implements OnChanges { // TODO: play/stop security?
 
   private duration: number;
 
+  constructor(
+    private readonly dateService: DateService
+  ) {}
+
   ngOnChanges(): void {
     this.initialize();
   }
@@ -58,29 +57,16 @@ implements OnChanges { // TODO: play/stop security?
     if (this.isPlaying) { return; }
     this.onStart.emit();
     if (!this.duration) { return this.onComplete(); }
-    this.value = timer(millisecondsInSecond, millisecondsInSecond).pipe(
+    this.value = timer(millisInSecond, millisInSecond).pipe(
       scan(value => value - 1, this.duration),
       tap(value => this.onTick(value)),
-      map(value => this.format(value)),
+      map(value => this.dateService.formatTime(value)),
       take(this.duration)
     );
   }
 
-  private parse(value: string): number {
-    const [h, m, s] = value.split(separator).map(n => parseInt(n, 10));
-    return (h * secondsInHour) + (m * secondsInMinute) + s;
-  }
-
-  private format(value: number): string {
-    return [
-      (value / secondsInHour) % hoursInDay,
-      (value / secondsInMinute) % minutesInHour,
-      value % secondsInMinute
-    ].map(n => Math.floor(n).toString().padStart(2, '0')).join(separator);
-  }
-
   private initialize() {
-    this.duration = this.parse(this.item.rest);
+    this.duration = this.dateService.parseTime(this.item.rest);
     this.stop();
   }
 

@@ -1,5 +1,6 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 
+import { DateService } from './date.service';
 import { LoaderService } from './loader.service';
 import { DatabaseService } from './database.service';
 import { ExercisesService } from './exercises.service';
@@ -13,6 +14,7 @@ export class ServicesModule {
     return {
       ngModule: ServicesModule,
       providers: [
+        DateService,
         LoaderService,
         DatabaseService,
         ExercisesService,
