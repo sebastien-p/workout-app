@@ -1,5 +1,5 @@
 import { Type } from '@angular/core';
-import { ModalController, Modal } from 'ionic-angular';
+import { AlertController, ModalController, Modal } from 'ionic-angular';
 import { Dexie } from 'dexie';
 
 import { WithId } from '../models/with-id.model';
@@ -12,6 +12,7 @@ extends BasePage<V> {
   list: T[];
 
   constructor(
+    alertController: AlertController,
     protected readonly modalController: ModalController,
     protected readonly modalPage: Type<ItemModalPage<T, U>>,
     service: U,
@@ -19,6 +20,7 @@ extends BasePage<V> {
   ) {
     super(
       navParams,
+      alertController,
       service
     );
   }

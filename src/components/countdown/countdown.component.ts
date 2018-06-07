@@ -22,8 +22,7 @@ const warnings: number = 3;
   selector: 'app-countdown',
   templateUrl: 'countdown.component.html'
 })
-export class CountdownComponent
-implements OnChanges { // TODO: play/stop security?
+export class CountdownComponent implements OnChanges {
   @Input('rest')
   readonly item: WithRest;
 

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavParams, ViewController } from 'ionic-angular';
+import { NavParams, ViewController, AlertController } from 'ionic-angular';
 
 import { DisplayExercise } from '../../models/exercise.model';
 import { ExercisesService } from '../../services/exercises.service';
@@ -14,11 +14,13 @@ extends ItemEditModalPage<DisplayExercise, ExercisesService> {
   constructor(
     navParams: NavParams,
     viewController: ViewController,
+    alertController: AlertController,
     exercisesService: ExercisesService
   ) {
     super(
       navParams,
       viewController,
+      alertController,
       exercisesService
     );
   }

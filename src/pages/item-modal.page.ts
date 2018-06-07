@@ -1,20 +1,19 @@
-import { ViewController } from 'ionic-angular';
+import { ViewController, AlertController } from 'ionic-angular';
 
 import { WithId } from '../models/with-id.model';
-import { Params } from './base.page';
-import { ModalPage } from './modal.page';
+import { Params, BasePage } from './base.page';
 
-export abstract class ItemModalPage
-<T extends WithId, U extends any>
-extends ModalPage<T> {
+export abstract class ItemModalPage<T extends WithId, U extends any>
+extends BasePage<T, U> {
   constructor(
     navParams: Params<T>,
-    viewController: ViewController,
+    protected readonly viewController: ViewController,
+    alertController: AlertController,
     service: U
   ) {
     super(
-      viewController,
       navParams,
+      alertController,
       service
     );
   }
@@ -23,7 +22,8 @@ extends ModalPage<T> {
     return !this.item.id;
   }
 
-  dismiss(...parameters: any[]): Promise<number> {
-    return super.dismiss(this.item.id, ...parameters);
+  dismiss(confirm: boolean = false): void {
+    if (confirm) { this.confirm(() => this.dismiss()); }
+    else { this.viewController.dismiss(); }
   }
 }

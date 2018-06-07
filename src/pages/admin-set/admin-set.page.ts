@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavParams, ViewController } from 'ionic-angular';
+import { NavParams, ViewController, AlertController } from 'ionic-angular';
 
 import { DisplayExercise } from '../../models/exercise.model';
 import { DisplaySet } from '../../models/set.model';
@@ -14,22 +14,22 @@ import { ItemEditModalPage } from '../item-edit-modal.page';
   selector: 'page-admin-set',
   templateUrl: 'admin-set.page.html'
 })
-export class AdminSetPage
-extends ItemEditModalPage<DisplaySet, SetsService> {
+export class AdminSetPage extends ItemEditModalPage<DisplaySet, SetsService> {
   readonly amplitudes: Keys<typeof Amplitude> = this.spreadEnum(Amplitude);
   readonly rythms: Keys<typeof Rythm> = this.spreadEnum(Rythm);
-
   exercises: DisplayExercise[];
 
   constructor(
     navParams: NavParams,
     viewController: ViewController,
+    alertController: AlertController,
     setsService: SetsService,
     private readonly exercisesService: ExercisesService
   ) {
     super(
       navParams,
       viewController,
+      alertController,
       setsService
     );
   }

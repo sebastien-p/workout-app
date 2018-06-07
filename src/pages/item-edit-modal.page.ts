@@ -5,8 +5,7 @@ import { Dexie } from 'dexie';
 import { WithId } from '../models/with-id.model';
 import { ItemModalPage } from './item-modal.page';
 
-export abstract class ItemEditModalPage
-<T extends WithId, U extends any>
+export abstract class ItemEditModalPage<T extends WithId, U extends any>
 extends ItemModalPage<T, U> {
   @ViewChild(NgForm)
   readonly form: NgForm;
@@ -28,7 +27,7 @@ extends ItemModalPage<T, U> {
     if (this.canSubmit) { this.save().then(() => this.dismiss()); }
   }
 
-  protected save(): Dexie.Promise<number> { // FIXME
+  protected save(): Dexie.Promise<number> {
     return this.service.save({ ...this.item as any, ...this.value as any });
   }
 }
