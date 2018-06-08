@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NavParams, ViewController, AlertController } from 'ionic-angular';
 
-import { DisplayExercise } from '../../models/exercise.model';
+import { FullExercise } from '../../models/exercise.model';
 import { ExercisesService } from '../../services/exercises.service';
 import { ItemEditModalPage } from '../item-edit-modal.page';
 
@@ -10,7 +10,7 @@ import { ItemEditModalPage } from '../item-edit-modal.page';
   templateUrl: 'admin-exercise.page.html'
 })
 export class AdminExercisePage
-extends ItemEditModalPage<DisplayExercise, ExercisesService> {
+extends ItemEditModalPage<FullExercise, ExercisesService> {
   constructor(
     navParams: NavParams,
     viewController: ViewController,

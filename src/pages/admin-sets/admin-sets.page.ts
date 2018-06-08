@@ -3,8 +3,8 @@ import { NavParams, AlertController, ModalController } from 'ionic-angular';
 import { ReorderIndexes } from 'ionic-angular/components/item/item-reorder';
 import Dexie from 'dexie';
 
-import { DisplaySet } from '../../models/set.model';
-import { DisplayWorkout } from '../../models/workout.model';
+import { FullSet } from '../../models/set.model';
+import { FullWorkout } from '../../models/workout.model';
 import { SetsService } from '../../services/sets.service';
 import { WorkoutsService } from '../../services/workouts.service';
 import { ListEditPage } from '../list-edit.page';
@@ -15,7 +15,7 @@ import { AdminSetPage } from '../admin-set/admin-set.page';
   templateUrl: 'admin-sets.page.html'
 })
 export class AdminSetsPage
-extends ListEditPage<DisplaySet, SetsService, DisplayWorkout> {
+extends ListEditPage<FullSet, SetsService, FullWorkout> {
   constructor(
     navParams: NavParams,
     alertController: AlertController,
@@ -32,12 +32,12 @@ extends ListEditPage<DisplaySet, SetsService, DisplayWorkout> {
     );
   }
 
-  get list(): DisplaySet[] {
+  get list(): FullSet[] {
     return this.item.sets;
   }
 
-  add(...parameters: DisplaySet[keyof DisplaySet][]): void {
-    super.add(this.item.id, ...parameters);
+  add(...parameters: FullSet[keyof FullSet][]): void {
+    super.add(this.item, ...parameters);
   }
 
   reorder($event: ReorderIndexes): void {
@@ -45,7 +45,7 @@ extends ListEditPage<DisplaySet, SetsService, DisplayWorkout> {
     this.workoutsService.save(this.item);
   }
 
-  protected refresh(enter: boolean = false): Dexie.Promise<DisplaySet[]> {
+  protected refresh(enter: boolean = false): Dexie.Promise<FullSet[]> {
     if (enter) { return null; }
     return this.workoutsService.fetch(this.item.id).then(workout => {
       this.item = workout;

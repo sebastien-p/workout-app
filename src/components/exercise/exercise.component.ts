@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 
-import { DisplayExercise } from '../../models/exercise.model';
+import { FullExercise } from '../../models/exercise.model';
 
 @Component({
   selector: 'app-exercise',
@@ -8,5 +8,5 @@ import { DisplayExercise } from '../../models/exercise.model';
 })
 export class ExerciseComponent {
   @Input()
-  readonly exercise: DisplayExercise;
+  readonly exercise: FullExercise;
 }

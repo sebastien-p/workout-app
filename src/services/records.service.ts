@@ -1,16 +1,13 @@
 import { Injectable } from '@angular/core';
 import Dexie from 'dexie';
 
-import { DisplayExercise } from '../models/exercise.model';
-import { DisplayWorkout } from '../models/workout.model';
-import { DatabaseRecord, DisplayRecord } from '../models/record.model';
+import { FullSet } from '../models/set.model';
+import { LightRecord, FullRecord } from '../models/record.model';
 import { DatabaseService } from './database.service';
-import { ExercisesService } from './exercises.service';
-import { WorkoutsService } from './workouts.service';
+import { SetsService } from './sets.service';
 
 export type Where = {
-  workout: number;
-  exercise: number;
+  set: number;
   serie: number;
 };
 
@@ -18,81 +15,65 @@ export type Where = {
 export class RecordsService {
   constructor(
     private readonly database: DatabaseService,
-    private readonly exercisesService: ExercisesService,
-    private readonly workoutsService: WorkoutsService
+    private readonly sets: SetsService
   ) {}
 
   create(
-    workout: DisplayWorkout,
-    exercise: DisplayExercise,
+    set: FullSet,
     serie: number = 1,
     value: number = 0,
     date: string = new Date().toISOString()
-  ): DisplayRecord {
+  ): FullRecord {
     return {
-      date,
-      workout,
-      exercise,
+      set,
       serie,
-      value
+      value,
+      date
     };
   }
 
-  fetch(where: Where): Dexie.Promise<DisplayRecord>;
-  fetch(): Dexie.Promise<DisplayRecord[]>;
+  fetch(where: Where): Dexie.Promise<FullRecord>;
+  fetch(): Dexie.Promise<FullRecord[]>;
   fetch(where?: Where): any {
     const { exercises, workouts, sets, records } = this.database;
-    return this.database.transaction('r', [
-      exercises,
-      workouts,
-      sets,
-      records
-    ], async () => {
-      return await (where ? this.fetchOne(where) : this.fetchAll());
-    });
+    return this.database.transaction<FullRecord | FullRecord[]>(
+      'r',
+      [exercises, workouts, sets, records],
+      () => where ? this.fetchOne(where) : this.fetchAll()
+    );
   }
 
-  save(
-    { workout, exercise, ...record }: DisplayRecord
-  ): Dexie.Promise<number> {
+  save({ set, ...record }: FullRecord): Dexie.Promise<number> {
     const { records } = this.database;
-    return this.database.transaction('rw', [
-      records
-    ], async () => {
-      return await records.put({
-        workout: workout.id,
-        exercise: exercise.id,
-        ...record
-      });
-    });
+    return this.database.transaction(
+      'rw',
+      [records],
+      () => records.put({ set: set.id, ...record })
+    );
   }
 
-  delete({ id }: DisplayRecord): Dexie.Promise<void> {
+  delete({ id }: FullRecord): Dexie.Promise<void> {
     const { records } = this.database;
-    return this.database.transaction('rw', [
-      records
-    ], async () => {
-      return await records.delete(id);
-    });
+    return this.database.transaction(
+      'rw',
+      [records],
+      () => records.delete(id)
+    );
   }
 
-  private async addRelations( // TODO: cleanup + optimize
-    { workout: workoutId, exercise: exerciseId, ...record }: DatabaseRecord
-  ): Dexie.Promise<DisplayRecord> {
-    const [workout, exercise] = await Dexie.Promise.all([
-      this.workoutsService.fetch(workoutId),
-      this.exercisesService.fetch(exerciseId)
-    ]) as [DisplayWorkout, DisplayExercise];
-    return { workout, exercise, ...record };
+  private async addRelations(
+    { set, ...record }: LightRecord
+  ): Dexie.Promise<FullRecord> {
+    return { set: await this.sets.fetch(set), ...record };
   }
 
-  private async fetchOne(where: Where): Dexie.Promise<DisplayRecord> {
+  private async fetchOne(where: Where): Dexie.Promise<FullRecord> {
     const { records } = this.database;
-    const record: DatabaseRecord = await records.where(where).last();
+    const record: LightRecord = await records.where(where).last();
     return record ? this.addRelations(record) : null;
   }
 
-  private async fetchAll(): Dexie.Promise<DisplayRecord[]> {
+  private async fetchAll(): Dexie.Promise<FullRecord[]> {
     const { records, map } = this.database;
     return map(
       await records.orderBy('date').reverse().toArray(),

@@ -1,6 +1,5 @@
 import { WithId } from './with-id.model';
-import { WithExerciseId, WithExercise } from './with-exercise.model';
-import { WithWorkoutId, WithWorkout } from './with-workout.model';
+import { WithSetId, WithSet } from './with-set.model';
 
 interface Record extends WithId {
   date: string;
@@ -8,8 +7,6 @@ interface Record extends WithId {
   value: number;
 }
 
-export interface DatabaseRecord
-extends Record, WithExerciseId, WithWorkoutId {}
+export interface LightRecord extends Record, WithSetId {}
 
-export interface DisplayRecord
-extends Record, WithExercise, WithWorkout {}
+export interface FullRecord extends Record, WithSet {}

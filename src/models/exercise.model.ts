@@ -4,6 +4,6 @@ import { WithDescription } from './with-description.model';
 
 interface Exercise extends WithId, WithName, WithDescription {}
 
-export interface DatabaseExercise extends Exercise {}
+export interface LightExercise extends Exercise {}
 
-export interface DisplayExercise extends Exercise {}
+export interface FullExercise extends Exercise {}

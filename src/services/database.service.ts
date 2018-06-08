@@ -2,10 +2,10 @@ import { Injectable } from '@angular/core';
 import Dexie from 'dexie';
 
 import { WithId } from '../models/with-id.model';
-import { DatabaseExercise } from '../models/exercise.model';
-import { DatabaseWorkout } from '../models/workout.model';
-import { DatabaseSet } from '../models/set.model';
-import { DatabaseRecord } from '../models/record.model';
+import { LightExercise } from '../models/exercise.model';
+import { LightWorkout } from '../models/workout.model';
+import { LightSet } from '../models/set.model';
+import { LightRecord } from '../models/record.model';
 import { LoaderService } from './loader.service';
 
 export type Table<T extends WithId> = Dexie.Table<T, number>;
@@ -15,10 +15,10 @@ export type Updater<T> = (values: T[]) => T[];
 @Injectable()
 export class DatabaseService
 extends Dexie {
-  exercises: Table<DatabaseExercise>;
-  workouts: Table<DatabaseWorkout>;
-  sets: Table<DatabaseSet>;
-  records: Table<DatabaseRecord>;
+  exercises: Table<LightExercise>;
+  workouts: Table<LightWorkout>;
+  sets: Table<LightSet>;
+  records: Table<LightRecord>;
 
   constructor(
     private readonly loaderService: LoaderService
@@ -29,7 +29,7 @@ extends Dexie {
       exercises: '++id,name',
       workouts: '++id,name,*&sets',
       sets: '++id,exercise',
-      records: '++id,[workout+exercise+serie],workout,exercise,date'
+      records: '++id,[set+serie],set,date'
     });
 
     this.handleHooks(['creating', 'updating', 'deleting'], () => this.load());
