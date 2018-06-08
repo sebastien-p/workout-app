@@ -1,6 +1,6 @@
 import { ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Dexie } from 'dexie';
+import Dexie from 'dexie';
 
 import { WithId } from '../models/with-id.model';
 import { ItemModalPage } from './item-modal.page';

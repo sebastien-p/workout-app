@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Dexie } from 'dexie';
+import Dexie from 'dexie';
 
 import { DisplaySet } from '../models/set.model';
 import { DisplayWorkout } from '../models/workout.model';

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NavParams, AlertController, ModalController } from 'ionic-angular';
 import { ReorderIndexes } from 'ionic-angular/components/item/item-reorder';
-import { Dexie } from 'dexie';
+import Dexie from 'dexie';
 
 import { DisplaySet } from '../../models/set.model';
 import { DisplayWorkout } from '../../models/workout.model';

@@ -1,6 +1,6 @@
 import { Type } from '@angular/core';
 import { AlertController, ModalController, Modal } from 'ionic-angular';
-import { Dexie } from 'dexie';
+import Dexie from 'dexie';
 
 import { WithId } from '../models/with-id.model';
 import { BasePage, Params } from './base.page';
