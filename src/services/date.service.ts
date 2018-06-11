@@ -24,7 +24,10 @@ export class DateService {
     ].map(n => Math.floor(n).toString().padStart(2, '0')).join(timeSeparator);
   }
 
-  shiftISODate(date: string, shift: number): string {
-    return new Date(new Date(date).getTime() + shift).toISOString();
+  getISODate(date: string | number = Date.now(), shift: number = 0): string {
+    const normalized: Date = new Date(date as any);
+    normalized.setMilliseconds(0);
+    normalized.setSeconds(0);
+    return new Date(normalized.getTime() + shift).toISOString();
   }
 }

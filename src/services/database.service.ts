@@ -29,7 +29,7 @@ extends Dexie {
       exercises: '++id,name',
       workouts: '++id,name,*&sets',
       sets: '++id,exercise',
-      records: '++id,[set+serie],set,date'
+      records: '++id,set,date,[set+date]'
     });
 
     this.handleHooks(['creating', 'updating', 'deleting'], () => this.load());
