@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 
-import { SetStats } from '../../models/set-stats.model';
+import { Stats } from '../../models/stats.model';
 
 @Component({
   selector: 'app-set-stats',
@@ -8,8 +8,8 @@ import { SetStats } from '../../models/set-stats.model';
 })
 export class SetStatsComponent {
   @Input()
-  readonly thisTime: SetStats;
+  readonly thisTime: Stats;
 
   @Input()
-  readonly lastTime?: SetStats;
+  readonly lastTime?: Stats;
 }

@@ -1,4 +1,4 @@
-export interface SetStats {
+export interface Stats {
   values: number[];
   total: number;
 }

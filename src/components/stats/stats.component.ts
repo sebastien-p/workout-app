@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 
-import { SetStats } from '../../models/set-stats.model';
+import { Stats } from '../../models/stats.model';
 
 @Component({
   selector: 'app-stats',
@@ -8,5 +8,5 @@ import { SetStats } from '../../models/set-stats.model';
 })
 export class StatsComponent {
   @Input()
-  readonly stats?: SetStats;
+  readonly stats?: Stats;
 }
