@@ -29,10 +29,10 @@ extends BasePage<V> {
     this.refresh(true);
   }
 
-  view(item: T): Modal {
+  view(item: T): void {
     const modal: Modal = this.modalController.create(this.modalPage, { item });
+    modal.onDidDismiss(() => this.refresh());
     modal.present();
-    return modal;
   }
 
   protected refresh(enter: boolean = false): Dexie.Promise<T[]> {
