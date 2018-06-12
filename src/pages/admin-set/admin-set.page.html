@@ -41,6 +41,15 @@
         </ion-select>
       </ion-item>
       <ion-item>
+        <ion-label stacked>Description</ion-label>
+        <ion-textarea
+          name="description"
+          required
+          rows="10"
+          [ngModel]="item.description">
+        </ion-textarea>
+      </ion-item>
+      <ion-item>
         <ion-label stacked>
           Series
           <ion-badge float-end>{{ value.series }}</ion-badge>
@@ -92,15 +101,6 @@
             {{ label }}
           </ion-option>
         </ion-select>
-      </ion-item>
-      <ion-item>
-        <ion-label stacked>Description</ion-label>
-        <ion-textarea
-          name="description"
-          required
-          rows="10"
-          [ngModel]="item.description">
-        </ion-textarea>
       </ion-item>
     </ion-list>
   </form>

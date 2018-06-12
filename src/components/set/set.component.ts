@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 
-import { DisplaySet } from '../../models/set.model';
+import { FullSet } from '../../models/set.model';
 import { Amplitude } from '../../models/amplitude.enum';
 import { Rythm } from '../../models/rythm.enum';
 
@@ -10,7 +10,7 @@ import { Rythm } from '../../models/rythm.enum';
 })
 export class SetComponent {
   @Input()
-  readonly set: DisplaySet;
+  readonly set: FullSet;
 
   @Input()
   readonly compact: boolean = false;

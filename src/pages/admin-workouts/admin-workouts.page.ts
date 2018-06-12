@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { AlertController, ModalController } from 'ionic-angular';
 
-import { DisplayWorkout } from '../../models/workout.model';
+import { FullWorkout } from '../../models/workout.model';
 import { WorkoutsService } from '../../services/workouts.service';
 import { ListEditPage } from '../list-edit.page';
 import { AdminWorkoutPage } from '../admin-workout/admin-workout.page';
@@ -11,7 +11,7 @@ import { AdminWorkoutPage } from '../admin-workout/admin-workout.page';
   templateUrl: 'admin-workouts.page.html'
 })
 export class AdminWorkoutsPage
-extends ListEditPage<DisplayWorkout, WorkoutsService> {
+extends ListEditPage<FullWorkout, WorkoutsService> {
   constructor(
     alertController: AlertController,
     modalController: ModalController,

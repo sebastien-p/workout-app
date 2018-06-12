@@ -1,6 +1,6 @@
 import { Type } from '@angular/core';
 import { AlertController, ModalController, Modal } from 'ionic-angular';
-import { Dexie } from 'dexie';
+import Dexie from 'dexie';
 
 import { WithId } from '../models/with-id.model';
 import { BasePage, Params } from './base.page';
@@ -29,10 +29,10 @@ extends BasePage<V> {
     this.refresh(true);
   }
 
-  view(item: T): Modal {
+  view(item: T): void {
     const modal: Modal = this.modalController.create(this.modalPage, { item });
+    modal.onDidDismiss(() => this.refresh());
     modal.present();
-    return modal;
   }
 
   protected refresh(enter: boolean = false): Dexie.Promise<T[]> {

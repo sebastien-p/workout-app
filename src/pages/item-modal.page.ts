@@ -22,7 +22,7 @@ extends BasePage<T, U> {
     return !this.item.id;
   }
 
-  dismiss(confirm: boolean = false): void {
+  dismiss(confirm: boolean = false): void { // TODO: echap confirm
     if (confirm) { this.confirm(() => this.dismiss()); }
     else { this.viewController.dismiss(); }
   }

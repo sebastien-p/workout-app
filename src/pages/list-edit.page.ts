@@ -1,5 +1,5 @@
 import { Type } from '@angular/core';
-import { AlertController, ModalController, Modal } from 'ionic-angular';
+import { AlertController, ModalController } from 'ionic-angular';
 import { ReorderIndexes } from 'ionic-angular/components/item/item-reorder';
 
 import { WithId } from '../models/with-id.model';
@@ -24,12 +24,6 @@ extends ListPage<T, U, V> {
       service,
       navParams
     );
-  }
-
-  view(item: T): Modal {
-    const modal: Modal = super.view(item);
-    modal.onDidDismiss(() => this.refresh());
-    return modal;
   }
 
   add(...parameters: T[keyof T][]): void {

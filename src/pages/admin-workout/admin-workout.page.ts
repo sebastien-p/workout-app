@@ -1,7 +1,7 @@
 import { Component, Type } from '@angular/core';
 import { NavParams, ViewController, AlertController } from 'ionic-angular';
 
-import { DisplayWorkout } from '../../models/workout.model';
+import { FullWorkout } from '../../models/workout.model';
 import { WorkoutsService } from '../../services/workouts.service';
 import { ItemEditModalPage } from '../item-edit-modal.page';
 import { AdminSetsPage } from '../admin-sets/admin-sets.page';
@@ -11,7 +11,7 @@ import { AdminSetsPage } from '../admin-sets/admin-sets.page';
   templateUrl: 'admin-workout.page.html'
 })
 export class AdminWorkoutPage
-extends ItemEditModalPage<DisplayWorkout, WorkoutsService> {
+extends ItemEditModalPage<FullWorkout, WorkoutsService> {
   readonly setsPage: Type<AdminSetsPage> = AdminSetsPage;
 
   constructor(

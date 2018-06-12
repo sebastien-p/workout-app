@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Dexie } from 'dexie';
+import Dexie from 'dexie';
 
-import { DisplaySet } from '../models/set.model';
-import { DisplayWorkout } from '../models/workout.model';
+import { FullSet } from '../models/set.model';
+import { FullWorkout } from '../models/workout.model';
 import { DatabaseService } from './database.service';
 import { SetsService } from './sets.service';
 
@@ -14,68 +14,66 @@ export class WorkoutsService {
   ) {}
 
   create(
-    description: string = null,
+    name: string = '',
+    description: string = '',
     record: boolean = true,
-    name: string = null,
     rest: string = '00:00:00',
-    sets: DisplaySet[] = []
-  ): DisplayWorkout {
+    sets: FullSet[] = []
+  ): FullWorkout {
     return {
+      name,
       description,
       record,
-      name,
       rest,
       sets
     };
   }
 
-  fetch(id: number): Dexie.Promise<DisplayWorkout>;
-  fetch(): Dexie.Promise<DisplayWorkout[]>;
+  fetch(id: number): Dexie.Promise<FullWorkout>;
+  fetch(): Dexie.Promise<FullWorkout[]>;
   fetch(id?: number): any {
-    const { exercises, sets, workouts } = this.database;
-    return this.database.transaction('r', [
-      exercises,
-      sets,
-      workouts
-    ], async () => {
-      return await (id ? this.fetchOne(id) : this.fetchAll());
-    });
+    const { exercises, workouts, sets } = this.database;
+    return this.database.transaction<FullWorkout | FullWorkout[]>(
+      'r',
+      [exercises, workouts, sets],
+      () => id ? this.fetchOne(id) : this.fetchAll()
+    );
   }
 
-  save({ sets, ...workout }: DisplayWorkout): Dexie.Promise<number> {
+  save({ sets, ...workout }: FullWorkout): Dexie.Promise<number> {
     const { workouts } = this.database;
-    return this.database.transaction('rw', [
-      workouts
-    ], async () => {
-      return await workouts.put({ sets: sets.map(set => set.id), ...workout });
-    });
+    return this.database.transaction(
+      'rw',
+      [workouts],
+      () => workouts.put({ sets: sets.map(set => set.id), ...workout })
+    );
   }
 
-  delete({ id, sets: workoutSets }: DisplayWorkout): Dexie.Promise<void> {
-    const { sets, workouts, records } = this.database;
-    return this.database.transaction('rw', [
-      sets,
-      workouts,
-      records
-    ], async () => {
-      sets.bulkDelete(workoutSets.map(set => set.id));
-      records.where({ workout: id }).delete();
-      return await workouts.delete(id);
-    });
+  delete({ id, sets: workoutSets }: FullWorkout): Dexie.Promise<void> {
+    const { workouts, sets, records } = this.database;
+    return this.database.transaction(
+      'rw',
+      [workouts, sets, records],
+      () => {
+        const setIds: number[] = workoutSets.map(set => set.id);
+        records.where('set').anyOf(setIds).delete();
+        sets.bulkDelete(setIds);
+        return workouts.delete(id);
+      }
+    );
   }
 
-  private fetchOne(id: number): Dexie.Promise<DisplayWorkout> {
+  private async fetchOne(id: number): Dexie.Promise<FullWorkout> {
     const { workouts, map } = this.database;
-    return workouts.get(id).then(async ({ sets, ...workout }) => ({
-      sets: await map(sets, set => this.sets.fetch(set)),
-      ...workout
-    }));
+    const { sets, ...workout } = await workouts.get(id);
+    return { sets: await map(sets, set => this.sets.fetch(set)), ...workout };
   }
 
-  private fetchAll(): Dexie.Promise<DisplayWorkout[]> {
+  private async fetchAll(): Dexie.Promise<FullWorkout[]> {
     const { workouts, map } = this.database;
-    return workouts.orderBy('name').primaryKeys().then(
-      ids => map(ids, id => this.fetchOne(id))
+    return map(
+      await workouts.orderBy('name').primaryKeys(),
+      id => this.fetchOne(id)
     );
   }
 }
