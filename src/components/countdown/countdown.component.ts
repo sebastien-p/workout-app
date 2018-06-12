@@ -71,8 +71,8 @@ export class CountdownComponent implements OnChanges {
 
   private notify(): void { // TODO: beep
     if (warnings < 1 || this.duration < warnings) { return; }
+    if (navigator.vibrate) { navigator.vibrate(200); }
     console.log('notified');
-    navigator.vibrate(200);
   }
 
   private onComplete(): void {
