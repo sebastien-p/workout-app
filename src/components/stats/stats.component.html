@@ -3,7 +3,7 @@
     <ng-content></ng-content>
   </h2>
   <ol>
-    <li *ngFor="let value of stats.values">{{ value || 0 }}</li>
+    <li *ngFor="let value of stats.values">{{ value }}</li>
   </ol>
   <p>Total: {{ stats.total }}</p>
 </ng-container>
