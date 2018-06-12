@@ -13,11 +13,14 @@
 <ng-container *ngIf="!!list; else loading">
   <ion-list
     *ngIf="!!list.length; else empty"
+    approxItemHeight="100px"
+    [virtualScroll]="list"
+    [virtualTrackBy]="trackById()"
     [sliding]="true"
     [reorder]="reorder !== false && list.length > 1"
     (ionItemReorder)="onReorder.emit($event)">
     <ion-item-sliding
-      *ngFor="let item of list; trackBy: trackById()"
+      *virtualItem="let item"
       (ionSwipe)="onView.emit(item)">
       <ion-item>
         <ng-container
