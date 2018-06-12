@@ -11,7 +11,6 @@ interface Set extends WithId, WithDescription, WithRest {
   amplitude: Amplitude;
   rythm: Rythm;
   series: number;
-  lastSession?: string;
 }
 
 export interface LightSet

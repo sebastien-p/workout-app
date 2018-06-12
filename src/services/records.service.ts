@@ -35,7 +35,7 @@ export class RecordsService {
     total: number = 0
   ): Stats {
     return {
-      values: Array(series).fill(null),
+      values: Array(series).fill(total / series),
       total
     };
   }
@@ -51,33 +51,27 @@ export class RecordsService {
     );
   }
 
-  save({ set, ...record }: FullRecord): Dexie.Promise<number> { // TODO: update set lastSession
-    const { workouts, sets, records } = this.database;
+  save({ set, ...record }: FullRecord): Dexie.Promise<number> {
+    const { records } = this.database;
     return this.database.transaction(
       'rw',
-      [workouts, sets, records],
-      () => {
-        // FIXME: only if set.lastSession < record.date
-        if (!set.lastSession || set.lastSession < record.date) {
-          this.sets.save({ ...set, lastSession: record.date });
-        }
-        return records.put({ set: set.id, ...record });
-      }
+      [records],
+      () => records.put({ set: set.id, ...record })
     );
   }
 
-  delete(
-    { id/* , set: { id: setId, lastSession } */ }: FullRecord
-  ): Dexie.Promise<void> { // TODO: update set lastSession
-    const { /* workouts, sets,  */records } = this.database;
+  delete({ id }: FullRecord): Dexie.Promise<void> {
+    const { records } = this.database;
     return this.database.transaction(
       'rw',
-      [/* workouts, sets,  */records],
-      () => {
-        // const count: number = records.where({ set: setId, date: lastSession }).count();
-        return records.delete(id);
-      }
+      [records],
+      () => records.delete(id)
     );
+  }
+
+  private get all(): Dexie.Collection<LightRecord, number> {
+    const { records } = this.database;
+    return records.orderBy('date').reverse();
   }
 
   private async addRelations(
@@ -86,11 +80,10 @@ export class RecordsService {
     return { set: await this.sets.fetch(set), ...record };
   }
 
-  private async fetchOne(
-    { id, lastSession, series }: FullSet
-  ): Dexie.Promise<Stats> {
+  private async fetchOne({ id, series }: FullSet): Dexie.Promise<Stats> {
     const { records } = this.database;
-    const results: LightRecord[] = await records
+    const [lastSession] = await this.all.uniqueKeys();
+    const results: LightRecord[] = !lastSession ? [] : await records
       .where({ set: id, date: lastSession })
       .and(({ serie }) => serie <= series)
       .sortBy('serie');
@@ -102,10 +95,7 @@ export class RecordsService {
   }
 
   private async fetchAll(): Dexie.Promise<FullRecord[]> {
-    const { records, map } = this.database;
-    return map(
-      await records.orderBy('date').reverse().toArray(),
-      record => this.addRelations(record)
-    );
+    const { map } = this.database;
+    return map(await this.all.toArray(), record => this.addRelations(record));
   }
 }
