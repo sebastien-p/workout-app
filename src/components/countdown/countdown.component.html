@@ -1,7 +1,4 @@
 <ion-toolbar>
-  <ion-buttons start>
-    <ng-content></ng-content>
-  </ion-buttons>
   <ion-title>{{ (value | async) || item.rest }}</ion-title>
 </ion-toolbar>
 <ion-fab
@@ -11,7 +8,6 @@
   [ngSwitch]="isPlaying">
   <button
     ion-fab
-    icon-only
     type="button"
     *ngSwitchCase="false"
     (tap)="play()">
@@ -19,7 +15,6 @@
   </button>
   <button
     ion-fab
-    icon-only
     type="button"
     *ngSwitchDefault
     (tap)="stop()">
