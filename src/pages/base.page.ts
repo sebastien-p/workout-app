@@ -8,7 +8,7 @@ import { WithId } from '../models/with-id.model';
 import { BaseComponent } from '../components/base.component';
 
 export type Data<T extends WithId = WithId> = { item: T };
-export type AlertValue<T> = { value: T };
+export type AlertValue<T> = { value: T } | void;
 
 export class Params<T extends WithId = WithId> extends NavParams {
   data: Data<T>;
@@ -37,7 +37,7 @@ extends BaseComponent {
 
   confirm(): Promise<boolean> {
     return this.alert<boolean>('Are you sure?', 'Yes', 'No')
-      .then(alert => !!alert);
+      .then(alert => alert !== null);
   }
 
   prompt(
@@ -59,7 +59,7 @@ extends BaseComponent {
       const alert: Alert = this.alertController.create({
         buttons: [
           { text: rejectButton, handler: () => resolve(null) },
-          { text: resolveButton, handler: value => resolve({ value }) }
+          { text: resolveButton, handler: value => resolve(value) }
         ],
         inputs: input ? [{ ...input, name: 'value' }] : null,
         enableBackdropDismiss: false,
