@@ -1,14 +1,14 @@
 import { NavParams, AlertController, Alert } from 'ionic-angular';
 
+import {
+  AlertInputOptions
+} from 'ionic-angular/components/alert/alert-options';
+
 import { WithId } from '../models/with-id.model';
 import { BaseComponent } from '../components/base.component';
 
-export type Data<T extends WithId = WithId> = {
-  item: T;
-};
-
-type PromptParameter = { value: string };
-type AlertHandler<T> = (parameter?: T) => void;
+export type Data<T extends WithId = WithId> = { item: T };
+export type AlertValue<T> = { value: T };
 
 export class Params<T extends WithId = WithId> extends NavParams {
   data: Data<T>;
@@ -35,25 +35,36 @@ extends BaseComponent {
     this.data.item = item;
   }
 
-  confirm(handler: AlertHandler<void>): void {
-    const alert: Alert = this.alertController.create({
-      buttons: [{ text: 'No' }, { text: 'Yes', handler }],
-      title: 'Are you sure?'
-    });
-    alert.present();
+  confirm(): Promise<boolean> {
+    return this.alert<boolean>('Are you sure?', 'Yes', 'No')
+      .then(alert => !!alert);
   }
 
   prompt(
     title: string,
-    handler: AlertHandler<PromptParameter>,
     type: string = 'text',
-    placeholder?: string
-  ): void {
-    const alert: Alert = this.alertController.create({
-      buttons: [{ text: 'Cancel' }, { text: 'Save', handler }],
-      inputs: [{ name: 'value', type, placeholder }],
-      title
+    placeholder: string = ''
+  ): Promise<string> {
+    return this.alert<string>(title, 'Save', 'Cancel', { type, placeholder })
+      .then(alert => alert && alert.value);
+  }
+
+  protected alert<V>(
+    title: string,
+    resolveButton: string,
+    rejectButton: string,
+    input?: AlertInputOptions
+  ): Promise<AlertValue<V>> {
+    return new Promise<AlertValue<V>>((resolve, reject) => {
+      const alert: Alert = this.alertController.create({
+        buttons: [
+          { text: rejectButton, handler: () => resolve(null) },
+          { text: resolveButton, handler: value => resolve({ value }) }
+        ],
+        inputs: input ? [{ ...input, name: 'value' }] : null,
+        title
+      });
+      alert.present().catch(reject);
     });
-    alert.present();
   }
 }

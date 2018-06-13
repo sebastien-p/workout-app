@@ -31,8 +31,10 @@ extends ListPage<T, U, V> {
   }
 
   remove(item: T): void {
-    this.confirm(() => {
-      this.service.delete(item).then(() => this.refresh());
+    this.confirm().then(value => {
+      if (!value) { return; }
+      this.service.delete(item);
+      this.refresh();
     });
   }
 
