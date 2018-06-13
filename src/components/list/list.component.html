@@ -19,15 +19,13 @@
     [sliding]="true"
     [reorder]="reorder !== false && list.length > 1"
     (ionItemReorder)="onReorder.emit($event)">
-    <ion-item-sliding
-      *virtualItem="let item"
-      (ionSwipe)="onView.emit(item)">
+    <ion-item-sliding *virtualItem="let item">
       <ion-item>
         <ng-container
           *ngTemplateOutlet="template; context: getContext(item)">
         </ng-container>
       </ion-item>
-      <ion-item-options>
+      <ion-item-options (ionSwipe)="onView.emit(item)">
         <button
           ion-button
           type="button"
