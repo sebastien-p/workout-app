@@ -62,6 +62,7 @@ extends BaseComponent {
           { text: resolveButton, handler: value => resolve({ value }) }
         ],
         inputs: input ? [{ ...input, name: 'value' }] : null,
+        enableBackdropDismiss: false,
         title
       });
       alert.present().catch(reject);
