@@ -10,16 +10,13 @@
   </div>
 </ng-template>
 
-<ng-container *ngIf="!!list; else loading">
+<ng-template #reordered> <!-- FIXME+DRY: https://stackblitz.com/edit/ionic-qvpwrf?file=pages%2Fhome%2Fhome.html -->
   <ion-list
     *ngIf="!!list.length; else empty"
-    approxItemHeight="100px"
-    [virtualScroll]="list"
-    [virtualTrackBy]="trackById()"
-    [sliding]="true"
-    [reorder]="reorder !== false && list.length > 1"
+    sliding="true"
+    [reorder]="list.length > 1"
     (ionItemReorder)="onReorder.emit($event)">
-    <ion-item-sliding *virtualItem="let item">
+    <ion-item-sliding *ngFor="let item of list; trackBy: trackById()">
       <ion-item>
         <ng-container
           *ngTemplateOutlet="template; context: getContext(item)">
@@ -44,5 +41,40 @@
       </ion-item-options>
     </ion-item-sliding>
   </ion-list>
-</ng-container>
+</ng-template>
 
+<ng-container *ngIf="!!list; else loading">
+  <ng-container *ngIf="reorder === false; else reordered">
+    <ion-list
+      *ngIf="!!list.length; else empty"
+      sliding="true"
+      approxItemHeight="100px"
+      [virtualScroll]="list"
+      [virtualTrackBy]="trackById()">
+      <ion-item-sliding *virtualItem="let item">
+        <ion-item>
+          <ng-container
+            *ngTemplateOutlet="template; context: getContext(item)">
+          </ng-container>
+        </ion-item>
+        <ion-item-options (ionSwipe)="onView.emit(item)">
+          <button
+            ion-button
+            type="button"
+            color="danger"
+            *ngIf="delete !== false"
+            (tap)="onRemove.emit(item)">
+            Delete
+          </button>
+          <button
+            ion-button
+            expandable
+            type="button"
+            (tap)="onView.emit(item)">
+            View
+          </button>
+        </ion-item-options>
+      </ion-item-sliding>
+    </ion-list>
+  </ng-container>
+</ng-container>
