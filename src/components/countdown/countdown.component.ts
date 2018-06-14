@@ -15,8 +15,9 @@ import { tap } from 'rxjs/operators/tap';
 
 import { WithRest } from '../../models/with-rest.model';
 import { millisInSecond, DateService } from '../../services/date.service';
+import { NativeService } from '../../services/native.service';
 
-const warnings: number = 3;
+const warnings: number = 4;
 
 @Component({
   selector: 'app-countdown',
@@ -37,7 +38,8 @@ export class CountdownComponent implements OnChanges {
   private duration: number;
 
   constructor(
-    private readonly dateService: DateService
+    private readonly dateService: DateService,
+    private readonly nativeService: NativeService
   ) {}
 
   ngOnChanges(): void {
@@ -69,10 +71,9 @@ export class CountdownComponent implements OnChanges {
     this.stop();
   }
 
-  private notify(): void { // TODO: beep
-    if (warnings < 1 || this.duration < warnings) { return; }
-    if (navigator.vibrate) { navigator.vibrate(200); }
-    console.log('notified');
+  private notify(): void {
+    const shouldNotify: boolean = warnings > 0 && this.duration >= warnings;
+    if (shouldNotify) { this.nativeService.notify(); }
   }
 
   private onComplete(): void {
