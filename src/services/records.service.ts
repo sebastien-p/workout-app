@@ -96,6 +96,6 @@ export class RecordsService {
 
   private async fetchAll(): Dexie.Promise<FullRecord[]> {
     const { map } = this.database;
-    return map(await this.all.toArray(), record => this.addRelations(record));
+    return map(await this.all.toArray(), record => this.addRelations(record)); // TODO: cleanup
   }
 }
