@@ -17,7 +17,7 @@ import { WithRest } from '../../models/with-rest.model';
 import { millisInSecond, DateService } from '../../services/date.service';
 import { NativeService } from '../../services/native.service';
 
-const warnings: number = 3;
+const warnings: number = 4;
 
 @Component({
   selector: 'app-countdown',
