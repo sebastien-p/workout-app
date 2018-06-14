@@ -16,6 +16,7 @@ import { CountdownComponent } from './countdown/countdown.component';
 import { ExerciseComponent } from './exercise/exercise.component';
 import { WorkoutComponent } from './workout/workout.component';
 import { SetComponent } from './set/set.component';
+import { RecordComponent } from './record/record.component';
 import { StatsComponent } from './stats/stats.component';
 import { SetStatsComponent } from './set-stats/set-stats.component';
 
@@ -37,6 +38,7 @@ import { SetStatsComponent } from './set-stats/set-stats.component';
     ExerciseComponent,
     WorkoutComponent,
     SetComponent,
+    RecordComponent,
     StatsComponent,
     SetStatsComponent
   ],
@@ -51,6 +53,7 @@ import { SetStatsComponent } from './set-stats/set-stats.component';
     ExerciseComponent,
     WorkoutComponent,
     SetComponent,
+    RecordComponent,
     StatsComponent,
     SetStatsComponent
   ]
