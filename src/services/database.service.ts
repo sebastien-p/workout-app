@@ -7,6 +7,7 @@ import { LightWorkout } from '../models/workout.model';
 import { LightSet } from '../models/set.model';
 import { LightRecord } from '../models/record.model';
 import { LoaderService } from './loader.service';
+import db from '../assets/db.json';
 
 export type Table<T extends WithId = WithId> = Dexie.Table<T, number>;
 export type Mapper<T, U> = (value: T) => Promise<U>
@@ -39,7 +40,7 @@ extends Dexie {
 
     this.handleHooks(['creating', 'updating', 'deleting'], () => this.load());
 
-    // this.export().then(dumps => console.log(JSON.stringify(dumps))); // TODO
+    this.on('populate', () => this.import(db));
   }
 
   map<T, U>(list: T[], mapper: Mapper<T, U>): Dexie.Promise<U[]> {
