@@ -1,6 +1,5 @@
 app-with-description {
-  > p {
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
+  p {
+    white-space: pre-line;
   }
 }
