@@ -74,12 +74,6 @@ export class RecordsService {
     return records.orderBy('date').reverse();
   }
 
-  private async addRelations(
-    { set, ...record }: LightRecord
-  ): Dexie.Promise<FullRecord> {
-    return { set: await this.sets.fetch(set), ...record };
-  }
-
   private async fetchOne({ id, series }: FullSet): Dexie.Promise<Stats> {
     const { records } = this.database;
     const [lastSession] = await this.all.uniqueKeys();
@@ -96,6 +90,9 @@ export class RecordsService {
 
   private async fetchAll(): Dexie.Promise<FullRecord[]> {
     const { map } = this.database;
-    return map(await this.all.toArray(), record => this.addRelations(record)); // TODO: cleanup
+    return map(await this.all.toArray(), async ({ set, ...record }) => ({
+      set: await this.sets.fetch(set),
+      ...record
+    }));
   }
 }

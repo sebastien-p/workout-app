@@ -9,7 +9,7 @@ import { LightRecord } from '../models/record.model';
 import { LoaderService } from './loader.service';
 
 export type Table<T extends WithId = WithId> = Dexie.Table<T, number>;
-export type Mapper<T, U> = (value: T) => /* Dexie. */Promise<U>; // TODO
+export type Mapper<T, U> = (value: T) => Promise<U>
 export type Updater<T> = (values: T[]) => T[];
 
 export type Dump = {
