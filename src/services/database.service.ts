@@ -7,10 +7,16 @@ import { LightWorkout } from '../models/workout.model';
 import { LightSet } from '../models/set.model';
 import { LightRecord } from '../models/record.model';
 import { LoaderService } from './loader.service';
+import db from '../assets/db.json';
 
-export type Table<T extends WithId> = Dexie.Table<T, number>;
-export type Mapper<T, U> = (value: T) => Dexie.Promise<U>;
+export type Table<T extends WithId = WithId> = Dexie.Table<T, number>;
+export type Mapper<T, U> = (value: T) => Promise<U>
 export type Updater<T> = (values: T[]) => T[];
+
+export type Dump = {
+  table: string;
+  items: WithId[];
+};
 
 @Injectable()
 export class DatabaseService
@@ -33,6 +39,8 @@ extends Dexie {
     });
 
     this.handleHooks(['creating', 'updating', 'deleting'], () => this.load());
+
+    this.on('populate', () => this.import(db));
   }
 
   map<T, U>(list: T[], mapper: Mapper<T, U>): Dexie.Promise<U[]> {
@@ -49,6 +57,29 @@ extends Dexie {
 
   removeAll<T>(list: T[], values: T[]): T[] {
     return list.filter(item => values.indexOf(item) < 0);
+  }
+
+  export(): Dexie.Promise<Dump[]> {
+    return this.transaction(
+      'r',
+      this.tables,
+      () => this.map(this.tables, (async table => ({
+        items: await table.toArray(),
+        table: table.name
+      })))
+    );
+  }
+
+  import(dumps: Dump[]): Dexie.Promise<number[]> {
+    return this.transaction(
+      'rw',
+      this.tables,
+      () => this.map(dumps, async ({ table: name, items }) => {
+        const table: Table = this.table(name);
+        await table.clear();
+        return table.bulkAdd(items);
+      })
+    );
   }
 
   private handleHooks(hooks: string[], handler: Function): void {
