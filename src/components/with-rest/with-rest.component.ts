@@ -17,7 +17,6 @@ export class WithRestComponent {
 
   get rest(): string {
     const { rest, restAfter } = this.item;
-    if (rest === restAfter) { return rest; }
     return this.stringService.formatTuple(rest, restAfter);
   }
 }
