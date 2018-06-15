@@ -11,8 +11,7 @@
   *ngIf="compact === false; else summary"
   [name]="set.exercise"
   [description]="set">
-  <ion-badge>{{ amplitude }}</ion-badge>
-  <ion-badge>{{ rythm }}</ion-badge>
   <ion-badge>{{ set.series }} serie(s)</ion-badge>
+  <ion-badge>{{ modifiers }}</ion-badge>
   <app-with-rest [item]="set"></app-with-rest>
 </app-item>

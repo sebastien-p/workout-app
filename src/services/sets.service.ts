@@ -23,6 +23,7 @@ export class SetsService {
     amplitude: Amplitude = Amplitude.Normal,
     rythm: Rythm = Rythm.Normal,
     rest: string = '00:00:00',
+    restAfter: string = rest,
     series: number = 1
   ): FullSet {
     return {
@@ -32,6 +33,7 @@ export class SetsService {
       amplitude,
       rythm,
       rest,
+      restAfter,
       series
     };
   }

@@ -1,10 +1,9 @@
 import { WithId } from './with-id.model';
 import { WithName } from './with-name.model';
 import { WithDescription } from './with-description.model';
-import { WithRest } from './with-rest.model';
 import { WithSetIds, WithSets } from './with-set.model';
 
-interface Workout extends WithId, WithName, WithDescription, WithRest {
+interface Workout extends WithId, WithName, WithDescription {
   record: boolean;
 }
 

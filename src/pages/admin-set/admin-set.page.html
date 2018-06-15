@@ -77,6 +77,16 @@
         </ion-datetime>
       </ion-item>
       <ion-item>
+        <ion-label stacked>Rest after</ion-label>
+        <ion-datetime
+          name="restAfter"
+          required
+          hourValues="0"
+          displayFormat="HH:mm:ss"
+          [ngModel]="item.restAfter">
+        </ion-datetime>
+      </ion-item>
+      <ion-item>
         <ion-label stacked>Amplitude</ion-label>
         <ion-select
           name="amplitude"

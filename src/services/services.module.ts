@@ -7,6 +7,7 @@ import { Vibration } from '@ionic-native/vibration';
 
 import { DateService } from './date.service';
 import { NumberService } from './number.service';
+import { StringService } from './string.service';
 import { LoaderService } from './loader.service';
 import { DatabaseService } from './database.service';
 import { ExercisesService } from './exercises.service';
@@ -28,6 +29,7 @@ export class ServicesModule {
         Vibration,
         DateService,
         NumberService,
+        StringService,
         LoaderService,
         DatabaseService,
         ExercisesService,
