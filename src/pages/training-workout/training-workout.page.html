@@ -1,0 +1,49 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="dismiss()">Close</ion-button>
+    </ion-buttons>
+    <ion-title>Workout</ion-title>
+    <ion-buttons slot="end">
+      <ion-button [disabled]="isStart" (click)="showPrevious()">
+        <ion-icon slot="icon-only" name="play-back"></ion-icon>
+      </ion-button>
+      <ion-button [disabled]="isEnd" (click)="showNext()">
+        <ion-icon slot="icon-only" name="play-forward"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <app-set *ngIf="!isFirstSet" [compact]="true" [set]="previousSet">
+    Before:
+  </app-set>
+</ion-header>
+
+<ion-content class="ion-padding" [ngSwitch]="hasSet">
+  <app-empty *ngSwitchCase="false"></app-empty>
+  <ng-container *ngSwitchDefault>
+    <h1>
+      Set {{ setNumber }}/{{ setsTotal }} - Serie {{ serieNumber }}/{{
+      seriesTotal }}
+    </h1>
+    <app-set-stats
+      *ngIf="shouldRecord"
+      [thisTime]="thisTimeStats"
+      [lastTime]="lastTimeStats | async"
+    >
+    </app-set-stats>
+    <app-workout [workout]="item"></app-workout>
+    <app-set [set]="currentSet"></app-set>
+    <app-exercise [exercise]="exercise"></app-exercise>
+  </ng-container>
+</ion-content>
+
+<ion-footer>
+  <app-countdown
+    *ngIf="hasSet"
+    [rest]="rest"
+    (started)="promptRepetitions()"
+    (completed)="showNext()"
+  >
+  </app-countdown>
+  <app-set *ngIf="!isLastSet" [compact]="true" [set]="nextSet">After:</app-set>
+</ion-footer>

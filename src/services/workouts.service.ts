@@ -1,43 +1,66 @@
 import { Injectable } from '@angular/core';
 
+import { FullSet } from '../models/set.model';
+import { FullWorkout } from '../models/workout.model';
 import { DatabaseService } from './database.service';
-import { Workout } from '../models/workout.model';
+import { SetsService } from './sets.service';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class WorkoutsService {
   constructor(
-    private readonly databaseService: DatabaseService
+    private readonly database: DatabaseService,
+    private readonly sets: SetsService
   ) {}
 
-  static create(
-    description: string = null,
-    manual: boolean = false,
-    name: string = null,
-    restTime: number = 0,
-    sets: number[] = []
-  ): Workout {
-    return {
-      description,
-      manual,
-      name,
-      restTime,
-      sets
-    };
+  create(
+    name: string = '',
+    description: string = '',
+    record: boolean = true,
+    sets: FullSet[] = []
+  ): FullWorkout {
+    return { name, description, record, sets };
   }
 
-  create(workout: Workout): Promise<number> {
-    return this.databaseService.workouts.add(workout);
+  fetch(id: number): Promise<FullWorkout>;
+  fetch(): Promise<FullWorkout[]>;
+  fetch(id?: number): any {
+    const { exercises, workouts, sets } = this.database;
+    return this.database.transaction<FullWorkout | FullWorkout[]>(
+      'r',
+      [exercises, workouts, sets],
+      () => (id ? this.fetchOne(id) : this.fetchAll())
+    );
   }
 
-  read(): Promise<Workout[]> {
-    return this.databaseService.workouts.toArray();
+  save({ sets, ...workout }: FullWorkout): Promise<number> {
+    const { workouts } = this.database;
+    return this.database.transaction('rw', [workouts], () =>
+      workouts.put({ sets: sets.map(set => set.id), ...workout })
+    );
   }
 
-  update({ id, ...changes }: Workout): Promise<number> {
-    return this.databaseService.workouts.update(id, changes);
+  delete({ id, sets: workoutSets }: FullWorkout): Promise<void> {
+    const { workouts, sets, records } = this.database;
+    return this.database.transaction('rw', [workouts, sets, records], () => {
+      const setIds: number[] = workoutSets.map(set => set.id);
+      records.where('set').anyOf(setIds).delete();
+      sets.bulkDelete(setIds);
+      return workouts.delete(id);
+    });
   }
 
-  delete(id: number): Promise<void> {
-    return this.databaseService.workouts.delete(id);
+  private async fetchOne(id: number): Promise<FullWorkout> {
+    const { workouts, map } = this.database;
+    const { sets, ...workout } = await workouts.get(id);
+    return { sets: await map(sets, set => this.sets.fetch(set)), ...workout };
+  }
+
+  private async fetchAll(): Promise<FullWorkout[]> {
+    const { workouts, map } = this.database;
+    return map(await workouts.orderBy('name').primaryKeys(), id =>
+      this.fetchOne(id)
+    );
   }
 }

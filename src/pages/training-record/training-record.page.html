@@ -1,0 +1,74 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="dismiss()">Close</ion-button>
+    </ion-buttons>
+    <ion-title>Record</ion-title>
+    <ion-buttons slot="end">
+      <ion-button [disabled]="!canSubmit" (click)="submit()">Save</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form (ngSubmit)="submit()">
+    <ion-list>
+      <ion-item>
+        <ion-label position="stacked">Date</ion-label>
+        <ion-datetime
+          name="date"
+          required
+          displayFormat="MMM D, YYYY, HH:mm"
+          [ngModel]="item.date"
+        >
+        </ion-datetime>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Set</ion-label>
+        <ion-select
+          name="set"
+          required
+          [ngModel]="item.set"
+          [compareWith]="compareById"
+          [attr.disabled]="!sets"
+          (ngModelChange)="onSetChange()"
+        >
+          <ion-select-option
+            *ngFor="let set of sets; trackBy: trackById"
+            [value]="set"
+          >
+            {{ set.workout.name }} - {{ set.exercise.name }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item *ngIf="set">
+        <ion-label position="stacked">Serie</ion-label>
+        <ion-badge slot="end">{{ value.serie }}</ion-badge>
+        <ion-range
+          name="serie"
+          required
+          snaps
+          min="1"
+          [max]="set.series"
+          [ngModel]="item.serie"
+        >
+          <ion-label slot="start">1</ion-label>
+          <ion-label slot="end">{{ set.series }}</ion-label>
+        </ion-range>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Repetitions</ion-label>
+        <!-- FIXME: min validation + inputmode? -->
+        <ion-input
+          name="value"
+          type="number"
+          required
+          min="0"
+          step="1"
+          [ngModel]="item.value"
+        >
+        </ion-input>
+      </ion-item>
+    </ion-list>
+  </form>
+</ion-content>

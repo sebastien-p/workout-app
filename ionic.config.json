@@ -1,8 +1,5 @@
 {
-  "name": "TODO",
-  "app_id": "",
-  "type": "ionic-angular",
-  "integrations": {
-    "cordova": {}
-  }
+  "name": "workout-app",
+  "integrations": {},
+  "type": "angular"
 }

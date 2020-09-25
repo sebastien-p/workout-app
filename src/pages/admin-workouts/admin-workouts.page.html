@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Workouts</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="add()">Add</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <app-list
+    [list]="list"
+    [delete]="true"
+    (viewed)="view($event)"
+    (removed)="remove($event)"
+  >
+    <ng-template let-item>
+      <app-workout [workout]="item"></app-workout>
+    </ng-template>
+  </app-list>
+</ion-content>

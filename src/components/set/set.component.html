@@ -1,0 +1,18 @@
+<ng-template #summary>
+  <ion-toolbar>
+    <ion-title>
+      <ng-content></ng-content>
+      {{ set.exercise.name }}, {{ set.series }} serie(s)
+    </ion-title>
+  </ion-toolbar>
+</ng-template>
+
+<app-item
+  *ngIf="!compact; else summary"
+  [name]="set.exercise"
+  [description]="set"
+>
+  <ion-badge>{{ set.series }} serie(s)</ion-badge>
+  <ion-badge>{{ modifiers }}</ion-badge>
+  <app-with-rest [item]="set"></app-with-rest>
+</app-item>

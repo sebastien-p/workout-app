@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Sets</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="add()">Add</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <app-list
+    [list]="list"
+    [delete]="true"
+    [reorder]="true"
+    (viewed)="view($event)"
+    (removed)="remove($event)"
+    (reordered)="reorder($event)"
+  >
+    <ng-template let-item>
+      <app-set [set]="item"></app-set>
+    </ng-template>
+  </app-list>
+</ion-content>

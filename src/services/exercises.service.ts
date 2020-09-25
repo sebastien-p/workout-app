@@ -1,55 +1,75 @@
 import { Injectable } from '@angular/core';
 
-import { DatabaseService } from './database.service';
-import { Exercise } from '../models/exercise.model';
+import { FullExercise } from '../models/exercise.model';
+import { DatabaseService, Updater } from './database.service';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class ExercisesService {
-  constructor(
-    private readonly databaseService: DatabaseService
-  ) {}
+  constructor(private readonly database: DatabaseService) {}
 
-  static create(
-    name: string = null,
-    description: string = null
-  ): Exercise {
-    return {
-      name,
-      description
-    };
+  create(
+    name: string = '',
+    description: string = '',
+    doubled: boolean = false
+  ): FullExercise {
+    return { name, description, doubled };
   }
 
-  create(exercise: Exercise): Promise<number> {
-    return this.databaseService.exercises.add(exercise);
+  fetch(id: number): Promise<FullExercise>;
+  fetch(): Promise<FullExercise[]>;
+  fetch(id?: number): any {
+    const { exercises } = this.database;
+    return this.database.transaction<FullExercise | FullExercise[]>(
+      'r',
+      [exercises],
+      () => (id ? this.fetchOne(id) : this.fetchAll())
+    );
   }
 
-  read(): Promise<Exercise[]> {
-    return this.databaseService.exercises.toArray();
+  save(exercise: FullExercise): Promise<number> {
+    const { exercises } = this.database;
+    return this.database.transaction('rw', [exercises], () =>
+      exercises.put({ ...exercise })
+    );
   }
 
-  update({ id, ...changes }: Exercise): Promise<number> {
-    return this.databaseService.exercises.update(id, changes);
+  delete({ id }: FullExercise): Promise<void> {
+    const { exercises, workouts, sets, records, removeAll } = this.database;
+    return this.database.transaction(
+      'rw',
+      [exercises, workouts, sets, records],
+      async () => {
+        const ids: number[] = await sets.where({ exercise: id }).primaryKeys();
+        this.updateWorkouts(ids, workoutSets => removeAll(workoutSets, ids));
+        records.where('set').anyOf(ids).delete();
+        sets.bulkDelete(ids);
+        return await exercises.delete(id);
+      }
+    );
   }
 
-  delete(id: number): Promise<void> { // TODO: remove it from workouts
-    const { workouts, exercises } = this.databaseService;
-    return this.databaseService.transaction('rw', [workouts, exercises], async () => {
-      exercises.delete(id);
-      const trololo = await this.databaseService.workouts
-        .where('sets')
-        .equals(id)
-        .toArray();
-      if (!trololo.length) { return; }
-      trololo.forEach(workout => {
-        workout.sets = workout.sets.filter(set => set !== id);
+  private fetchOne(id: number): Promise<FullExercise> {
+    const { exercises } = this.database;
+    return exercises.get(id);
+  }
+
+  private fetchAll(): Promise<FullExercise[]> {
+    const { exercises } = this.database;
+    return exercises.orderBy('name').toArray();
+  }
+
+  private updateWorkouts(
+    sets: number[],
+    setsUpdater: Updater<number>
+  ): Promise<number> {
+    const { workouts } = this.database;
+    return workouts
+      .where('sets')
+      .anyOf(sets)
+      .modify(workout => {
+        workout.sets = setsUpdater(workout.sets);
       });
-      workouts.bulkPut(trololo);
-    });
-    // this.databaseService.workouts
-    //   .where('exercises.exerciseId')
-    //   .equals(id)
-    //   .toArray()
-    //   .then(data => console.log(data));
-    // return this.databaseService.exercises.delete(id);
   }
 }

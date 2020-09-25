@@ -1,0 +1,72 @@
+<ng-template #loading>
+  <div class="ion-padding ion-text-center"><ion-spinner></ion-spinner></div>
+</ng-template>
+
+<ng-template #empty>
+  <div class="ion-padding"><app-empty></app-empty></div>
+</ng-template>
+
+<ng-template #reorderable>
+  <!-- FIXME+DRY: https://stackblitz.com/edit/ionic-qvpwrf?file=pages%2Fhome%2Fhome.html -->
+  <ion-reorder-group
+    *ngIf="list.length; else empty"
+    [disabled]="list.length < 2"
+    (ionItemReorder)="reordered.emit($event.detail)"
+  >
+    <ion-item-sliding *ngFor="let item of list; trackBy: trackById">
+      <ion-item>
+        <ion-label>
+          <ng-container
+            *ngTemplateOutlet="template; context: getContext(item)"
+          ></ng-container>
+        </ion-label>
+        <ion-reorder slot="end"></ion-reorder>
+      </ion-item>
+      <ion-item-options (ionSwipe)="viewed.emit(item)">
+        <ion-item-option
+          color="danger"
+          *ngIf="delete"
+          (click)="removed.emit(item)"
+        >
+          Delete
+        </ion-item-option>
+        <ion-item-option expandable (click)="viewed.emit(item)">
+          View
+        </ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-reorder-group>
+</ng-template>
+
+<ng-container *ngIf="list; else loading">
+  <ng-container *ngIf="!reorder; else reorderable">
+    <ion-virtual-scroll
+      *ngIf="list.length; else empty"
+      [items]="list"
+      [trackBy]="trackById"
+      approxItemHeight="100px"
+    >
+      <ion-item-sliding *virtualItem="let item">
+        <ion-item>
+          <ion-label>
+            <ng-container
+              *ngTemplateOutlet="template; context: getContext(item)"
+            ></ng-container>
+          </ion-label>
+        </ion-item>
+        <ion-item-options (ionSwipe)="viewed.emit(item)">
+          <ion-item-option
+            color="danger"
+            *ngIf="delete"
+            (click)="removed.emit(item)"
+          >
+            Delete
+          </ion-item-option>
+          <ion-item-option expandable (click)="viewed.emit(item)">
+            View
+          </ion-item-option>
+        </ion-item-options>
+      </ion-item-sliding>
+    </ion-virtual-scroll>
+  </ng-container>
+</ng-container>

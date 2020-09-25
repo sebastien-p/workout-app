@@ -1,49 +1,109 @@
 import { Injectable } from '@angular/core';
 
-import { DatabaseService } from './database.service';
-import { Set } from '../models/set.model';
-import { Amplitude } from '../models/amplitude.model';
-import { Rythm } from '../models/rythm.model';
+import { Amplitude } from '../models/amplitude.enum';
+import { FullExercise } from '../models/exercise.model';
+import { Rythm } from '../models/rythm.enum';
+import { LightSet, FullSet } from '../models/set.model';
+import { LightWorkout } from '../models/workout.model';
+import { DatabaseService, Updater } from './database.service';
+import { ExercisesService } from './exercises.service';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class SetsService {
   constructor(
-    private readonly databaseService: DatabaseService
+    private readonly database: DatabaseService,
+    private readonly exercises: ExercisesService
   ) {}
 
-  static create(
-    amplitude: Amplitude = Amplitude.Normal,
+  create(
+    workout: LightWorkout,
     description: string = null,
-    exercise: number = null,
-    repetitions: number = 0,
-    rest: number = 0,
-    restLast: number = rest,
-    rythm: Rythm = Rythm.Normal
-  ): Set {
+    exercise: FullExercise = null,
+    amplitude: Amplitude = Amplitude.Normal,
+    rythm: Rythm = Rythm.Normal,
+    rest: string = '00:00:00',
+    restAfter: string = rest,
+    series: number = 1
+  ): FullSet {
     return {
-      amplitude,
+      workout,
       description,
       exercise,
-      repetitions,
+      amplitude,
+      rythm,
       rest,
-      restLast,
-      rythm
+      restAfter,
+      series
     };
   }
 
-  create(workout: Set): Promise<number> {
-    return this.databaseService.sets.add(workout);
+  fetch(id: number): Promise<FullSet>;
+  fetch(): Promise<FullSet[]>;
+  fetch(id?: number): any {
+    const { exercises, workouts, sets } = this.database;
+    return this.database.transaction<FullSet | FullSet[]>(
+      'r',
+      [exercises, workouts, sets],
+      () => (id ? this.fetchOne(id) : this.fetchAll())
+    );
   }
 
-  read(): Promise<Set[]> {
-    return this.databaseService.sets.toArray();
+  save({ exercise, workout, ...set }: FullSet): Promise<number> {
+    const { workouts, sets, add } = this.database;
+    return this.database.transaction('rw', [workouts, sets], async () => {
+      const id: number = await sets.put({
+        exercise: exercise.id,
+        workout: workout.id,
+        ...set
+      });
+      this.updateWorkout(workout, ids => add(ids, id));
+      return id;
+    });
   }
 
-  update({ id, ...changes }: Set): Promise<number> {
-    return this.databaseService.sets.update(id, changes);
+  delete({ id, workout }: FullSet): Promise<void> {
+    const { workouts, sets, records, removeOne } = this.database;
+    return this.database.transaction('rw', [workouts, sets, records], () => {
+      this.updateWorkout(workout, ids => removeOne(ids, id));
+      records.where({ set: id }).delete();
+      return sets.delete(id);
+    });
   }
 
-  delete(id: number): Promise<void> {
-    return this.databaseService.sets.delete(id);
+  private async addRelations({
+    exercise: exerciseId,
+    workout: workoutId,
+    ...set
+  }: LightSet): Promise<FullSet> {
+    const { workouts } = this.database;
+    const [exercise, workout] = await Promise.all([
+      this.exercises.fetch(exerciseId),
+      workouts.get(workoutId)
+    ]);
+    return { exercise, workout, ...set };
+  }
+
+  private async fetchOne(id: number): Promise<FullSet> {
+    const { sets } = this.database;
+    return this.addRelations(await sets.get(id));
+  }
+
+  private async fetchAll(): Promise<FullSet[]> {
+    const { sets, map } = this.database;
+    return map(await sets.toCollection().primaryKeys(), id =>
+      this.fetchOne(id)
+    );
+  }
+
+  private updateWorkout(
+    { id }: LightWorkout,
+    setsUpdater: Updater<number>
+  ): Promise<number> {
+    const { workouts } = this.database;
+    return workouts.where({ id }).modify(workout => {
+      workout.sets = setsUpdater(workout.sets);
+    });
   }
 }

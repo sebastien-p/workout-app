@@ -1,12 +1,18 @@
-import { Identifiable } from './identifiable.model';
-import { Amplitude } from './amplitude.model';
-import { Rythm } from './rythm.model';
+import { WithId } from './with-id.model';
+import { WithDescription } from './with-description.model';
+import { WithRest } from './with-rest.model';
+import { WithExerciseId, WithExercise } from './with-exercise.model';
+import { WithWorkoutId, WithWorkout } from './with-workout.model';
+import { LightWorkout } from './workout.model';
+import { Amplitude } from './amplitude.enum';
+import { Rythm } from './rythm.enum';
 
-export interface Set extends Identifiable {
+interface Set extends WithId, WithDescription, WithRest {
   amplitude: Amplitude;
-  exercise: number;
-  repetitions: number;
-  rest: number;
-  restLast: number;
   rythm: Rythm;
+  series: number;
 }
+
+export interface LightSet extends Set, WithExerciseId, WithWorkoutId {}
+
+export interface FullSet extends Set, WithExercise, WithWorkout<LightWorkout> {}
