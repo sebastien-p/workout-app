@@ -13,7 +13,6 @@ import { scan } from 'rxjs/operators/scan';
 import { take } from 'rxjs/operators/take';
 import { tap } from 'rxjs/operators/tap';
 
-import { WithRest } from '../../models/with-rest.model';
 import { millisInSecond, DateService } from '../../services/date.service';
 import { NativeService } from '../../services/native.service';
 
@@ -24,8 +23,8 @@ const warnings: number = 4;
   templateUrl: 'countdown.component.html'
 })
 export class CountdownComponent implements OnChanges {
-  @Input('rest')
-  readonly item: WithRest;
+  @Input()
+  readonly rest: string;
 
   @Output()
   readonly onStart: EventEmitter<void> = new EventEmitter();
@@ -67,7 +66,7 @@ export class CountdownComponent implements OnChanges {
   }
 
   private initialize() {
-    this.duration = this.dateService.parseTime(this.item.rest);
+    this.duration = this.dateService.parseTime(this.rest);
     this.stop();
   }
 

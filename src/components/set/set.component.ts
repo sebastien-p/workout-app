@@ -3,6 +3,7 @@ import { Component, Input } from '@angular/core';
 import { FullSet } from '../../models/set.model';
 import { Amplitude } from '../../models/amplitude.enum';
 import { Rythm } from '../../models/rythm.enum';
+import { StringService } from '../../services/string.service';
 
 @Component({
   selector: 'app-set',
@@ -15,11 +16,12 @@ export class SetComponent {
   @Input()
   readonly compact: boolean = false;
 
-  get amplitude() {
-    return Amplitude[this.set.amplitude];
-  }
+  constructor(
+    private readonly stringService: StringService
+  ) {}
 
-  get rythm() {
-    return Rythm[this.set.rythm];
+  get modifiers(): string {
+    const { amplitude, rythm } = this.set;
+    return this.stringService.formatTuple(Amplitude[amplitude], Rythm[rythm]);
   }
 }

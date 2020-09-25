@@ -5,4 +5,11 @@ app-list { /* FIXME */
   position: absolute;
   right: 0;
   top: 0;
+
+  h1,
+  p {
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
 }

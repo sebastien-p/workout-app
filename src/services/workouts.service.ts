@@ -17,14 +17,12 @@ export class WorkoutsService {
     name: string = '',
     description: string = '',
     record: boolean = true,
-    rest: string = '00:00:00',
     sets: FullSet[] = []
   ): FullWorkout {
     return {
       name,
       description,
       record,
-      rest,
       sets
     };
   }
