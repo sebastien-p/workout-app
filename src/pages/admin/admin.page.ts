@@ -1,13 +1,7 @@
-import { Component, Type } from '@angular/core';
-
-import { AdminExercisesPage } from '../admin-exercises/admin-exercises.page';
-import { AdminWorkoutsPage } from '../admin-workouts/admin-workouts.page';
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'page-admin',
+  selector: 'app-admin-page',
   templateUrl: 'admin.page.html'
 })
-export class AdminPage {
-  readonly exercisesPage: Type<AdminExercisesPage> = AdminExercisesPage;
-  readonly workoutsPage: Type<AdminWorkoutsPage> = AdminWorkoutsPage;
-}
+export class AdminPage {}

@@ -1,28 +1,28 @@
-import { ViewController, AlertController } from 'ionic-angular';
-
 import { WithId } from '../models/with-id.model';
-import { Params, BasePage } from './base.page';
+import { AlertService } from '../services/alert.service';
+import { ModalService } from '../services/modal.service';
+import { BasePage } from './page';
 
-export abstract class ItemModalPage<T extends WithId, U extends any>
-extends BasePage<T, U> {
+export abstract class ItemModalPage<
+  T extends WithId,
+  U extends any // FIXME
+> extends BasePage<T, U> {
   constructor(
-    navParams: Params<T>,
-    protected readonly viewController: ViewController,
-    alertController: AlertController,
+    modalService: ModalService,
+    alertService: AlertService,
     service: U
   ) {
-    super(
-      navParams,
-      alertController,
-      service
-    );
+    super(modalService, alertService, service);
   }
 
   get isNew(): boolean {
     return !this.item.id;
   }
 
-  dismiss(): void {
-    this.viewController.dismiss();
+  async dismiss(skipConfirm: boolean = false): Promise<boolean> {
+    return (
+      (skipConfirm || (await this.alertService.confirm())) &&
+      this.modalService.dismiss()
+    );
   }
 }

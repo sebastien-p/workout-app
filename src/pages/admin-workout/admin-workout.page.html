@@ -1,65 +1,43 @@
 <ion-header>
-  <ion-navbar>
-    <ion-buttons start>
-      <button
-        ion-button
-        type="button"
-        (tap)="dismiss()">
-        Close
-      </button>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="dismiss()">Close</ion-button>
     </ion-buttons>
     <ion-title>Workout</ion-title>
-    <ion-buttons end>
-      <button
-        ion-button
-        type="submit"
-        form="workoutForm"
-        [disabled]="!canSubmit">
-        Save
-      </button>
+    <ion-buttons slot="end">
+      <ion-button [disabled]="!canSubmit" (click)="submit()">Save</ion-button>
     </ion-buttons>
-  </ion-navbar>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <form
-    id="workoutForm"
-    (ngSubmit)="submit()">
+  <form (ngSubmit)="submit()">
     <ion-list>
       <ion-item>
-        <ion-label stacked>Name</ion-label>
-        <ion-input
-          name="name"
-          type="text"
-          required
-          [ngModel]="item.name">
-        </ion-input>
+        <ion-label position="stacked">Name</ion-label>
+        <ion-input name="name" required [ngModel]="item.name"></ion-input>
       </ion-item>
       <ion-item>
-        <ion-label stacked>Description</ion-label>
+        <ion-label position="stacked">Description</ion-label>
         <ion-textarea
           name="description"
           rows="10"
           required
-          [ngModel]="item.description">
+          [ngModel]="item.description"
+        >
         </ion-textarea>
       </ion-item>
       <ion-item>
-        <ion-label stacked>Recorded</ion-label>
-        <ion-toggle
-          name="record"
-          required
-          [ngModel]="item.record">
-        </ion-toggle>
+        <ion-label>Recorded</ion-label>
+        <ion-toggle name="record" required [ngModel]="item.record"></ion-toggle>
       </ion-item>
-      <button
-        ion-item
-        type="button"
+      <ion-nav-link
         *ngIf="!isNew"
-        [navPush]="setsPage"
-        [navParams]="data">
-        Sets
-      </button>
+        [component]="setsPage"
+        [componentProps]="data"
+      >
+        <ion-item button detail><ion-label>Sets</ion-label></ion-item>
+      </ion-nav-link>
     </ion-list>
   </form>
 </ion-content>

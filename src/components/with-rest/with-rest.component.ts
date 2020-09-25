@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 
 import { WithRest } from '../../models/with-rest.model';
 import { StringService } from '../../services/string.service';
@@ -7,16 +7,20 @@ import { StringService } from '../../services/string.service';
   selector: 'app-with-rest',
   templateUrl: 'with-rest.component.html'
 })
-export class WithRestComponent {
+export class WithRestComponent implements OnChanges {
+  rest: string;
+
   @Input()
   readonly item: WithRest;
 
-  constructor(
-    private readonly stringService: StringService
-  ) {}
+  constructor(private readonly stringService: StringService) {}
 
-  get rest(): string {
+  ngOnChanges(): void {
+    this.setRest();
+  }
+
+  private setRest(): void {
     const { rest, restAfter } = this.item;
-    return this.stringService.formatTuple(rest, restAfter);
+    this.rest = this.stringService.formatTuple(rest, restAfter);
   }
 }

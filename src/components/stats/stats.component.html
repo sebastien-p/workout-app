@@ -1,9 +1,9 @@
-<ng-container *ngIf="!!stats">
-  <h2>
-    <ng-content></ng-content>
-  </h2>
+<ng-container *ngIf="stats">
+  <h2><ng-content></ng-content></h2>
   <ol>
-    <li *ngFor="let value of stats.values">{{ value }}</li>
+    <li *ngFor="let value of stats.values; trackBy: trackByIndex">
+      {{ value }}
+    </li>
   </ol>
   <p>Total: {{ stats.total }}</p>
 </ng-container>

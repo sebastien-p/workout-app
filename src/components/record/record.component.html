@@ -1,6 +1,7 @@
 <app-item
-  [name]="{ name: record.date | date:'MMM d, yyyy, HH:mm' }"
-  [description]="{ description: record.value + ' repetition(s)' }">
+  [name]="{ name: record.date | date: 'MMM d, yyyy, HH:mm' }"
+  [description]="{ description: record.value + ' repetition(s)' }"
+>
   <ion-badge>{{ record.set.workout.name }}</ion-badge>
   <ion-badge>{{ record.set.exercise.name }}</ion-badge>
   <ion-badge>Serie {{ record.serie }}</ion-badge>

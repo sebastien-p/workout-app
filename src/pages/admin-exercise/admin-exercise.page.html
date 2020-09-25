@@ -1,48 +1,39 @@
 <ion-header>
-  <ion-navbar>
-    <ion-buttons start>
-      <button
-        ion-button
-        type="button"
-        (tap)="dismiss()">
-        Close
-      </button>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="dismiss()">Close</ion-button>
     </ion-buttons>
     <ion-title>Exercise</ion-title>
-    <ion-buttons end>
-      <button
-        ion-button
-        type="submit"
-        form="exerciseForm"
-        [disabled]="!canSubmit">
-        Save
-      </button>
+    <ion-buttons slot="end">
+      <ion-button [disabled]="!canSubmit" (click)="submit()"> Save </ion-button>
     </ion-buttons>
-  </ion-navbar>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <form
-    id="exerciseForm"
-    (ngSubmit)="submit()">
+  <form (ngSubmit)="submit()">
     <ion-list>
       <ion-item>
-        <ion-label stacked>Name</ion-label>
-        <ion-input
-          name="name"
-          type="text"
-          required
-          [ngModel]="item.name">
-        </ion-input>
+        <ion-label position="stacked">Name</ion-label>
+        <ion-input name="name" required [ngModel]="item.name"></ion-input>
       </ion-item>
       <ion-item>
-        <ion-label stacked>Description</ion-label>
+        <ion-label position="stacked">Description</ion-label>
         <ion-textarea
           name="description"
           rows="10"
           required
-          [ngModel]="item.description">
+          [ngModel]="item.description"
+        >
         </ion-textarea>
+      </ion-item>
+      <ion-item>
+        <ion-label>Doubled</ion-label>
+        <ion-toggle
+          name="doubled"
+          required
+          [ngModel]="item.doubled"
+        ></ion-toggle>
       </ion-item>
     </ion-list>
   </form>

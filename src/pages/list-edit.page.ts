@@ -1,44 +1,42 @@
 import { Type } from '@angular/core';
-import { AlertController, ModalController } from 'ionic-angular';
-import { ReorderIndexes } from 'ionic-angular/components/item/item-reorder';
+import { ItemReorderEventDetail } from '@ionic/core';
 
 import { WithId } from '../models/with-id.model';
-import { Params } from './base.page';
-import { ListPage } from './list.page';
+import { AlertService } from '../services/alert.service';
+import { ModalService } from '../services/modal.service';
 import { ItemEditModalPage } from './item-edit-modal.page';
+import { ListPage } from './list.page';
 
-export abstract class ListEditPage
-<T extends WithId, U extends any, V extends WithId = WithId>
-extends ListPage<T, U, V> {
+export abstract class ListEditPage<
+  T extends WithId,
+  U extends any, // FIXME
+  V extends WithId = WithId
+> extends ListPage<T, U, V> {
   constructor(
-    alertController: AlertController,
-    modalController: ModalController,
     modalPage: Type<ItemEditModalPage<T, U>>,
-    service: U,
-    navParams?: Params<V>
+    modalService: ModalService,
+    alertService: AlertService,
+    service: U
   ) {
-    super(
-      alertController,
-      modalController,
-      modalPage,
-      service,
-      navParams
-    );
+    super(modalPage, modalService, alertService, service);
   }
 
-  add(...parameters: T[keyof T][]): void {
-    this.view(this.service.create(...parameters));
+  add(...parameters: T[keyof T][]): Promise<void> {
+    return this.view(this.service.create(...parameters));
   }
 
-  remove(item: T): void {
-    this.confirm().then(value => {
-      if (!value) { return; }
-      this.service.delete(item);
-      this.refresh();
-    });
+  async remove(item: T): Promise<boolean> {
+    const remove: boolean = await this.alertService.confirm();
+
+    if (remove) {
+      await this.service.delete(item);
+      await this.refresh();
+    }
+
+    return remove;
   }
 
-  reorder($event: ReorderIndexes): void {
-    $event.applyTo(this.list);
+  reorder(detail: ItemReorderEventDetail): void {
+    detail.complete(this.list);
   }
 }

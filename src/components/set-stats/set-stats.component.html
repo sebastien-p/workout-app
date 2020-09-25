@@ -1,14 +1,6 @@
 <ion-grid>
   <ion-row>
-    <app-stats
-      ion-col
-      [stats]="thisTime">
-      This time
-    </app-stats>
-    <app-stats
-      ion-col
-      [stats]="lastTime">
-      Last time
-    </app-stats>
+    <ion-col><app-stats [stats]="thisTime">This time</app-stats></ion-col>
+    <ion-col><app-stats [stats]="lastTime">Last time</app-stats></ion-col>
   </ion-row>
 </ion-grid>

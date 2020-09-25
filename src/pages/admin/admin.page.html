@@ -1,22 +1,16 @@
 <ion-header>
-  <ion-navbar>
+  <ion-toolbar>
     <ion-title>Admin</ion-title>
-  </ion-navbar>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <ion-list>
-    <button
-      ion-item
-      type="button"
-      [navPush]="exercisesPage">
-      Exercises
-    </button>
-    <button
-      ion-item
-      type="button"
-      [navPush]="workoutsPage">
-      Workouts
-    </button>
+    <ion-item routerLink="exercises">
+      <ion-label>Exercises</ion-label>
+    </ion-item>
+    <ion-item routerLink="workouts">
+      <ion-label>Workouts</ion-label>
+    </ion-item>
   </ion-list>
 </ion-content>

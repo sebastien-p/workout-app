@@ -13,8 +13,6 @@ interface Set extends WithId, WithDescription, WithRest {
   series: number;
 }
 
-export interface LightSet
-extends Set, WithExerciseId, WithWorkoutId {}
+export interface LightSet extends Set, WithExerciseId, WithWorkoutId {}
 
-export interface FullSet
-extends Set, WithExercise, WithWorkout<LightWorkout> {}
+export interface FullSet extends Set, WithExercise, WithWorkout<LightWorkout> {}
