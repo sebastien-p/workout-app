@@ -1,55 +1,57 @@
 import { Component } from '@angular/core';
-import { NavParams, AlertController, ModalController } from 'ionic-angular';
-import { ReorderIndexes } from 'ionic-angular/components/item/item-reorder';
-import Dexie from 'dexie';
+import { ItemReorderEventDetail } from '@ionic/core';
 
 import { FullSet } from '../../models/set.model';
 import { FullWorkout } from '../../models/workout.model';
+import { AlertService } from '../../services/alert.service';
+import { ModalService } from '../../services/modal.service';
 import { SetsService } from '../../services/sets.service';
 import { WorkoutsService } from '../../services/workouts.service';
 import { ListEditPage } from '../list-edit.page';
 import { AdminSetPage } from '../admin-set/admin-set.page';
 
 @Component({
-  selector: 'page-admin-sets',
+  selector: 'app-admin-sets-page',
   templateUrl: 'admin-sets.page.html'
 })
-export class AdminSetsPage
-extends ListEditPage<FullSet, SetsService, FullWorkout> {
+export class AdminSetsPage extends ListEditPage<
+  FullSet,
+  SetsService,
+  FullWorkout
+> {
   constructor(
-    navParams: NavParams,
-    alertController: AlertController,
-    modalController: ModalController,
-    setsService: SetsService,
-    private readonly workoutsService: WorkoutsService
+    private readonly workoutsService: WorkoutsService,
+    alertService: AlertService,
+    modalService: ModalService,
+    setsService: SetsService
   ) {
-    super(
-      alertController,
-      modalController,
-      AdminSetPage,
-      setsService,
-      navParams
-    );
+    super(AdminSetPage, modalService, alertService, setsService);
   }
 
   get list(): FullSet[] {
     return this.item.sets;
   }
 
-  add(...parameters: FullSet[keyof FullSet][]): void {
-    super.add(this.item, ...parameters);
+  set list(sets: FullSet[]) {
+    this.item.sets = sets;
   }
 
-  reorder($event: ReorderIndexes): void {
-    super.reorder($event);
-    this.workoutsService.save(this.item);
+  add(...parameters: FullSet[keyof FullSet][]): Promise<void> {
+    return super.add(
+      { ...this.item, sets: this.list.map(set => set.id) },
+      ...parameters
+    );
   }
 
-  protected refresh(enter: boolean = false): Dexie.Promise<FullSet[]> {
-    if (enter) { return null; }
-    return this.workoutsService.fetch(this.item.id).then(workout => {
-      this.item = workout;
-      return workout.sets;
-    });
+  reorder(detail: ItemReorderEventDetail): Promise<number> {
+    super.reorder(detail);
+    return this.workoutsService.save(this.item);
+  }
+
+  protected async refresh(enter: boolean = false): Promise<void> {
+    if (!enter) {
+      const { sets } = await this.workoutsService.fetch(this.item.id);
+      this.list = sets;
+    }
   }
 }

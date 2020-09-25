@@ -1,13 +1,14 @@
 import { ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import Dexie from 'dexie';
 
 import { WithId } from '../models/with-id.model';
 import { ItemModalPage } from './item-modal.page';
 
-export abstract class ItemEditModalPage<T extends WithId, U extends any>
-extends ItemModalPage<T, U> {
-  @ViewChild(NgForm)
+export abstract class ItemEditModalPage<
+  T extends WithId,
+  U extends any // FIXME
+> extends ItemModalPage<T, U> {
+  @ViewChild(NgForm, { static: true })
   readonly form: NgForm;
 
   get value(): Partial<T> {
@@ -23,11 +24,14 @@ extends ItemModalPage<T, U> {
     this.form.reset(this.value);
   }
 
-  submit() : void {
-    if (this.canSubmit) { this.save().then(() => this.dismiss()); }
+  async submit(): Promise<void> {
+    if (this.canSubmit) {
+      await this.save();
+      await this.dismiss(true);
+    }
   }
 
-  protected save(): Dexie.Promise<number> {
-    return this.service.save({ ...this.item as any, ...this.value as any });
+  protected save(value: Partial<T> = this.value): Promise<number> {
+    return (this.service as any).save({ ...this.item, ...value }); // FIXME
   }
 }

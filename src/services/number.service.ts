@@ -1,12 +1,18 @@
 import { Injectable } from '@angular/core';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class NumberService {
-  toUnsignedInt(value: number, min: number = 0): number {
-    return Math.abs(Math.floor(value) || min);
+  toUnsignedInt(value: number | string): number {
+    if (typeof value === 'string') {
+      value = parseInt(value.trim(), 10);
+    }
+
+    return Math.abs(Math.floor(value)) || 0;
   }
 
-  parseUnsignedInt(value: string, min?: number): number {
-    return this.toUnsignedInt(parseInt(value, 10), min);
+  clamp(value: number, min: number = 0): number {
+    return Math.max(min, value);
   }
 }

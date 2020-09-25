@@ -1,23 +1,12 @@
 <ion-toolbar>
   <ion-title>{{ (value | async) || rest }}</ion-title>
 </ion-toolbar>
-<ion-fab
-  top
-  right
-  edge
-  [ngSwitch]="isPlaying">
-  <button
-    ion-fab
-    type="button"
-    *ngSwitchCase="false"
-    (tap)="play()">
-    <ion-icon name="md-play"></ion-icon>
-  </button>
-  <button
-    ion-fab
-    type="button"
-    *ngSwitchDefault
-    (tap)="stop()">
-    <ion-icon name="md-square"></ion-icon>
-  </button>
+
+<ion-fab vertical="top" horizontal="end" edge [ngSwitch]="isPlaying">
+  <ion-fab-button *ngSwitchCase="false" (click)="play()">
+    <ion-icon name="play"></ion-icon>
+  </ion-fab-button>
+  <ion-fab-button *ngSwitchDefault (click)="stop()">
+    <ion-icon name="stop"></ion-icon>
+  </ion-fab-button>
 </ion-fab>

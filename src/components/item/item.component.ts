@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 
-import { WithName } from '../../models/with-name.model';
 import { WithDescription } from '../../models/with-description.model';
+import { WithName } from '../../models/with-name.model';
 
 @Component({
   selector: 'app-item',

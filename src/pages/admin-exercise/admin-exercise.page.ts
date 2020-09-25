@@ -1,27 +1,24 @@
 import { Component } from '@angular/core';
-import { NavParams, ViewController, AlertController } from 'ionic-angular';
 
 import { FullExercise } from '../../models/exercise.model';
+import { AlertService } from '../../services/alert.service';
 import { ExercisesService } from '../../services/exercises.service';
+import { ModalService } from '../../services/modal.service';
 import { ItemEditModalPage } from '../item-edit-modal.page';
 
 @Component({
-  selector: 'page-admin-exercise',
+  selector: 'app-admin-exercise-page',
   templateUrl: 'admin-exercise.page.html'
 })
-export class AdminExercisePage
-extends ItemEditModalPage<FullExercise, ExercisesService> {
+export class AdminExercisePage extends ItemEditModalPage<
+  FullExercise,
+  ExercisesService
+> {
   constructor(
-    navParams: NavParams,
-    viewController: ViewController,
-    alertController: AlertController,
+    modalService: ModalService,
+    alertService: AlertService,
     exercisesService: ExercisesService
   ) {
-    super(
-      navParams,
-      viewController,
-      alertController,
-      exercisesService
-    );
+    super(modalService, alertService, exercisesService);
   }
 }

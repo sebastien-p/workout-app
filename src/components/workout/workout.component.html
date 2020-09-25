@@ -1,6 +1,4 @@
-<app-item
-  [name]="workout"
-  [description]="workout">
+<app-item [name]="workout" [description]="workout">
   <ion-badge>{{ workout.sets.length }} set(s)</ion-badge>
   <ion-badge *ngIf="workout.record">Recorded</ion-badge>
 </app-item>

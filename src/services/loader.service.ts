@@ -1,26 +1,44 @@
 import { Injectable } from '@angular/core';
-import { LoadingController, Loading } from 'ionic-angular';
+import { LoadingController } from '@ionic/angular';
 
-@Injectable()
+import { NumberService } from './number.service';
+
+@Injectable({
+  providedIn: 'root'
+})
 export class LoaderService {
-  private retain: number = 0;
-  private loader: Loading;
+  private loader: Promise<HTMLIonLoadingElement>;
+  private users = 0;
 
   constructor(
-    private readonly loadingController: LoadingController
-  ) {}
-
-  show(): void {
-    if (this.retain) { return; }
-    this.loader = this.loadingController.create();
-    this.loader.present();
-    this.retain += 1;
+    loadingController: LoadingController,
+    private readonly numberService: NumberService
+  ) {
+    this.loader = loadingController.create();
   }
 
-  hide(): void {
-    if (!this.retain) { return; }
-    this.loader.dismiss();
-    this.loader = null;
-    this.retain -= 1;
+  async show(): Promise<void> {
+    if (!this.users) {
+      this.useLoader('present');
+    }
+
+    this.addUsers(1);
+  }
+
+  async hide(): Promise<void> {
+    this.addUsers(-1);
+
+    if (!this.users) {
+      this.useLoader('dismiss');
+    }
+  }
+
+  private addUsers(increment: number): void {
+    this.users = this.numberService.clamp(this.users + increment);
+  }
+
+  private async useLoader(method: 'present' | 'dismiss'): Promise<void> {
+    const loader: HTMLIonLoadingElement = await this.loader;
+    await loader[method]();
   }
 }

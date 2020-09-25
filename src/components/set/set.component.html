@@ -8,9 +8,10 @@
 </ng-template>
 
 <app-item
-  *ngIf="compact === false; else summary"
+  *ngIf="!compact; else summary"
   [name]="set.exercise"
-  [description]="set">
+  [description]="set"
+>
   <ion-badge>{{ set.series }} serie(s)</ion-badge>
   <ion-badge>{{ modifiers }}</ion-badge>
   <app-with-rest [item]="set"></app-with-rest>

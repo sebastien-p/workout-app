@@ -6,17 +6,13 @@ import {
   EventEmitter
 } from '@angular/core';
 
-import { Observable } from 'rxjs/Observable';
-import { timer } from 'rxjs/observable/timer';
-import { map } from 'rxjs/operators/map';
-import { scan } from 'rxjs/operators/scan';
-import { take } from 'rxjs/operators/take';
-import { tap } from 'rxjs/operators/tap';
+import { Observable, timer } from 'rxjs';
+import { map, scan, take, tap } from 'rxjs/operators';
 
 import { millisInSecond, DateService } from '../../services/date.service';
 import { NativeService } from '../../services/native.service';
 
-const warnings: number = 4;
+const warnings = 4;
 
 @Component({
   selector: 'app-countdown',
@@ -27,12 +23,12 @@ export class CountdownComponent implements OnChanges {
   readonly rest: string;
 
   @Output()
-  readonly onStart: EventEmitter<void> = new EventEmitter();
+  readonly started: EventEmitter<void> = new EventEmitter();
 
   @Output()
-  readonly onEnd: EventEmitter<void> = new EventEmitter();
+  readonly completed: EventEmitter<void> = new EventEmitter();
 
-  value: Observable<string>;
+  value: Observable<string> | null;
 
   private duration: number;
 
@@ -54,9 +50,16 @@ export class CountdownComponent implements OnChanges {
   }
 
   play(): void {
-    if (this.isPlaying) { return; }
-    this.onStart.emit();
-    if (!this.duration) { return this.onComplete(); }
+    if (this.isPlaying) {
+      return;
+    }
+
+    this.started.emit();
+
+    if (!this.duration) {
+      return this.onComplete();
+    }
+
     this.value = timer(millisInSecond, millisInSecond).pipe(
       scan(value => value - 1, this.duration),
       tap(value => this.onTick(value)),
@@ -65,23 +68,23 @@ export class CountdownComponent implements OnChanges {
     );
   }
 
-  private initialize() {
+  private initialize(): void {
     this.duration = this.dateService.parseTime(this.rest);
     this.stop();
   }
 
-  private notify(): void {
-    const shouldNotify: boolean = warnings > 0 && this.duration >= warnings;
-    if (shouldNotify) { this.nativeService.notify(); }
+  private onTick(value: number): void {
+    if (warnings > 0 && this.duration >= warnings && value < warnings) {
+      this.nativeService.notify();
+    }
+
+    if (!value) {
+      this.onComplete();
+    }
   }
 
   private onComplete(): void {
     this.stop();
-    this.onEnd.emit();
-  }
-
-  private onTick(value: number): void {
-    if (value < warnings) { this.notify(); }
-    if (!value) { this.onComplete(); }
+    this.completed.emit();
   }
 }

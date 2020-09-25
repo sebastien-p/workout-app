@@ -1,0 +1,16 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Workouts</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <app-list [list]="list" (viewed)="view($event)">
+    <ng-template let-item>
+      <app-workout [workout]="item"></app-workout>
+    </ng-template>
+  </app-list>
+</ion-content>

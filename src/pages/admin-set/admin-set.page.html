@@ -1,115 +1,104 @@
 <ion-header>
-  <ion-navbar>
-    <ion-buttons start>
-      <button
-        ion-button
-        type="button"
-        (tap)="dismiss()">
-        Close
-      </button>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="dismiss()">Close</ion-button>
     </ion-buttons>
     <ion-title>Set</ion-title>
-    <ion-buttons end>
-      <button
-        ion-button
-        type="submit"
-        form="setForm"
-        [disabled]="!canSubmit">
-        Save
-      </button>
+    <ion-buttons slot="end">
+      <ion-button [disabled]="!canSubmit" (click)="submit()">Save</ion-button>
     </ion-buttons>
-  </ion-navbar>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <form
-    id="setForm"
-    (ngSubmit)="submit()">
+  <form (ngSubmit)="submit()">
     <ion-list>
       <ion-item>
-        <ion-label stacked>Exercise</ion-label>
+        <ion-label position="stacked">Exercise</ion-label>
         <ion-select
           name="exercise"
           required
           [ngModel]="item.exercise"
-          [compareWith]="compareById()">
-          <ion-option
-            *ngFor="let exercise of exercises; trackBy: trackById()"
-            [value]="exercise">
+          [compareWith]="compareById"
+          [attr.disabled]="!exercises"
+        >
+          <ion-select-option
+            *ngFor="let exercise of exercises; trackBy: trackById"
+            [value]="exercise"
+          >
             {{ exercise.name }}
-          </ion-option>
+          </ion-select-option>
         </ion-select>
       </ion-item>
       <ion-item>
-        <ion-label stacked>Description</ion-label>
+        <ion-label position="stacked">Description</ion-label>
         <ion-textarea
           name="description"
           required
           rows="10"
-          [ngModel]="item.description">
+          [ngModel]="item.description"
+        >
         </ion-textarea>
       </ion-item>
       <ion-item>
-        <ion-label stacked>
-          Series
-          <ion-badge float-end>{{ value.series }}</ion-badge>
-        </ion-label>
+        <ion-label position="stacked"> Series </ion-label>
+        <ion-badge slot="end">
+          {{ value.series * (value.exercise?.doubled ? 2 : 1) }}
+        </ion-badge>
         <ion-range
           name="series"
           required
           snaps
           min="1"
           max="10"
-          step="1"
-          [ngModel]="item.series">
-          <ion-label range-left>1</ion-label>
-          <ion-label range-right>10</ion-label>
+          [ngModel]="item.series"
+        >
+          <ion-label slot="start">1</ion-label>
+          <ion-label slot="end">10</ion-label>
         </ion-range>
       </ion-item>
       <ion-item>
-        <ion-label stacked>Rest</ion-label>
+        <ion-label position="stacked">Rest</ion-label>
         <ion-datetime
           name="rest"
           required
           hourValues="0"
           displayFormat="HH:mm:ss"
-          [ngModel]="item.rest">
+          [ngModel]="item.rest"
+        >
         </ion-datetime>
       </ion-item>
       <ion-item>
-        <ion-label stacked>Rest after</ion-label>
+        <ion-label position="stacked">Rest after</ion-label>
         <ion-datetime
           name="restAfter"
           required
           hourValues="0"
           displayFormat="HH:mm:ss"
-          [ngModel]="item.restAfter">
+          [ngModel]="item.restAfter"
+        >
         </ion-datetime>
       </ion-item>
       <ion-item>
-        <ion-label stacked>Amplitude</ion-label>
-        <ion-select
-          name="amplitude"
-          required
-          [ngModel]="item.amplitude">
-          <ion-option
-            *ngFor="let label of amplitudes; index as value"
-            [value]="value">
+        <ion-label position="stacked">Amplitude</ion-label>
+        <ion-select name="amplitude" required [ngModel]="item.amplitude">
+          <ion-select-option
+            *ngFor="let label of amplitudes; trackBy: trackByIndex; index as value"
+            [value]="value"
+          >
             {{ label }}
-          </ion-option>
+          </ion-select-option>
         </ion-select>
       </ion-item>
       <ion-item>
-        <ion-label stacked>Rythm</ion-label>
-        <ion-select
-          name="rythm"
-          required
-          [ngModel]="item.rythm">
-          <ion-option
-            *ngFor="let label of rythms; index as value"
-            [value]="value">
+        <ion-label position="stacked">Rythm</ion-label>
+        <ion-select name="rythm" required [ngModel]="item.rythm">
+          <ion-select-option
+            *ngFor="let label of rythms; trackBy: trackByIndex; index as value"
+            [value]="value"
+          >
             {{ label }}
-          </ion-option>
+          </ion-select-option>
         </ion-select>
       </ion-item>
     </ion-list>

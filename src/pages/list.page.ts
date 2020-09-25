@@ -1,41 +1,37 @@
 import { Type } from '@angular/core';
-import { AlertController, ModalController, Modal } from 'ionic-angular';
-import Dexie from 'dexie';
 
 import { WithId } from '../models/with-id.model';
-import { BasePage, Params } from './base.page';
+import { AlertService } from '../services/alert.service';
+import { ModalService } from '../services/modal.service';
+import { BasePage } from './page';
 import { ItemModalPage } from './item-modal.page';
 
-export abstract class ListPage
-<T extends WithId, U extends any, V extends WithId = WithId>
-extends BasePage<V> {
+export abstract class ListPage<
+  T extends WithId,
+  U extends any, // FIXME
+  V extends WithId = WithId
+> extends BasePage<V> {
   list: T[];
 
   constructor(
-    alertController: AlertController,
-    protected readonly modalController: ModalController,
     protected readonly modalPage: Type<ItemModalPage<T, U>>,
-    service: U,
-    navParams?: Params<V>
+    modalService: ModalService,
+    alertService: AlertService,
+    service: U
   ) {
-    super(
-      navParams,
-      alertController,
-      service
-    );
+    super(modalService, alertService, service);
   }
 
-  ionViewDidEnter(): void {
+  ionViewWillEnter(): void {
     this.refresh(true);
   }
 
-  view(item: T): void {
-    const modal: Modal = this.modalController.create(this.modalPage, { item });
-    modal.onDidDismiss(() => this.refresh());
-    modal.present();
+  async view(item: T): Promise<void> {
+    await this.modalService.modal(this.modalPage, { data: { item } });
+    this.refresh();
   }
 
-  protected refresh(enter: boolean = false): Dexie.Promise<T[]> {
-    return this.service.fetch().then(list => this.list = list);
+  protected async refresh(enter: boolean = false): Promise<void> {
+    this.list = await this.service.fetch();
   }
 }
