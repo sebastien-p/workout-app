@@ -1,9 +1,12 @@
-import { ViewChild } from '@angular/core';
+import { Directive, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
 import { WithId } from '../models/with-id.model';
 import { ItemModalPage } from './item-modal.page';
 
+// FIXME
+@Directive()
+// tslint:disable-next-line: directive-class-suffix
 export abstract class ItemEditModalPage<
   T extends WithId,
   U extends any // FIXME

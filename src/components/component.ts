@@ -1,7 +1,11 @@
+import { Directive } from '@angular/core';
 import { WithId } from '../models/with-id.model';
 
 export type Keys<T extends {}> = (keyof T)[];
 
+// FIXME
+@Directive()
+// tslint:disable-next-line: directive-class-suffix
 export abstract class BaseComponent {
   trackByIndex(index: number) {
     return index;

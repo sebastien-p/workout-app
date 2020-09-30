@@ -1,4 +1,4 @@
-import { Input } from '@angular/core';
+import { Directive, Input } from '@angular/core';
 
 import { WithId } from '../models/with-id.model';
 import { BaseComponent } from '../components/component';
@@ -8,7 +8,9 @@ import { ModalService } from '../services/modal.service';
 export interface Data<T extends WithId = WithId> {
   item?: T;
 }
-
+// FIXME
+@Directive()
+// tslint:disable-next-line: directive-class-suffix
 export abstract class BasePage<
   T extends WithId = WithId,
   U extends any = any // FIXME

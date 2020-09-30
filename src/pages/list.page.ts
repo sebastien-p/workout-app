@@ -1,4 +1,4 @@
-import { Type } from '@angular/core';
+import { Directive, Type } from '@angular/core';
 
 import { WithId } from '../models/with-id.model';
 import { AlertService } from '../services/alert.service';
@@ -6,6 +6,9 @@ import { ModalService } from '../services/modal.service';
 import { BasePage } from './page';
 import { ItemModalPage } from './item-modal.page';
 
+// FIXME
+@Directive()
+// tslint:disable-next-line: directive-class-suffix
 export abstract class ListPage<
   T extends WithId,
   U extends any, // FIXME

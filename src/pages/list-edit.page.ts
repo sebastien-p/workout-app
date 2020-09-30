@@ -1,4 +1,4 @@
-import { Type } from '@angular/core';
+import { Directive, Type } from '@angular/core';
 import { ItemReorderEventDetail } from '@ionic/core';
 
 import { WithId } from '../models/with-id.model';
@@ -7,6 +7,9 @@ import { ModalService } from '../services/modal.service';
 import { ItemEditModalPage } from './item-edit-modal.page';
 import { ListPage } from './list.page';
 
+// FIXME
+@Directive()
+// tslint:disable-next-line: directive-class-suffix
 export abstract class ListEditPage<
   T extends WithId,
   U extends any, // FIXME
