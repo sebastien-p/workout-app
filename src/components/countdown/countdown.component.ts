@@ -12,7 +12,7 @@ import { map, scan, take, tap } from 'rxjs/operators';
 import { millisInSecond, DateService } from '../../services/date.service';
 import { NativeService } from '../../services/native.service';
 
-const warnings = 4;
+const warnings = 6;
 
 @Component({
   selector: 'app-countdown',
