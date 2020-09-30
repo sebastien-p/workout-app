@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit } from '@angular/core';
+import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
 
 import { FullExercise } from '../../models/exercise.model';
 import { FullSet } from '../../models/set.model';
@@ -20,7 +20,7 @@ import { ItemModalPage } from '../item-modal.page';
 })
 export class TrainingWorkoutPage
   extends ItemModalPage<FullWorkout, WorkoutsService>
-  implements OnInit {
+  implements OnInit, OnDestroy {
   setNumber: number;
   serieNumber: number;
 
@@ -106,14 +106,11 @@ export class TrainingWorkoutPage
   }
 
   ngOnInit(): void {
+    this.nativeService.keepAwake();
     this.initialize(1, 1);
   }
 
-  ionViewWillEnter(): void {
-    this.nativeService.keepAwake();
-  }
-
-  ionViewWillLeave(): void {
+  ngOnDestroy(): void {
     this.nativeService.allowSleep();
   }
 
