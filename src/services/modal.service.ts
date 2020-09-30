@@ -17,7 +17,8 @@ export class ModalService {
     const modal: HTMLIonModalElement = await this.modalController.create({
       componentProps: { component, componentProps },
       // Because we can't use IonNav directly...
-      component: NavComponent
+      component: NavComponent,
+      backdropDismiss: false
     });
 
     await modal.present();
