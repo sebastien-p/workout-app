@@ -35,6 +35,12 @@ export class RecordsService {
     return [this.createStats(set.series), this.fetch(set)];
   }
 
+  setSerieValue(stats: Stats, serie: number, value: number): void {
+    const { values } = stats;
+    values[serie - 1] = value;
+    stats.total = values.reduce((total, current) => total + current, 0);
+  }
+
   fetch(set: FullSet): Promise<Stats>;
   fetch(): Promise<FullRecord[]>;
   fetch(set?: FullSet): any {
@@ -66,15 +72,13 @@ export class RecordsService {
   private async fetchOne({ id, series }: FullSet): Promise<Stats> {
     const { records } = this.database;
     const [lastSession] = await this.all.uniqueKeys();
-    const results: LightRecord[] = !lastSession
-      ? []
-      : await records
-          .where({ set: id, date: lastSession })
-          .and(({ serie }) => serie <= series)
-          .sortBy('serie');
+
+    const results: LightRecord[] = lastSession
+      ? await records.where({ set: id, date: lastSession }).toArray()
+      : [];
+
     return results.reduce<Stats>((stats, { serie, value }) => {
-      stats.values[serie - 1] = value;
-      stats.total += value;
+      this.setSerieValue(stats, serie, value);
       return stats;
     }, this.createStats(series));
   }

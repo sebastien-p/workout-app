@@ -197,8 +197,7 @@ export class TrainingWorkoutPage
   }
 
   private recordValue(value: number, serieNumber: number): Promise<number> {
-    this.thisTimeStats.values[serieNumber - 1] = value;
-    this.thisTimeStats.total += value;
+    this.recordsService.setSerieValue(this.thisTimeStats, serieNumber, value);
 
     return this.recordsService.save(
       this.recordsService.create(
