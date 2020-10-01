@@ -170,6 +170,8 @@ export class TrainingWorkoutPage
   }
 
   async promptRepetitions(): Promise<void> {
+    this.nativeService.notify();
+
     const serieNumber: number = this.serieNumber;
 
     if (!this.shouldRecord || serieNumber > this.thisTimeStats.values.length) {
