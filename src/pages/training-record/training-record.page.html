@@ -52,6 +52,7 @@
           min="1"
           [max]="set.series"
           [ngModel]="item.serie"
+          [disabled]="set.series < 2"
         >
           <ion-label slot="start">1</ion-label>
           <ion-label slot="end">{{ set.series }}</ion-label>
