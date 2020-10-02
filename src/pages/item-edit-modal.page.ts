@@ -23,6 +23,10 @@ export abstract class ItemEditModalPage<
     return dirty && valid;
   }
 
+  dismiss(skipConfirm: boolean = this.form.pristine): Promise<boolean> {
+    return super.dismiss(skipConfirm);
+  }
+
   reset(): void {
     this.form.reset(this.value);
   }
