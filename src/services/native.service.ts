@@ -17,7 +17,7 @@ export class NativeService {
   private readonly audioContext: AudioContext;
   private beepBuffer: Promise<AudioBuffer>;
 
-  // private readonly lock: NoSleep;
+  // private readonly lock: NoSleep; // FIXME
 
   constructor(
     platform: Platform,

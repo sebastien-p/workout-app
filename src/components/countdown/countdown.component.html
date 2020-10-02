@@ -2,6 +2,7 @@
   <ion-title>{{ (value | async) || rest }}</ion-title>
 </ion-toolbar>
 
+<!-- FIXME: iOS "z-index" issue -->
 <ion-fab vertical="top" horizontal="end" edge [ngSwitch]="isPlaying">
   <ion-fab-button *ngSwitchCase="false" (click)="play()">
     <ion-icon name="play"></ion-icon>
