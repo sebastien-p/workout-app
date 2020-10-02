@@ -31,7 +31,7 @@ export class RecordsService {
     return { values: Array(series).fill(0), total: 0 };
   }
 
-  createStatsTuple(set: FullSet): [Stats, Promise<Stats>] {
+  getStats(set: FullSet): [Stats, Promise<Stats>] {
     return [this.createStats(set.series), this.fetch(set)];
   }
 

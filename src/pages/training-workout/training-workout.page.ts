@@ -21,13 +21,11 @@ import { ItemModalPage } from '../item-modal.page';
 export class TrainingWorkoutPage
   extends ItemModalPage<FullWorkout, WorkoutsService>
   implements OnInit, OnDestroy {
-  setNumber: number;
-  serieNumber: number;
-
-  thisTimeStats?: Stats;
-  lastTimeStats?: Promise<Stats>;
+  setNumber = 1;
+  serieNumber = 1;
 
   private readonly startDate: string;
+  private stats?: [Stats, Promise<Stats>][];
 
   @ViewChild(CountdownComponent, { static: false })
   private readonly countdown?: CountdownComponent;
@@ -105,9 +103,24 @@ export class TrainingWorkoutPage
     return this.currentSet?.[this.isLastSerie ? 'restAfter' : 'rest'];
   }
 
+  get thisTimeStats(): Stats | undefined {
+    return this.stats?.[this.setNumber - 1][0];
+  }
+
+  get lastTimeStats(): Promise<Stats> | undefined {
+    return this.stats?.[this.setNumber - 1][1];
+  }
+
+  private get sets(): FullSet[] {
+    return this.item.sets;
+  }
+
   ngOnInit(): void {
     this.nativeService.keepAwake();
-    this.initialize(1, 1);
+
+    if (this.shouldRecord) {
+      this.stats = this.sets.map(set => this.recordsService.getStats(set));
+    }
   }
 
   ngOnDestroy(): void {
@@ -130,51 +143,12 @@ export class TrainingWorkoutPage
     }
   }
 
-  private get sets(): FullSet[] {
-    return this.item.sets;
-  }
-
-  private getSeriesTotal(set: FullSet | undefined): number {
-    if (!set) {
-      return 1;
-    }
-
-    const { series, exercise } = set;
-    return exercise.doubled ? series * 2 : series;
-  }
-
-  private initialize(setNumber: number, serieNumber: number): void {
-    this.setNumber = setNumber;
-    this.serieNumber = serieNumber;
-
-    if (this.shouldRecord) {
-      [
-        this.thisTimeStats,
-        this.lastTimeStats
-      ] = this.recordsService.createStatsTuple(this.currentSet);
-    }
-  }
-
-  private show(
-    shift: number,
-    serieNumber: number,
-    shouldInitializeSet: boolean
-  ): void {
-    this.countdown?.stop();
-
-    if (shouldInitializeSet) {
-      this.initialize(this.setNumber + shift, serieNumber);
-    } else {
-      this.serieNumber += shift;
-    }
-  }
-
   async promptRepetitions(): Promise<void> {
+    const { thisTimeStats, currentSet, serieNumber } = this;
+
     this.nativeService.notify();
 
-    const serieNumber: number = this.serieNumber;
-
-    if (!this.shouldRecord || serieNumber > this.thisTimeStats.values.length) {
+    if (!this.shouldRecord || serieNumber > thisTimeStats.values.length) {
       return;
     }
 
@@ -191,23 +165,50 @@ export class TrainingWorkoutPage
 
     if (repetitions) {
       await this.recordValue(
+        thisTimeStats,
+        currentSet,
+        serieNumber,
         // FIXME: input validation
-        this.numberService.toUnsignedInt(repetitions),
-        serieNumber
+        this.numberService.toUnsignedInt(repetitions)
       );
     }
   }
 
-  private recordValue(value: number, serieNumber: number): Promise<number> {
-    this.recordsService.setSerieValue(this.thisTimeStats, serieNumber, value);
+  private getSeriesTotal(set: FullSet | undefined): number {
+    if (!set) {
+      return 1;
+    }
+
+    const { series, exercise } = set;
+    return exercise.doubled ? series * 2 : series;
+  }
+
+  private show(
+    shift: number,
+    serieNumber: number,
+    shouldChangeSet: boolean
+  ): void {
+    this.countdown?.stop();
+
+    if (shouldChangeSet) {
+      this.setNumber = this.setNumber + shift;
+      this.serieNumber = serieNumber;
+    } else {
+      this.serieNumber += shift;
+    }
+  }
+
+  // TODO: do nothing if value is 0?
+  private recordValue(
+    stats: Stats,
+    set: FullSet,
+    serie: number,
+    value: number
+  ): Promise<number> {
+    this.recordsService.setSerieValue(stats, serie, value);
 
     return this.recordsService.save(
-      this.recordsService.create(
-        this.currentSet,
-        serieNumber,
-        value,
-        this.startDate
-      )
+      this.recordsService.create(set, serie, value, this.startDate)
     );
   }
 }
