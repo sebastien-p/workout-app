@@ -1,6 +1,7 @@
 import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
 
 import { FullExercise } from '../../models/exercise.model';
+import { FullRecord } from '../../models/record.model';
 import { FullSet } from '../../models/set.model';
 import { Stats } from '../../models/stats.model';
 import { FullWorkout } from '../../models/workout.model';
@@ -119,7 +120,9 @@ export class TrainingWorkoutPage
     this.nativeService.keepAwake();
 
     if (this.shouldRecord) {
-      this.stats = this.sets.map(set => this.recordsService.getStats(set));
+      this.stats = this.sets.map(set => {
+        return this.recordsService.getStats(set, this.startDate);
+      });
     }
   }
 
@@ -144,11 +147,11 @@ export class TrainingWorkoutPage
   }
 
   async promptRepetitions(): Promise<void> {
-    const { thisTimeStats, currentSet, serieNumber } = this;
+    const { thisTimeStats, serieNumber } = this;
 
     this.nativeService.notify();
 
-    if (!this.shouldRecord || serieNumber > thisTimeStats.values.length) {
+    if (!this.shouldRecord || serieNumber > thisTimeStats.records.length) {
       return;
     }
 
@@ -166,7 +169,6 @@ export class TrainingWorkoutPage
     if (repetitions) {
       await this.recordValue(
         thisTimeStats,
-        currentSet,
         serieNumber,
         // FIXME: input validation
         this.numberService.toUnsignedInt(repetitions)
@@ -199,16 +201,17 @@ export class TrainingWorkoutPage
   }
 
   // TODO: do nothing if value is 0?
-  private recordValue(
+  private async recordValue(
     stats: Stats,
-    set: FullSet,
     serie: number,
     value: number
-  ): Promise<number> {
-    this.recordsService.setSerieValue(stats, serie, value);
-
-    return this.recordsService.save(
-      this.recordsService.create(set, serie, value, this.startDate)
+  ): Promise<void> {
+    const record: FullRecord = this.recordsService.setSerieValue(
+      stats,
+      serie,
+      value
     );
+
+    record.id = await this.recordsService.save(record);
   }
 }

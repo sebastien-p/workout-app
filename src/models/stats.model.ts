@@ -1,4 +1,6 @@
+import { FullRecord } from './record.model';
+
 export interface Stats {
-  values: number[];
+  records: FullRecord[];
   total: number;
 }

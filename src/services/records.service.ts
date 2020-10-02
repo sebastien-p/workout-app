@@ -20,25 +20,32 @@ export class RecordsService {
 
   create(
     set: FullSet,
+    date: string = this.dateService.getISODate(),
     serie: number = 1,
-    value: number = 0,
-    date: string = this.dateService.getISODate()
+    value: number = 0
   ): FullRecord {
     return { set, serie, value, date };
   }
 
-  createStats(series: number = 1): Stats {
-    return { values: Array(series).fill(0), total: 0 };
+  createStats(set: FullSet, date?: string): Stats {
+    return {
+      total: 0,
+      records: [...Array(set.series)].map((value, index) => {
+        return this.create(set, date, index + 1);
+      })
+    };
   }
 
-  getStats(set: FullSet): [Stats, Promise<Stats>] {
-    return [this.createStats(set.series), this.fetch(set)];
+  getStats(set: FullSet, date?: string): [Stats, Promise<Stats>] {
+    return [this.createStats(set, date), this.fetch(set)];
   }
 
-  setSerieValue(stats: Stats, serie: number, value: number): void {
-    const { values } = stats;
-    values[serie - 1] = value;
-    stats.total = values.reduce((total, current) => total + current, 0);
+  setSerieValue(stats: Stats, serie: number, newValue: number): FullRecord {
+    const { records } = stats;
+    const target: FullRecord = records[serie - 1];
+    target.value = newValue;
+    stats.total = records.reduce((total, { value }) => total + value, 0);
+    return target;
   }
 
   fetch(set: FullSet): Promise<Stats>;
@@ -69,18 +76,18 @@ export class RecordsService {
     return records.orderBy('date').reverse();
   }
 
-  private async fetchOne({ id, series }: FullSet): Promise<Stats> {
+  private async fetchOne(set: FullSet): Promise<Stats> {
     const { records } = this.database;
     const [lastSession] = await this.all.uniqueKeys();
 
     const results: LightRecord[] = lastSession
-      ? await records.where({ set: id, date: lastSession }).toArray()
+      ? await records.where({ set: set.id, date: lastSession }).toArray()
       : [];
 
     return results.reduce<Stats>((stats, { serie, value }) => {
       this.setSerieValue(stats, serie, value);
       return stats;
-    }, this.createStats(series));
+    }, this.createStats(set));
   }
 
   private async fetchAll(): Promise<FullRecord[]> {

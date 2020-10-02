@@ -1,8 +1,8 @@
 <ng-container *ngIf="stats">
   <h2><ng-content></ng-content></h2>
   <ol>
-    <li *ngFor="let value of stats.values; trackBy: trackByIndex">
-      {{ value }}
+    <li *ngFor="let record of stats.records; trackBy: trackById">
+      {{ record.value }}
     </li>
   </ol>
   <p>Total: {{ stats.total }}</p>
