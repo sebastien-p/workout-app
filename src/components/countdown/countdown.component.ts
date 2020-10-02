@@ -69,8 +69,8 @@ export class CountdownComponent implements OnChanges {
   }
 
   private initialize(): void {
-    this.duration = this.dateService.parseTime(this.rest);
     this.stop();
+    this.duration = this.dateService.parseTime(this.rest);
   }
 
   private onTick(value: number): void {

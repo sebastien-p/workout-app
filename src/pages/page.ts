@@ -8,6 +8,7 @@ import { ModalService } from '../services/modal.service';
 export interface Data<T extends WithId = WithId> {
   item?: T;
 }
+
 // FIXME
 @Directive()
 // tslint:disable-next-line: directive-class-suffix

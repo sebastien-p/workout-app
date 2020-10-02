@@ -7,7 +7,7 @@ export type Keys<T extends {}> = (keyof T)[];
 @Directive()
 // tslint:disable-next-line: directive-class-suffix
 export abstract class BaseComponent {
-  trackByIndex(index: number) {
+  trackByIndex(index: number): number {
     return index;
   }
 
