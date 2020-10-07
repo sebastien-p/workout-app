@@ -19,6 +19,9 @@ const warnings = 6;
   templateUrl: 'countdown.component.html'
 })
 export class CountdownComponent implements OnChanges {
+  value: Observable<string> | null;
+  private duration: number;
+
   @Input()
   readonly rest: string;
 
@@ -27,10 +30,6 @@ export class CountdownComponent implements OnChanges {
 
   @Output()
   readonly completed: EventEmitter<void> = new EventEmitter();
-
-  value: Observable<string> | null;
-
-  private duration: number;
 
   constructor(
     private readonly dateService: DateService,

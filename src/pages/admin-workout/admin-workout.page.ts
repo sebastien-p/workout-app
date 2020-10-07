@@ -33,7 +33,7 @@ export class AdminWorkoutPage extends ItemEditModalPage<
 
     if (this.canSubmit) {
       this.item.id = await this.save();
-      this.reset();
+      this.form.reset(this.value);
     }
   }
 }

@@ -27,10 +27,6 @@ export abstract class ItemEditModalPage<
     return super.dismiss(skipConfirm);
   }
 
-  reset(): void {
-    this.form.reset(this.value);
-  }
-
   async submit(): Promise<void> {
     if (this.canSubmit) {
       await this.save();
