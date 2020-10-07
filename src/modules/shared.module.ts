@@ -6,6 +6,8 @@ import { IonicModule } from '@ionic/angular';
 import { CountdownComponent } from '../components/countdown/countdown.component';
 import { EmptyComponent } from '../components/empty/empty.component';
 import { ExerciseComponent } from '../components/exercise/exercise.component';
+import { FileInputComponent } from '../components/file-input/file-input.component';
+import { ImageComponent } from '../components/image/image.component';
 import { ItemComponent } from '../components/item/item.component';
 import { ListComponent } from '../components/list/list.component';
 import { NavComponent } from '../components/nav/nav.component';
@@ -24,6 +26,8 @@ import { WorkoutComponent } from '../components/workout/workout.component';
     CountdownComponent,
     EmptyComponent,
     ExerciseComponent,
+    FileInputComponent,
+    ImageComponent,
     ItemComponent,
     ListComponent,
     NavComponent,
@@ -43,6 +47,8 @@ import { WorkoutComponent } from '../components/workout/workout.component';
     CountdownComponent,
     EmptyComponent,
     ExerciseComponent,
+    FileInputComponent,
+    ImageComponent,
     ItemComponent,
     ListComponent,
     NavComponent,

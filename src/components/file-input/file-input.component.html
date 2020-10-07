@@ -1,0 +1,12 @@
+<label (click)="onTouched()">
+  <ion-item>
+    <ng-content></ng-content>
+    <!-- TODO: validate max file size & type -->
+    <ion-input
+      hidden
+      type="file"
+      [accept]="accept"
+      (change)="onChange($event.target.files[0])"
+    ></ion-input>
+  </ion-item>
+</label>

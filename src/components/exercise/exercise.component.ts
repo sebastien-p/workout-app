@@ -9,4 +9,7 @@ import { FullExercise } from '../../models/exercise.model';
 export class ExerciseComponent {
   @Input()
   readonly exercise: FullExercise;
+
+  @Input()
+  readonly compact: boolean = false;
 }

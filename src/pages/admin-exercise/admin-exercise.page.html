@@ -35,6 +35,22 @@
           [ngModel]="item.doubled"
         ></ion-toggle>
       </ion-item>
+      <ion-item-sliding [disabled]="!value.image" (ionSwipe)="removeImage()">
+        <app-file-input name="image" accept="image/*" [ngModel]="item.image">
+          <ion-label>
+            Image
+            <p>{{ value.image?.name }}</p>
+          </ion-label>
+          <ion-thumbnail slot="end">
+            <app-image [source]="value.image"></app-image>
+          </ion-thumbnail>
+        </app-file-input>
+        <ion-item-options>
+          <ion-item-option expandable color="danger" (click)="removeImage()">
+            Delete
+          </ion-item-option>
+        </ion-item-options>
+      </ion-item-sliding>
     </ion-list>
   </form>
 </ion-content>

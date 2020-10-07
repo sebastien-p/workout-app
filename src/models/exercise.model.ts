@@ -4,6 +4,7 @@ import { WithDescription } from './with-description.model';
 
 interface Exercise extends WithId, WithName, WithDescription {
   doubled: boolean;
+  image?: File;
 }
 
 // tslint:disable-next-line: no-empty-interface
