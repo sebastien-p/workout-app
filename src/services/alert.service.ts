@@ -13,8 +13,8 @@ export interface AlertData<T> {
 export class AlertService {
   constructor(protected readonly alertController: AlertController) {}
 
-  async confirm(): Promise<boolean> {
-    const { resolved } = await this.alert<void>('Are you sure?', 'Yes', 'No');
+  async confirm(question: string = 'Are you sure?'): Promise<boolean> {
+    const { resolved } = await this.alert<void>(question, 'Yes', 'No');
     return resolved;
   }
 

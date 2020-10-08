@@ -5,17 +5,16 @@ import { LightExercise } from '../models/exercise.model';
 import { LightRecord } from '../models/record.model';
 import { LightSet } from '../models/set.model';
 import { WithId } from '../models/with-id.model';
+import { WithName } from '../models/with-name.model';
 import { LightWorkout } from '../models/workout.model';
+import { AlertService } from './alert.service';
 import { LoaderService } from './loader.service';
-
-import db from '../assets/db.json';
 
 export type Table<T extends WithId = WithId> = Dexie.Table<T, number>;
 export type Mapper<T, U> = (value: T) => Promise<U>;
 export type Updater<T> = (values: T[]) => T[];
 
-export interface Dump {
-  table: string;
+export interface Dump extends WithName {
   items: WithId[];
 }
 
@@ -28,7 +27,10 @@ export class DatabaseService extends Dexie {
   sets: Table<LightSet>;
   records: Table<LightRecord>;
 
-  constructor(private readonly loaderService: LoaderService) {
+  constructor(
+    private readonly alertService: AlertService,
+    private readonly loaderService: LoaderService
+  ) {
     super('pro.fing.workout-app.db'); // FIXME
 
     this.version(1).stores({
@@ -39,8 +41,6 @@ export class DatabaseService extends Dexie {
     });
 
     this.handleHooks(['creating', 'updating', 'deleting'], () => this.load());
-
-    this.on('populate', () => this.import(db));
   }
 
   map<T, U>(list: T[], mapper: Mapper<T, U>): Promise<U[]> {
@@ -59,23 +59,37 @@ export class DatabaseService extends Dexie {
     return list.filter(item => values.indexOf(item) < 0);
   }
 
-  export(): Promise<Dump[]> {
+  async export(): Promise<Dump[]> {
+    const records: boolean = await this.withRecords;
+
     return this.transaction('r', this.tables, () =>
-      this.map(this.tables, async table => ({
-        items: await table.toArray(),
-        table: table.name
-      }))
+      this.map(this.tables, async table => {
+        const { name } = table;
+
+        return {
+          items: name !== 'records' || records ? await table.toArray() : [],
+          name
+        };
+      })
     );
   }
 
-  import(dumps: Dump[]): Promise<number[]> {
+  async import(dumps: Dump[]): Promise<(number | void)[]> {
+    const records: boolean = await this.withRecords;
+
     return this.transaction('rw', this.tables, () =>
-      this.map(dumps, async ({ table: name, items }) => {
-        const table: Table = this.table(name);
-        await table.clear();
-        return table.bulkAdd(items);
+      this.map(dumps, async ({ name, items }) => {
+        if (name !== 'records' || records) {
+          const table: Table = this.table(name);
+          await table.clear();
+          return table.bulkAdd(items);
+        }
       })
     );
+  }
+
+  private get withRecords(): Promise<boolean> {
+    return this.alertService.confirm('With records?');
   }
 
   private handleHooks(hooks: string[], handler: () => void): void {

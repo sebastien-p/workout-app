@@ -47,7 +47,12 @@ export class FileInputComponent implements ControlValueAccessor {
   }
 
   registerOnChange(onChange: FileInputComponent['onChange']): void {
-    this.onChange = file => file && onChange(file);
+    this.onChange = file => {
+      if (file) {
+        this.writeValue();
+        return onChange(file);
+      }
+    };
   }
 
   registerOnTouched(onTouched: FileInputComponent['onTouched']): void {

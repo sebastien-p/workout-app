@@ -1,6 +1,9 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>Admin</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="exportDatabase()">Export</ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -12,5 +15,12 @@
     <ion-item routerLink="workouts">
       <ion-label>Workouts</ion-label>
     </ion-item>
+    <app-file-input
+      ngModel
+      accept="application/json"
+      (ngModelChange)="importDatabase($event)"
+    >
+      <ion-label>Import database</ion-label>
+    </app-file-input>
   </ion-list>
 </ion-content>
