@@ -1,5 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
-import { IonItemSliding } from '@ionic/angular';
+import { Component } from '@angular/core';
 
 import { FullExercise } from '../../models/exercise.model';
 import { AlertService } from '../../services/alert.service';
@@ -15,9 +14,6 @@ export class AdminExercisePage extends ItemEditModalPage<
   FullExercise,
   ExercisesService
 > {
-  @ViewChild(IonItemSliding, { static: true })
-  private readonly imageItemSliding: IonItemSliding;
-
   constructor(
     modalService: ModalService,
     alertService: AlertService,
@@ -28,8 +24,6 @@ export class AdminExercisePage extends ItemEditModalPage<
 
   async removeImage(): Promise<void> {
     if (await this.alertService.confirm()) {
-      await this.imageItemSliding.close();
-
       const { image } = this.form.controls;
       image.setValue(undefined);
       image.markAsDirty();

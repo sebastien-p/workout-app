@@ -36,7 +36,10 @@
         [component]="setsPage"
         [componentProps]="data"
       >
-        <ion-item button detail><ion-label>Sets</ion-label></ion-item>
+        <ion-item button detail>
+          <ion-icon name="layers" slot="start"></ion-icon>
+          <ion-label>Sets</ion-label>
+        </ion-item>
       </ion-nav-link>
     </ion-list>
   </form>

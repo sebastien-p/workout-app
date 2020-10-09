@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
 import { CountdownComponent } from '../components/countdown/countdown.component';
+import { DeletableComponent } from '../components/deletable/deletable.component';
 import { EmptyComponent } from '../components/empty/empty.component';
 import { ExerciseComponent } from '../components/exercise/exercise.component';
 import { FileInputComponent } from '../components/file-input/file-input.component';
@@ -24,6 +25,7 @@ import { WorkoutComponent } from '../components/workout/workout.component';
   imports: [CommonModule, FormsModule, IonicModule],
   declarations: [
     CountdownComponent,
+    DeletableComponent,
     EmptyComponent,
     ExerciseComponent,
     FileInputComponent,
@@ -45,6 +47,7 @@ import { WorkoutComponent } from '../components/workout/workout.component';
     FormsModule,
     IonicModule,
     CountdownComponent,
+    DeletableComponent,
     EmptyComponent,
     ExerciseComponent,
     FileInputComponent,

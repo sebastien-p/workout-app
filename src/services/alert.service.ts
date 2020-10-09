@@ -18,6 +18,7 @@ export class AlertService {
     return resolved;
   }
 
+  // TODO: autofocus
   async prompt(
     title: string,
     input: Omit<AlertInput, 'name'>

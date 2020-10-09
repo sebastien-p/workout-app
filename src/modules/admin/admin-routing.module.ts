@@ -8,8 +8,8 @@ import { AdminExercisesPage } from '../../pages/admin-exercises/admin-exercises.
 const routes: Routes = [
   { path: 'exercises', component: AdminExercisesPage },
   { path: 'workouts', component: AdminWorkoutsPage },
-  { path: '', component: AdminPage }
-  // TODO: redirect?
+  { path: '', component: AdminPage },
+  { path: '**', redirectTo: '' }
 ];
 
 @NgModule({

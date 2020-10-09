@@ -10,9 +10,11 @@
 <ion-content>
   <ion-list>
     <ion-item routerLink="exercises">
+      <ion-icon name="barbell" slot="start"></ion-icon>
       <ion-label>Exercises</ion-label>
     </ion-item>
     <ion-item routerLink="workouts">
+      <ion-icon name="stopwatch" slot="start"></ion-icon>
       <ion-label>Workouts</ion-label>
     </ion-item>
     <app-file-input
@@ -20,7 +22,8 @@
       accept="application/json"
       (ngModelChange)="importDatabase($event)"
     >
-      <ion-label>Import database</ion-label>
+      <ion-icon name="server" slot="start"></ion-icon>
+      <ion-label color="danger">Import database</ion-label>
     </app-file-input>
   </ion-list>
 </ion-content>

@@ -25,7 +25,7 @@ export abstract class ListPage<
     super(modalService, alertService, service);
   }
 
-  ionViewWillEnter(): void {
+  ionViewDidEnter(): void {
     this.refresh(true);
   }
 

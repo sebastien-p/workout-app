@@ -39,7 +39,7 @@ export class TrainingRecordPage extends ItemEditModalPage<
     return this.value.set;
   }
 
-  async ionViewWillEnter(): Promise<void> {
+  async ionViewDidEnter(): Promise<void> {
     this.sets = await this.setsService.fetch();
   }
 

@@ -30,7 +30,7 @@ export class AdminSetPage extends ItemEditModalPage<FullSet, SetsService> {
     super(modalService, alertService, setsService);
   }
 
-  async ionViewWillEnter(): Promise<void> {
+  async ionViewDidEnter(): Promise<void> {
     this.exercises = await this.exercisesService.fetch();
   }
 }
