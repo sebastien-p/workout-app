@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Platform } from '@ionic/angular';
-import { Insomnia } from '@ionic-native/insomnia/ngx';
-import { SplashScreen } from '@ionic-native/splash-screen/ngx';
-import { StatusBar } from '@ionic-native/status-bar/ngx';
-import { Vibration } from '@ionic-native/vibration/ngx';
+// import { Platform } from '@ionic/angular';
+// import { Insomnia } from '@ionic-native/insomnia/ngx';
+// import { SplashScreen } from '@ionic-native/splash-screen/ngx';
+// import { StatusBar } from '@ionic-native/status-bar/ngx';
+// import { Vibration } from '@ionic-native/vibration/ngx';
 // import NoSleep from 'nosleep.js';
 
 const beep =
@@ -13,20 +13,20 @@ const beep =
   providedIn: 'root'
 })
 export class NativeService {
-  private readonly isHybrid: Promise<boolean>;
+  // private readonly isHybrid: Promise<boolean>;
   private readonly audioContext: AudioContext;
   private beepBuffer: Promise<AudioBuffer>;
 
   // private readonly lock: NoSleep; // FIXME
 
   constructor(
-    platform: Platform,
-    private readonly insomnia: Insomnia,
-    private readonly splashScreen: SplashScreen,
-    private readonly statusBar: StatusBar,
-    private readonly vibration: Vibration
+    // platform: Platform,
+    // private readonly insomnia: Insomnia,
+    // private readonly splashScreen: SplashScreen,
+    // private readonly statusBar: StatusBar,
+    // private readonly vibration: Vibration
   ) {
-    this.isHybrid = platform.ready().then(runtime => runtime === 'hybrid');
+    // this.isHybrid = platform.ready().then(runtime => runtime === 'hybrid');
 
     this.audioContext = new (window.AudioContext ||
       // tslint:disable-next-line: no-string-literal
@@ -36,32 +36,34 @@ export class NativeService {
   }
 
   async initialize(): Promise<void> {
-    if (await this.isHybrid) {
-      this.statusBar.styleDefault();
-      this.splashScreen.hide();
-    }
+    // if (await this.isHybrid) {
+    //   this.statusBar.styleDefault();
+    //   this.splashScreen.hide();
+    // }
   }
 
   async notify(): Promise<void> {
     this.beep();
 
-    if (await this.isHybrid) {
-      this.vibration.vibrate(200);
-    }
+    // if (await this.isHybrid) {
+    //   this.vibration.vibrate(200);
+    // }
   }
 
   async keepAwake(): Promise<void> {
-    if (await this.isHybrid) {
-      await this.insomnia.keepAwake();
-    } /*  else {
+    // if (await this.isHybrid) {
+    //   await this.insomnia.keepAwake();
+    // }
+    /*  else {
       this.lock.enable();
     } */
   }
 
   async allowSleep(): Promise<void> {
-    if (await this.isHybrid) {
-      await this.insomnia.allowSleepAgain();
-    } /*  else {
+    // if (await this.isHybrid) {
+    //   await this.insomnia.allowSleepAgain();
+    // }
+    /*  else {
       this.lock.disable();
     } */
   }
