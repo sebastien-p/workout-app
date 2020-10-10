@@ -80,7 +80,7 @@
         </ion-datetime>
       </ion-item>
       <ion-item>
-        <ion-label position="stacked">Amplitude</ion-label>
+        <ion-label>Amplitude</ion-label>
         <ion-select name="amplitude" required [ngModel]="item.amplitude">
           <ion-select-option
             *ngFor="let label of amplitudes; trackBy: trackByIndex; index as value"
@@ -91,7 +91,7 @@
         </ion-select>
       </ion-item>
       <ion-item>
-        <ion-label position="stacked">Rythm</ion-label>
+        <ion-label>Rythm</ion-label>
         <ion-select name="rythm" required [ngModel]="item.rythm">
           <ion-select-option
             *ngFor="let label of rythms; trackBy: trackByIndex; index as value"

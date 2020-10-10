@@ -38,7 +38,8 @@ ion-thumbnail {
   }
 }
 
-ion-badge {
+ion-badge,
+app-with-time {
   $spacing: 0.25em;
 
   &:not(:first-child) {
