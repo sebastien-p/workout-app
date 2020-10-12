@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
+import { IonDatetime } from '@ionic/angular';
 
 import { Amplitude } from '../../models/amplitude.enum';
 import { FullExercise } from '../../models/exercise.model';
+import { Mode } from '../../models/mode.enum';
 import { Rythm } from '../../models/rythm.enum';
 import { FullSet } from '../../models/set.model';
 import { Keys } from '../../components/component';
@@ -18,6 +20,7 @@ import { ItemEditModalPage } from '../item-edit-modal.page';
 export class AdminSetPage extends ItemEditModalPage<FullSet, SetsService> {
   readonly amplitudes: Keys<typeof Amplitude> = this.spreadEnum(Amplitude);
   readonly rythms: Keys<typeof Rythm> = this.spreadEnum(Rythm);
+  readonly modes: Keys<typeof Mode> = this.spreadEnum(Mode);
 
   exercises?: FullExercise[];
 
@@ -30,7 +33,25 @@ export class AdminSetPage extends ItemEditModalPage<FullSet, SetsService> {
     super(modalService, alertService, setsService);
   }
 
+  get series(): number {
+    return this.value.series;
+  }
+
+  get isSided(): boolean | undefined {
+    return this.value.exercise?.sided;
+  }
+
+  get hasOneSerie(): boolean {
+    return this.series < 2;
+  }
+
   async ionViewDidEnter(): Promise<void> {
     this.exercises = await this.exercisesService.fetch();
+  }
+
+  resetTime(input: IonDatetime, predicate: boolean): void {
+    if (predicate) {
+      input.value = '00:00:00';
+    }
   }
 }

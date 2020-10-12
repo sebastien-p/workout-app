@@ -3,7 +3,7 @@ import { WithName } from './with-name.model';
 import { WithDescription } from './with-description.model';
 
 interface Exercise extends WithId, WithName, WithDescription {
-  doubled: boolean;
+  sided: boolean;
   image?: File;
 }
 

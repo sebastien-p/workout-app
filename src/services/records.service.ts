@@ -7,6 +7,7 @@ import { Stats } from '../models/stats.model';
 import { DatabaseService } from './database.service';
 import { DateService } from './date.service';
 import { SetsService } from './sets.service';
+import { Mode } from '../models/mode.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -36,8 +37,10 @@ export class RecordsService {
     };
   }
 
-  getStats(set: FullSet, date?: string): [Stats, Promise<Stats>] {
-    return [this.createStats(set, date), this.fetch(set)];
+  getStats(set: FullSet, date?: string): [Stats, Promise<Stats>] | undefined {
+    if (set.mode === Mode.Repetitions) {
+      return [this.createStats(set, date), this.fetch(set)];
+    }
   }
 
   setSerieValue(stats: Stats, serie: number, newValue: number): FullRecord {

@@ -28,11 +28,11 @@
         </ion-textarea>
       </ion-item>
       <ion-item>
-        <ion-label>Doubled</ion-label>
+        <ion-label>Sided</ion-label>
         <ion-toggle
-          name="doubled"
+          name="sided"
           required
-          [ngModel]="item.doubled"
+          [ngModel]="item.sided"
         ></ion-toggle>
       </ion-item>
       <app-deletable [disabled]="!value.image" (deleted)="removeImage()">

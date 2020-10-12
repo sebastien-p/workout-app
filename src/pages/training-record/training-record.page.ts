@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { IonRange } from '@ionic/angular';
 
 import { FullRecord } from '../../models/record.model';
@@ -10,6 +10,7 @@ import { NumberService } from '../../services/number.service';
 import { RecordsService } from '../../services/records.service';
 import { SetsService } from '../../services/sets.service';
 import { ItemEditModalPage } from '../item-edit-modal.page';
+import { Mode } from '../../models/mode.enum';
 
 @Component({
   selector: 'app-training-record-page',
@@ -20,9 +21,6 @@ export class TrainingRecordPage extends ItemEditModalPage<
   RecordsService
 > {
   sets?: FullSet[];
-
-  @ViewChild(IonRange, { static: false })
-  private readonly serieRange?: IonRange;
 
   constructor(
     private readonly setsService: SetsService,
@@ -35,18 +33,17 @@ export class TrainingRecordPage extends ItemEditModalPage<
     super(modalService, alertService, recordsService);
   }
 
-  get set(): FullSet {
-    return this.value.set;
+  get series(): number | undefined {
+    return this.value.set?.series;
   }
 
   async ionViewDidEnter(): Promise<void> {
-    this.sets = await this.setsService.fetch();
+    const sets: FullSet[] = await this.setsService.fetch();
+    this.sets = sets.filter(({ mode }) => mode === Mode.Repetitions); // TODO: in service?
   }
 
-  onSetChange(): void {
-    if (this.serieRange) {
-      this.serieRange.value = 1;
-    }
+  resetSerie(input: IonRange): void {
+    input.value = 1;
   }
 
   // FIXME: form validation + datetime picker

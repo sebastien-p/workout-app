@@ -7,6 +7,7 @@ import { LightSet, FullSet } from '../models/set.model';
 import { LightWorkout } from '../models/workout.model';
 import { DatabaseService, Updater } from './database.service';
 import { ExercisesService } from './exercises.service';
+import { Mode } from '../models/mode.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -21,20 +22,24 @@ export class SetsService {
     workout: LightWorkout,
     description: string = null,
     exercise: FullExercise = null,
+    mode: Mode = Mode.Repetitions,
     amplitude: Amplitude = Amplitude.Normal,
     rythm: Rythm = Rythm.Normal,
-    rest: string = '00:00:00',
-    restAfter: string = rest,
+    time: string = '00:00:00',
+    timeSided: string = time,
+    timeAfter: string = time,
     series: number = 1
   ): FullSet {
     return {
       workout,
       description,
       exercise,
+      mode,
       amplitude,
       rythm,
-      rest,
-      restAfter,
+      time,
+      timeSided,
+      timeAfter,
       series
     };
   }

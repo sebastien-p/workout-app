@@ -12,9 +12,9 @@ export class ExercisesService {
   create(
     name: string = '',
     description: string = '',
-    doubled: boolean = false
+    sided: boolean = false
   ): FullExercise {
-    return { name, description, doubled };
+    return { name, description, sided };
   }
 
   fetch(id: number): Promise<FullExercise>;
@@ -40,7 +40,7 @@ export class ExercisesService {
     return this.database.transaction(
       'rw',
       [exercises, workouts, sets, records],
-      async () => {
+      async () => { // FIXME: await exerywhere or Promise.all? (not only here) + warn?
         const ids: number[] = await sets.where({ exercise: id }).primaryKeys();
         this.updateWorkouts(ids, workoutSets => removeAll(workoutSets, ids));
         records.where('set').anyOf(ids).delete();

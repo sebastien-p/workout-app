@@ -40,7 +40,7 @@
 <ion-footer>
   <app-countdown
     *ngIf="hasSet"
-    [rest]="rest"
+    [time]="time"
     (started)="promptRepetitions()"
     (completed)="showNext()"
   >

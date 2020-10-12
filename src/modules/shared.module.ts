@@ -18,7 +18,7 @@ import { SetStatsComponent } from '../components/set-stats/set-stats.component';
 import { StatsComponent } from '../components/stats/stats.component';
 import { WithDescriptionComponent } from '../components/with-description/with-description.component';
 import { WithNameComponent } from '../components/with-name/with-name.component';
-import { WithRestComponent } from '../components/with-rest/with-rest.component';
+import { WithTimeComponent } from '../components/with-time/with-time.component';
 import { WorkoutComponent } from '../components/workout/workout.component';
 
 @NgModule({
@@ -39,7 +39,7 @@ import { WorkoutComponent } from '../components/workout/workout.component';
     StatsComponent,
     WithDescriptionComponent,
     WithNameComponent,
-    WithRestComponent,
+    WithTimeComponent,
     WorkoutComponent
   ],
   exports: [
@@ -61,7 +61,7 @@ import { WorkoutComponent } from '../components/workout/workout.component';
     StatsComponent,
     WithDescriptionComponent,
     WithNameComponent,
-    WithRestComponent,
+    WithTimeComponent,
     WorkoutComponent
   ]
 })

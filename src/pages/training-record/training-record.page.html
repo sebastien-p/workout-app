@@ -32,7 +32,7 @@
           [ngModel]="item.set"
           [compareWith]="compareById"
           [attr.disabled]="!sets"
-          (ngModelChange)="onSetChange()"
+          (ngModelChange)="resetSerie(serieRange)"
         >
           <ion-select-option
             *ngFor="let set of sets; trackBy: trackById"
@@ -42,20 +42,20 @@
           </ion-select-option>
         </ion-select>
       </ion-item>
-      <ion-item *ngIf="set">
+      <ion-item [hidden]="!series || series < 2">
         <ion-label position="stacked">Serie</ion-label>
         <ion-badge slot="end">{{ value.serie }}</ion-badge>
         <ion-range
+          #serieRange
           name="serie"
           required
           snaps
           min="1"
-          [max]="set.series"
+          [max]="series"
           [ngModel]="item.serie"
-          [disabled]="set.series < 2"
         >
           <ion-label slot="start">1</ion-label>
-          <ion-label slot="end">{{ set.series }}</ion-label>
+          <ion-label slot="end">{{ series }}</ion-label>
         </ion-range>
       </ion-item>
       <ion-item>

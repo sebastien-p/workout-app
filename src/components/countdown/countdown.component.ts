@@ -23,7 +23,7 @@ export class CountdownComponent implements OnChanges {
   private duration: number;
 
   @Input()
-  readonly rest: string;
+  readonly time: string;
 
   @Output()
   readonly started: EventEmitter<void> = new EventEmitter();
@@ -69,7 +69,7 @@ export class CountdownComponent implements OnChanges {
 
   private initialize(): void {
     this.stop();
-    this.duration = this.dateService.parseTime(this.rest);
+    this.duration = this.dateService.parseTime(this.time);
   }
 
   private onTick(value: number): void {

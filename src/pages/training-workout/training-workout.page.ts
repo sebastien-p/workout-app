@@ -26,7 +26,7 @@ export class TrainingWorkoutPage
   serieNumber = 1;
 
   private readonly startDate: string;
-  private stats?: [Stats, Promise<Stats>][];
+  private stats?: ([Stats, Promise<Stats>] | undefined)[];
 
   @ViewChild(CountdownComponent, { static: false })
   private readonly countdown?: CountdownComponent;
@@ -72,15 +72,22 @@ export class TrainingWorkoutPage
     return !this.hasSet || this.serieNumber === 1;
   }
 
-  get isLastSerie(): boolean {
-    return this.serieNumber === this.seriesTotal;
+  get isLastSerie(): boolean | null {
+    const { serieNumber, seriesTotal } = this;
+
+    if (serieNumber === seriesTotal) {
+      return true;
+    }
+
+    const series: number = this.getSeriesTotal(this.currentSet, false);
+    return series < seriesTotal && serieNumber === series && null;
   }
 
   get isStart(): boolean {
     return this.isFirstSet && this.isFirstSerie;
   }
 
-  get isEnd(): boolean {
+  get isEnd(): boolean | null {
     return this.isLastSet && this.isLastSerie;
   }
 
@@ -100,16 +107,20 @@ export class TrainingWorkoutPage
     return this.currentSet?.exercise;
   }
 
-  get rest(): string | undefined {
-    return this.currentSet?.[this.isLastSerie ? 'restAfter' : 'rest'];
+  get time(): string | undefined {
+    const { currentSet: set, isLastSerie: last } = this;
+
+    if (set) {
+      return set[last ? 'timeAfter' : last === null ? 'timeSided' : 'time'];
+    }
   }
 
   get thisTimeStats(): Stats | undefined {
-    return this.stats?.[this.setNumber - 1][0];
+    return this.stats?.[this.setNumber - 1]?.[0];
   }
 
   get lastTimeStats(): Promise<Stats> | undefined {
-    return this.stats?.[this.setNumber - 1][1];
+    return this.stats?.[this.setNumber - 1]?.[1];
   }
 
   private get sets(): FullSet[] {
@@ -151,7 +162,11 @@ export class TrainingWorkoutPage
 
     this.nativeService.notify();
 
-    if (!this.shouldRecord || serieNumber > thisTimeStats.records.length) {
+    if (
+      !this.shouldRecord ||
+      !thisTimeStats ||
+      serieNumber > thisTimeStats.records.length
+    ) {
       return;
     }
 
@@ -176,19 +191,22 @@ export class TrainingWorkoutPage
     }
   }
 
-  private getSeriesTotal(set: FullSet | undefined): number {
+  private getSeriesTotal(
+    set: FullSet | undefined,
+    sided: boolean = true
+  ): number {
     if (!set) {
       return 1;
     }
 
     const { series, exercise } = set;
-    return exercise.doubled ? series * 2 : series;
+    return sided && exercise.sided ? series * 2 : series;
   }
 
   private show(
     shift: number,
     serieNumber: number,
-    shouldChangeSet: boolean
+    shouldChangeSet: boolean | null
   ): void {
     this.countdown?.stop();
 
