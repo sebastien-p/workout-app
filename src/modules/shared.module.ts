@@ -16,9 +16,6 @@ import { RecordComponent } from '../components/record/record.component';
 import { SetComponent } from '../components/set/set.component';
 import { SetStatsComponent } from '../components/set-stats/set-stats.component';
 import { StatsComponent } from '../components/stats/stats.component';
-import { WithDescriptionComponent } from '../components/with-description/with-description.component';
-import { WithNameComponent } from '../components/with-name/with-name.component';
-import { WithTimeComponent } from '../components/with-time/with-time.component';
 import { WorkoutComponent } from '../components/workout/workout.component';
 
 @NgModule({
@@ -37,9 +34,6 @@ import { WorkoutComponent } from '../components/workout/workout.component';
     SetComponent,
     SetStatsComponent,
     StatsComponent,
-    WithDescriptionComponent,
-    WithNameComponent,
-    WithTimeComponent,
     WorkoutComponent
   ],
   exports: [
@@ -59,9 +53,6 @@ import { WorkoutComponent } from '../components/workout/workout.component';
     SetComponent,
     SetStatsComponent,
     StatsComponent,
-    WithDescriptionComponent,
-    WithNameComponent,
-    WithTimeComponent,
     WorkoutComponent
   ]
 })

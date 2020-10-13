@@ -1,17 +1,13 @@
 import { Injectable } from '@angular/core';
 import { saveAs } from 'file-saver';
 
-import { StringService } from './string.service';
-
 @Injectable({
   providedIn: 'root'
 })
 export class FileService {
-  constructor(private readonly stringService: StringService) {}
-
   downloadJSON<T>(name: string, data: T[]): void {
     return saveAs(
-      new Blob([this.stringService.toJSON(data)], { type: 'application/json' }),
+      new Blob([this.toJSON(data)], { type: 'application/json' }),
       name + '.json'
     );
   }
@@ -22,6 +18,14 @@ export class FileService {
       reader.onload = () => resolve(JSON.parse(reader.result as string));
       reader.onerror = reject;
       reader.readAsText(file);
+    });
+  }
+
+  private toJSON(data: object): string {
+    return JSON.stringify(data, (key, value) => {
+      if (!(value instanceof Blob)) {
+        return value;
+      }
     });
   }
 }
