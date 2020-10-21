@@ -43,12 +43,19 @@ export class WorkoutsService {
 
   delete({ id, sets: workoutSets }: FullWorkout): Promise<void> {
     const { workouts, sets, records } = this.database;
-    return this.database.transaction('rw', [workouts, sets, records], () => {
-      const setIds: number[] = workoutSets.map(set => set.id);
-      records.where('set').anyOf(setIds).delete();
-      sets.bulkDelete(setIds);
-      return workouts.delete(id);
-    });
+    return this.database.transaction(
+      'rw',
+      [workouts, sets, records],
+      async () => {
+        const setIds: number[] = workoutSets.map(set => set.id);
+
+        await Promise.all([
+          records.where('set').anyOf(setIds).delete(),
+          sets.bulkDelete(setIds),
+          workouts.delete(id)
+        ]);
+      }
+    );
   }
 
   private async fetchOne(id: number): Promise<FullWorkout> {

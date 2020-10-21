@@ -56,25 +56,39 @@ export class SetsService {
   }
 
   save({ exercise, workout, ...set }: FullSet): Promise<number> {
-    const { workouts, sets, add } = this.database;
-    return this.database.transaction('rw', [workouts, sets], async () => {
-      const id: number = await sets.put({
-        exercise: exercise.id,
-        workout: workout.id,
-        ...set
-      });
-      this.updateWorkout(workout, ids => add(ids, id));
-      return id;
-    });
+    const { workouts, sets, records, add } = this.database;
+    return this.database.transaction(
+      'rw',
+      [workouts, sets, records],
+      async () => {
+        const id: number = await sets.put({
+          exercise: exercise.id,
+          workout: workout.id,
+          ...set
+        });
+
+        if (!set.id) {
+          await this.updateWorkout(workout, ids => add(ids, id));
+        }
+
+        return id;
+      }
+    );
   }
 
   delete({ id, workout }: FullSet): Promise<void> {
     const { workouts, sets, records, removeOne } = this.database;
-    return this.database.transaction('rw', [workouts, sets, records], () => {
-      this.updateWorkout(workout, ids => removeOne(ids, id));
-      records.where({ set: id }).delete();
-      return sets.delete(id);
-    });
+    return this.database.transaction(
+      'rw',
+      [workouts, sets, records],
+      async () => {
+        await Promise.all([
+          this.updateWorkout(workout, ids => removeOne(ids, id)),
+          records.where({ set: id }).delete(),
+          sets.delete(id)
+        ]);
+      }
+    );
   }
 
   private async addRelations({

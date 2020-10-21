@@ -40,12 +40,15 @@ export class ExercisesService {
     return this.database.transaction(
       'rw',
       [exercises, workouts, sets, records],
-      async () => { // FIXME: await exerywhere or Promise.all? (not only here) + warn?
+      async () => {
         const ids: number[] = await sets.where({ exercise: id }).primaryKeys();
-        this.updateWorkouts(ids, workoutSets => removeAll(workoutSets, ids));
-        records.where('set').anyOf(ids).delete();
-        sets.bulkDelete(ids);
-        return await exercises.delete(id);
+
+        await Promise.all([
+          this.updateWorkouts(ids, workoutSets => removeAll(workoutSets, ids)),
+          records.where('set').anyOf(ids).delete(),
+          sets.bulkDelete(ids),
+          exercises.delete(id)
+        ]);
       }
     );
   }
