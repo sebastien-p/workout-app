@@ -88,7 +88,10 @@ export class RecordsService {
       : [];
 
     return results.reduce<Stats>((stats, { serie, value }) => {
-      this.setSerieValue(stats, serie, value);
+      try {
+        this.setSerieValue(stats, serie, value);
+      } catch (error) {}
+
       return stats;
     }, this.createStats(set));
   }

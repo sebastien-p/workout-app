@@ -10,7 +10,6 @@ import { NumberService } from '../../services/number.service';
 import { RecordsService } from '../../services/records.service';
 import { SetsService } from '../../services/sets.service';
 import { ItemEditModalPage } from '../item-edit-modal.page';
-import { Mode } from '../../models/mode.enum';
 
 @Component({
   selector: 'app-training-record-page',
@@ -38,8 +37,7 @@ export class TrainingRecordPage extends ItemEditModalPage<
   }
 
   async ionViewDidEnter(): Promise<void> {
-    const sets: FullSet[] = await this.setsService.fetch();
-    this.sets = sets.filter(({ mode }) => mode === Mode.Repetitions); // TODO: in service?
+    this.sets =  await this.setsService.fetch();
   }
 
   resetSerie(input: IonRange): void {
